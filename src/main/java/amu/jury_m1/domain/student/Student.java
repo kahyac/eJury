@@ -13,7 +13,6 @@ public class Student {
     private final String lastName;
     private final String firstName;
     private final String email;
-
     private boolean archived;
 
     private final Map<String, BccAnnualResult> annualResults = new HashMap<>();

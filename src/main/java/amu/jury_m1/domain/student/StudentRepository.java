@@ -4,8 +4,6 @@ import java.util.Optional;
 import java.util.List;
 
 public interface StudentRepository {
-    void save(Student student);
-    Optional<Student> findById(StudentId id);
     List<Student> findActive();
 }
 
