@@ -6,6 +6,6 @@ import java.time.Year;
 import java.util.List;
 
 public interface ResultRepository {
-    List<BccAnnualResult> findByStudentAndYear(StudentId id, Year year);
-    void saveAll(List<BccAnnualResult> results);
+    List<KnowledgeBlockAnnualResult> findByStudentAndYear(StudentId id, Year year);
+    void saveAll(List<KnowledgeBlockAnnualResult> results);
 }
