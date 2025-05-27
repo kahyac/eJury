@@ -1,6 +1,6 @@
 package amu.jury_m1.domain;
 
-import amu.jury_m1.domain.student.Student;
+import amu.jury_m1.domain.student.StudentEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import java.time.Year;
@@ -15,5 +15,5 @@ public class Promotion {
 
     private final Year academicYear;       // année universitaire (ex: 2024)
     private final String trackLabel;       // libellé du parcours (ex: M1 IDL)
-    private final List<Student> students;  // liste des étudiants de la promo
+    private final List<StudentEntity> students;  // liste des étudiants de la promo
 }

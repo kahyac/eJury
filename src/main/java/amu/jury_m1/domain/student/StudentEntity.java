@@ -1,0 +1,18 @@
+package amu.jury_m1.domain.student;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudentEntity {
+    @Id
+    private String id;
+    private String lastName;
+    private String firstName;
+    private String email;
+}
