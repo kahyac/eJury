@@ -1,4 +1,4 @@
-package amu.jury_m1.service.cirriculum;
+package amu.jury_m1.service.curriculum;
 
 import amu.jury_m1.dao.*;
 import amu.jury_m1.domain.pedagogy.*;
@@ -6,8 +6,6 @@ import amu.jury_m1.service.dtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Year;
 
 @Service
 @RequiredArgsConstructor
