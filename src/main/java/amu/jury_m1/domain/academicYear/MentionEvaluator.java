@@ -1,4 +1,4 @@
-package amu.jury_m1.service.academicYear;
+package amu.jury_m1.domain.academicYear;
 
 import amu.jury_m1.domain.result.Mention;
 

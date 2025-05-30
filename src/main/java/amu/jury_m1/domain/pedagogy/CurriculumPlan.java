@@ -1,36 +1,37 @@
 package amu.jury_m1.domain.pedagogy;
 
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-/**
- * CurriculumPlan — Represents a pedagogical plan (maquette) for a given academic year.
- */
-
+@Entity
+@Table(name = "curriculum_plan")
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CurriculumPlan {
-    private final Year academicYear;
-    private final List<TeachingUnit> teachingUnits = new ArrayList<>();
-    private final List<KnowledgeBlock> knowledgeBlocks = new ArrayList<>();
-    private final List<UnitInBlockAssociation> associations = new ArrayList<>();
 
-    public CurriculumPlan(Year academicYear) {
-        this.academicYear = Objects.requireNonNull(academicYear);
-    }
+    @Id
+    private String id;  // exemple : "2024-GIG" ou "2024-IDL"
 
-    public void addTeachingUnit(TeachingUnit unit) {
-        teachingUnits.add(unit);
-    }
+    private String academicYear;
 
-    public void addKnowledgeBlock(KnowledgeBlock block) {
-        knowledgeBlocks.add(block);
-    }
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "curriculum_plan_id")
+    private List<TeachingUnit> teachingUnits = new ArrayList<>();
 
-    public void attachUnitToBlock(String unitCode, String blockCode, double coeff) {
-        associations.add(new UnitInBlockAssociation(unitCode, blockCode, coeff));
-    }
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "curriculum_plan_id")
+    private List<KnowledgeBlock> knowledgeBlocks = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "curriculum_plan_id")
+    private List<UnitInBlockAssociation> associations = new ArrayList<>();
 }

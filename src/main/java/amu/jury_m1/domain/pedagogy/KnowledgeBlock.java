@@ -1,15 +1,25 @@
 package amu.jury_m1.domain.pedagogy;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-/**
- * KnowledgeBlock — Represents a BCC (Bloc de Connaissances et Compétences).
- */
+@Entity
+@Table(name = "knowledge_block")
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class KnowledgeBlock {
-    private final String code;         // Code unique du bloc
-    private final String label;        // Intitulé du bloc
-    private final int semester;        // 1 ou 2
+
+    @Id
+    private String code;
+
+    private String label;
+
+    private int semester;
+
+    private double ects;
+
+
 }

@@ -1,16 +1,30 @@
 package amu.jury_m1.domain.pedagogy;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 /**
- * Association between a TeachingUnit and a KnowledgeBlock for a given curriculum.
+ * UnitInBlockAssociation — Représente l’association entre une UE et un BCC,
+ * avec un coefficient défini dans le cadre d’une maquette pédagogique.
  */
-
+@Entity
+@Table(name = "unit_in_block")
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UnitInBlockAssociation {
-    private final String teachingUnitCode; // Code de l’UE concernée
-    private final String blockCode;        // Code du BCC concerné
-    private final double coefficient;      // Coefficient dans ce bloc
+
+    /**
+     * Clé composite composée du code de l'UE et du code du BCC.
+     * Elle est définie par la classe UnitInBlockId (annotée @Embeddable).
+     */
+    @EmbeddedId
+    private UnitInBlockId id;
+
+    /**
+     * Coefficient de l’UE dans ce bloc (défini dans la maquette).
+     */
+    private Double coefficient;
 }
