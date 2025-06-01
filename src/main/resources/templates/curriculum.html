@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Curriculum</title>
+</head>
+<body>
+<h2 th:text="'Curriculum: ' + ${plan.id} + ' — ' + ${plan.academicYear}"></h2>
+
+<h3>Teaching Units</h3>
+<ul>
+    <li th:each="ue : ${plan.teachingUnits}">
+        <span th:text="${ue.code} + ' - ' + ${ue.label} + ' (' + ${ue.ects} + ' ECTS)'"></span>
+    </li>
+</ul>
+<a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}">➕ Add Teaching Unit</a>
+
+<h3>Knowledge Blocks</h3>
+<ul>
+    <li th:each="block : ${plan.knowledgeBlocks}">
+        <span th:text="${block.code} + ' - ' + ${block.label} + ' (S' + ${block.semester} + ') — ' + ${block.ects} + ' ECTS'"></span>
+    </li>
+</ul>
+<a th:href="@{'/curriculum/' + ${plan.id} + '/add-block'}">➕ Add Knowledge Block</a>
+
+<h3>Associations (UE ↔ BCC)</h3>
+<ul>
+    <li th:each="assoc : ${plan.associations}">
+        <span th:text="${assoc.id.teachingUnitCode} + ' → ' + ${assoc.id.blockCode} + ' (coef: ' + ${assoc.coefficient} + ')'"></span>
+    </li>
+</ul>
+<a th:href="@{'/curriculum/' + ${plan.id} + '/add-association'}">➕ Associate UE to Block</a>
+
+</body>
+</html>
