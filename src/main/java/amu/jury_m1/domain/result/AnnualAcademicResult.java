@@ -18,7 +18,7 @@ public class AnnualAcademicResult {
     private final StudentId studentId;
     private final Year academicYear;
     private final double annualAverage;
-    private final Decision decision;
+    private final AnnualDecision decision;
     private final Mention mention;
 
 }

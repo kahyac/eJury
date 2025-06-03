@@ -63,8 +63,14 @@ public class CurriculumController {
     // --- Form: Associate Teaching Unit to Block ---
     @GetMapping("/{id}/add-association")
     public String showAddAssociationForm(@PathVariable String id, Model model) {
+        CurriculumPlan plan = curriculumRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Curriculum not found: " + id));
+
         model.addAttribute("curriculumId", id);
         model.addAttribute("associationDto", new UnitInBlockAssociationDto("", "", 1.0));
+        model.addAttribute("units", plan.getTeachingUnits());
+        model.addAttribute("blocks", plan.getKnowledgeBlocks());
+
         return "add_association"; // template: add_association.html
     }
 
@@ -74,4 +80,17 @@ public class CurriculumController {
         service.associateUnitToBlock(dto, id);
         return "redirect:/curriculum/" + id;
     }
+
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("dto", new CurriculumPlanDto(null, "2025"));
+        return "create_curriculum";
+    }
+
+    @PostMapping("/create")
+    public String createCurriculum(@RequestParam String id, @RequestParam String academicYear) {
+        service.createCurriculumPlan(new CurriculumPlanDto(id, academicYear));
+        return "redirect:/curriculum/" + id;
+    }
+
 }

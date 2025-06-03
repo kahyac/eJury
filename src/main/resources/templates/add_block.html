@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Add Knowledge Block</title></head>
+<head><title>Ajouter un bloc de connaissances</title></head>
 <body>
-<h2>Add Knowledge Block</h2>
+<h2>Ajouter un bloc de connaissances</h2>
 
 <form th:action="@{'/curriculum/' + ${curriculumId} + '/add-block'}" method="post">
     <label>Code: <input type="text" name="code"/></label><br/>
     <label>Label: <input type="text" name="label"/></label><br/>
-    <label>Semester: <input type="number" name="semester"/></label><br/>
+    <label>Semestre: <input type="number" name="semester"/></label><br/>
     <label>ECTS: <input type="number" step="0.1" name="ects"/></label><br/>
-    <button type="submit">Add</button>
+    <button type="submit">Ajouter</button>
 </form>
 
 <a th:href="@{'/curriculum/' + ${curriculumId}}">← Back</a>

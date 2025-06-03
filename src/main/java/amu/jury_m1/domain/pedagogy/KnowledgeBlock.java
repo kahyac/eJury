@@ -10,6 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+/**
+ * (BCC) KnowledgeBlock -- Entité métier représentant un bloc de connaissances
+ */
 public class KnowledgeBlock {
 
     @Id
@@ -21,5 +24,6 @@ public class KnowledgeBlock {
 
     private double ects;
 
+    private boolean obligation;
 
 }

@@ -10,6 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+/**
+ * (UE) : TeachingUnit -- Entité métier représentant une unité d'enseigement
+ */
 public class TeachingUnit {
 
     @Id

@@ -13,6 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+/**
+ * CurriculumPlan -- Entité métier représentant une maquette pédagogique
+ */
 public class CurriculumPlan {
 
     @Id

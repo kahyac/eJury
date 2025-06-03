@@ -2,15 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Associate UE to Block</title></head>
 <body>
-<h2>Associate Teaching Unit to Knowledge Block</h2>
+<h2>Unité d'enseignement associée au bloc de connaissances</h2>
 
 <form th:action="@{'/curriculum/' + ${curriculumId} + '/add-association'}" method="post">
-    <label>UE Code: <input type="text" name="teachingUnitCode"/></label><br/>
-    <label>BCC Code: <input type="text" name="blockCode"/></label><br/>
+
+    <label>UE:</label>
+    <select name="teachingUnitCode">
+        <option th:each="ue : ${units}" th:value="${ue.code}" th:text="${ue.code} + ' - ' + ${ue.label}"></option>
+    </select>
+    <br/>
+
+    <label>BCC:</label>
+    <select name="blockCode">
+        <option th:each="block : ${blocks}" th:value="${block.code}" th:text="${block.code} + ' - ' + ${block.label}"></option>
+    </select>
+    <br/>
+
     <label>Coefficient: <input type="number" step="0.1" name="coefficient"/></label><br/>
-    <button type="submit">Associate</button>
+
+    <button type="submit">Associer</button>
 </form>
 
-<a th:href="@{'/curriculum/' + ${curriculumId}}">← Back</a>
+<a th:href="@{'/curriculum/' + ${curriculumId}}">← Retour</a>
 </body>
 </html>

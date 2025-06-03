@@ -15,7 +15,7 @@ public class KnowledgeBlockAnnualResult {
     private final double averageS2;
     private final double annualAverage;
 
-    private final Decision decision;
+    private final AnnualDecision decision;
     private final Mention mention;
 
     public KnowledgeBlockAnnualResult(StudentId studentId,
@@ -24,7 +24,7 @@ public class KnowledgeBlockAnnualResult {
                                       double averageS1,
                                       double averageS2,
                                       double annualAverage,
-                                      Decision decision,
+                                      AnnualDecision decision,
                                       Mention mention) {
         this.studentId = Objects.requireNonNull(studentId);
         this.blockCode = Objects.requireNonNull(blockCode);
@@ -48,11 +48,11 @@ public class KnowledgeBlockAnnualResult {
         double annual = (avgS1 * coefS1 + avgS2 * coefS2) / (coefS1 + coefS2);
 
         // Décision selon règle M3C
-        Decision decision;
+        AnnualDecision decision;
         if (annual >= 10) {
-            decision = Decision.PASSED;
+            decision = AnnualDecision.PASSED;
         }else {
-            decision = Decision.FAILED;
+            decision = AnnualDecision.FAILED;
         }
 
         // Mention calculée selon moyenne
@@ -79,6 +79,6 @@ public class KnowledgeBlockAnnualResult {
     public double getAverageS1() { return averageS1; }
     public double getAverageS2() { return averageS2; }
     public double getAnnualAverage() { return annualAverage; }
-    public Decision getDecision() { return decision; }
+    public AnnualDecision getDecision() { return decision; }
     public Mention getMention() { return mention; }
 }
