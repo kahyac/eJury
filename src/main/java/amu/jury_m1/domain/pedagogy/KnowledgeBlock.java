@@ -24,6 +24,4 @@ public class KnowledgeBlock {
 
     private double ects;
 
-    private boolean obligation;
-
 }

@@ -23,4 +23,6 @@ public class TeachingUnit {
     private double ects;
 
     private double workloadHours;
+
+    private boolean obligation;
 }

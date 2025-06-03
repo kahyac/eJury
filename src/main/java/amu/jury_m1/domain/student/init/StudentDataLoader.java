@@ -1,4 +1,4 @@
-package amu.jury_m1.domain.init;
+package amu.jury_m1.domain.student.init;
 
 
 import amu.jury_m1.domain.student.Student;
