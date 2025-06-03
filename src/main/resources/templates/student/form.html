@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Formulaire Étudiant</title></head>
+<body>
+<h1 th:text="${student.id == null} ? 'Ajouter' : 'Modifier'">Étudiant</h1>
+<form th:action="@{/students/save}" th:object="${student}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Nom: <input type="text" th:field="*{lastName}"/></label><br/>
+    <label>Prénom: <input type="text" th:field="*{firstName}"/></label><br/>
+    <label>Email: <input type="email" th:field="*{email}"/></label><br/>
+    <button type="submit">Enregistrer</button>
+</form>
+<a th:href="@{/students}">⬅ Retour</a>
+</body>
+</html>
