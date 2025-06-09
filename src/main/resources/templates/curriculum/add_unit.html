@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Ajouter un bloc annuel</title></head>
+<body>
+<h2>Ajouter un bloc de connaissances annuel</h2>
+
+<form th:action="@{'/curriculum/' + ${curriculumId} + '/add-annual-block'}" method="post">
+    <label>ID du bloc annuel: <input type="text" th:field="*{annualBlockDto.id}" required/></label><br/>
+    <button type="submit">Ajouter</button>
+</form>
+
+<a th:href="@{'/curriculum/' + ${curriculumId}}">← Retour</a>
+</body>
+</html>

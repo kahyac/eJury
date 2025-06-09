@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Créer une maquette pédagogique</title></head>
+<body>
+<h1>Créer une maquette pédagogique</h1>
+
+<form th:action="@{/curriculum/create}" method="post">
+    <label>Année universitaire :</label>
+    <input type="text" th:field="*{dto.academicYear}" placeholder="ex : 2024/2025"/><br/>
+
+    <button type="submit">Créer</button>
+</form>
+
+<a th:href="@{'/curriculum/1'}">← Voir la maquette</a>
+</body>
+</html>
