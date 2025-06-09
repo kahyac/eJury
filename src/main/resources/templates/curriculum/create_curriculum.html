@@ -1,16 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Créer une maquette pédagogique</title></head>
+<head>
+    <title>Créer une maquette pédagogique</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: auto;
+        }
+        form {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+        }
+        .return-link {
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+</head>
 <body>
+
 <h1>Créer une maquette pédagogique</h1>
 
-<form th:action="@{/curriculum/create}" method="post">
+<form th:action="@{/curriculum/create}" th:object="${dto}" method="post">
     <label>Année universitaire :</label>
-    <input type="text" th:field="*{dto.academicYear}" placeholder="ex : 2024/2025"/><br/>
+    <input type="text" th:field="*{academicYear}" placeholder="ex : 2024/2025" required/>
 
     <button type="submit">Créer</button>
 </form>
 
-<a th:href="@{'/curriculum/1'}">← Voir la maquette</a>
+<div th:if="${curriculumExists}">
+    <a th:href="@{'/curriculum/1'}" class="return-link">← Voir la maquette créée</a>
+</div>
+
 </body>
 </html>

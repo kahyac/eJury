@@ -28,10 +28,13 @@ public class CurriculumManagementService {
 
     @Transactional
     public void addAnnualKnowledgeBlock(AnnualKnowledgeBlockDto dto) {
+        if (annualKnowledgeBlockRepository.existsById(dto.id())) {
+            throw new IllegalArgumentException("Un bloc annuel avec cet identifiant existe déjà.");
+        }
+
         AnnualKnowledgeBlock block = AnnualKnowledgeBlock.builder()
                 .id(dto.id())
                 .build();
-        annualKnowledgeBlockRepository.save(block);
 
         CurriculumPlan plan = curriculumPlanRepo.findById(1L)
                 .orElseThrow(() -> new IllegalStateException("CurriculumPlan not found"));
@@ -39,6 +42,7 @@ public class CurriculumManagementService {
         plan.getAnnualKnowledgeBlocks().add(block);
         curriculumPlanRepo.save(plan);
     }
+
 
     @Transactional
     public void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto) {
@@ -60,6 +64,14 @@ public class CurriculumManagementService {
 
     @Transactional
     public void addTeachingUnit(TeachingUnitDto dto) {
+        if (teachingUnitRepo.existsById(dto.code())) {
+            throw new IllegalArgumentException("Une UE avec ce code existe déjà.");
+        }
+
+        if (teachingUnitRepo.existsByLabel(dto.label())) {
+            throw new IllegalArgumentException("Une UE avec ce libellé existe déjà.");
+        }
+
         TeachingUnit unit = TeachingUnit.builder()
                 .code(dto.code())
                 .label(dto.label())
@@ -69,6 +81,7 @@ public class CurriculumManagementService {
                 .build();
         teachingUnitRepo.save(unit);
     }
+
 
     @Transactional
     public void associateTeachingUnitToSemestrialBlock(String blockCode, String unitCode, double coefficient) {

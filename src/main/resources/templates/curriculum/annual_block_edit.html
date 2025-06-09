@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestion du bloc annuel</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem auto;
+            max-width: 960px;
+            line-height: 1.6;
+            background-color: #fdfdfd;
+            color: #2c3e50;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .block {
+            padding: 1rem;
+            background-color: #f7f9fa;
+            border-left: 4px solid #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .ue-entry {
+            margin-left: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .button-link, button {
+            display: inline-block;
+            margin: 0.4rem 0.6rem 0.4rem 0;
+            padding: 0.5rem 1rem;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-link:hover, button:hover {
+            background-color: #2980b9;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        input[type="text"] {
+            padding: 0.4rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Gestion du bloc annuel</h1>
+
+<!-- Formulaire de modification de l'ID -->
+<div class="section">
+    <form th:action="@{'/curriculum/annual/' + ${annualBlock.id} + '/update-id'}" method="post">
+        <label for="newId"><strong>Identifiant du bloc :</strong></label>
+        <input type="text" id="newId" name="newId" th:value="${annualBlock.id}" required/>
+        <button type="submit">Modifier</button>
+    </form>
+</div>
+
+<!-- Liste des blocs semestriels -->
+<div class="section">
+    <h2>Blocs semestriels associés</h2>
+
+    <ul>
+        <li th:each="sem : ${annualBlock.semesters}">
+            <div class="block">
+                <p>
+                    <strong>Libellé :</strong> <span th:text="${sem.label}">Label</span> |
+                    <strong>Semestre :</strong> <span th:text="${sem.semester}">1</span> |
+                    <strong>ECTS :</strong> <span th:text="${sem.ects}">30</span>
+                </p>
+
+                <ul>
+                    <li th:each="entry : ${sem.unitsCoefficientAssociation}">
+                        <div class="ue-entry">
+                            UE : <strong th:text="${entry.key.code}">UE101</strong> –
+                            <span th:text="${entry.key.label}">Programmation</span> |
+                            Coeff. : <span th:text="${entry.value}">1.5</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <a th:href="@{'/curriculum/sem-block/' + ${sem.code} + '/add-unit'}" class="button-link">
+                    + Associer une UE à ce bloc
+                </a>
+            </div>
+        </li>
+    </ul>
+
+    <a th:href="@{'/curriculum/annual/' + ${annualBlock.id} + '/add-sem-block'}" class="button-link">
+        + Ajouter un nouveau bloc semestriel
+    </a>
+</div>
+
+<div class="section">
+    <a th:href="@{'/curriculum/' + ${curriculumId}}" class="button-link">
+        ← Retour à la maquette pédagogique
+    </a>
+</div>
+
+</body>
+</html>

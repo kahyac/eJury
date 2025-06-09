@@ -1,34 +1,94 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Maquette pédagogique</title></head>
+<head>
+    <title>Maquette pédagogique</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem auto;
+            max-width: 900px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 2rem;
+        }
+        .block {
+            padding: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            background-color: #f9f9f9;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .ue-entry {
+            margin-left: 1rem;
+            font-size: 0.95rem;
+        }
+        .button-link {
+            display: inline-block;
+            margin: 0.4rem 0.5rem 0 0;
+            padding: 0.5rem 1rem;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button-link:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
 <body>
-<h1>Maquette pédagogique [[${plan.academicYear}]]</h1>
 
-<h2>Blocs annuels</h2>
-<ul>
-    <li th:each="annual : ${plan.annualKnowledgeBlocks}">
-        <b th:text="${annual.id}"></b>
-        <ul>
-            <li th:each="sem : ${annual.semesters}">
-                Bloc [[${sem.label}]] (Semestre [[${sem.semester}]]) – ECTS : [[${sem.ects}]]
+<h1>Maquette pédagogique – <span th:text="${plan.academicYear}">2024/2025</span></h1>
 
-                <ul>
-                    <li th:each="entry : ${sem.unitsCoefficientAssociation}">
-                        UE : [[${entry.key.code}]] - [[${entry.key.label}]], Coefficient : [[${entry.value}]]
-                    </li>
-                </ul>
+<!-- Bloc annuels -->
+<div class="section" th:if="${#lists.isEmpty(plan.annualKnowledgeBlocks)}">
+    <p>Aucun bloc annuel n’a encore été défini pour cette maquette.</p>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}" class="button-link">+ Ajouter un bloc annuel</a>
+</div>
 
-                <a th:href="@{'/curriculum/sem-block/' + ${sem.code} + '/add-unit'}">+ Associer une UE</a>
-            </li>
-        </ul>
+<div class="section" th:unless="${#lists.isEmpty(plan.annualKnowledgeBlocks)}">
+    <h2>Blocs annuels</h2>
+    <ul>
+        <li th:each="annual : ${plan.annualKnowledgeBlocks}">
+            <div class="block">
+                <strong>ID : </strong><span th:text="${annual.id}">M1A</span>
+                <br/>
+                <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}" class="button-link">Configurer ce bloc</a>
+            </div>
+        </li>
+    </ul>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}" class="button-link">+ Ajouter un autre bloc annuel</a>
+</div>
 
-        <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/add-sem-block'}">+ Ajouter un bloc semestriel</a>
-    </li>
-</ul>
+<!-- UEs -->
+<div class="section">
+    <h2>Unités d’Enseignement (UE)</h2>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}" class="button-link">+ Créer une UE</a>
 
-<hr/>
-<a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}">+ Ajouter une UE</a><br/>
-<a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}">+ Ajouter un bloc annuel</a>
+    <ul th:if="${not #lists.isEmpty(teachingUnits)}">
+        <li th:each="ue : ${teachingUnits}">
+            <div class="block">
+                <strong>Code :</strong> <span th:text="${ue.code}">UE101</span><br/>
+                <strong>Libellé :</strong> <span th:text="${ue.label}">Programmation</span><br/>
+                <strong>ECTS :</strong> <span th:text="${ue.ects}">6</span><br/>
+                <strong>Volume horaire :</strong> <span th:text="${ue.workloadHours}">50</span><br/>
+                <strong>Obligatoire :</strong> <span th:text="${ue.obligation ? 'Oui' : 'Non'}">Oui</span>
+            </div>
+        </li>
+    </ul>
+
+    <p th:if="${#lists.isEmpty(teachingUnits)}">Aucune UE définie pour le moment.</p>
+</div>
 
 </body>
 </html>

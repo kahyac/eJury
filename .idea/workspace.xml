@@ -5,50 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6444dd0-cfb8-4f71-a3a9-b4d2e9b4cf5f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/AnnualKnowledgeBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/CurriculumPlan.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/SemestrialKnowledgeBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/AnnualKnowledgeBlockDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/UnitAssociationFormDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_sem_block.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_unit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/associate_unit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/create_curriculum.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/annual_block_edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/CurriculumController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/CurriculumController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/StudentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/CurriculumPlanRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/CurriculumPlanRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/KnowledgeBlockRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/SemestrialKnowledgeBlockRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/ResultRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/ResultRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/StudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/StudentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/TeachingUnitRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/TeachingUnitRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/UnitInBlockAssociationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/AnnualKnowledgeBlockRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/Promotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/Promotion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/pedagogy/CurriculumPlan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/pedagogy/KnowledgeBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/pedagogy/TeachingUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/TeachingUnit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/pedagogy/UnitInBlockAssociation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/pedagogy/UnitInBlockId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/result/AnnualAcademicResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/AnnualAcademicResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/result/AnnualDecision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/AnnualDecision.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/result/KnowledgeBlockAnnualResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/KnowledgeBlockAnnualResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/result/KnowledgeBlockDecision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/KnowledgeBlockDecision.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/result/Mention.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/Mention.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/rule/AnnualCalculationStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/rule/AnnualCalculationStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/rule/AnnualRuleM3C.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/rule/AnnualRuleM3C.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/student/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/student/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/student/StudentId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/student/StudentId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/student/StudentNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/student/StudentNotFoundException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/domain/student/init/StudentDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/student/init/StudentDataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/academicYear/MentionEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/academicYear/MentionEvaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/AnnualKnowledgeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/AnnualKnowledgeBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/curriculum/CurriculumManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/curriculum/CurriculumManagementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/CurriculumPlanDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/CurriculumPlanDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/KnowledgeBlockDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/SemestrialKnowledgeBlockDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/TeachingUnitDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/TeachingUnitDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/add_association.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_association.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/add_block.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_annual_block.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/add_unit.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create_curriculum.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/curriculum.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/UnitInBlockAssociationDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_annual_block.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_annual_block.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_association.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_association.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_sem_block.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_sem_block.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_unit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_unit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/create_curriculum.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/create_curriculum.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/curriculum.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/curriculum.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

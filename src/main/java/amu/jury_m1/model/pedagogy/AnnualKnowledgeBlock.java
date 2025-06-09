@@ -22,6 +22,10 @@ public class AnnualKnowledgeBlock {
     @Id
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "curriculum_plan_id")
+    private CurriculumPlan curriculumPlan;
+
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "year_block_id")

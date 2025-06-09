@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TeachingUnitRepository extends JpaRepository<TeachingUnit, String> {}
+public interface TeachingUnitRepository extends JpaRepository<TeachingUnit, String> {
+    boolean existsByLabel(String label);
+}
