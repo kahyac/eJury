@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Maquette Pédagogique</title>
-</head>
+<head><title>Maquette pédagogique</title></head>
 <body>
-<h2 th:text="'Curriculum: ' + ${plan.id} + ' — ' + ${plan.academicYear}"></h2>
+<h1>Maquette pédagogique [[${plan.academicYear}]]</h1>
 
-<h3>Unités d'Enseignements</h3>
+<h2>Blocs annuels</h2>
 <ul>
-    <li th:each="ue : ${plan.teachingUnits}">
-        <span th:text="${ue.code} + ' - ' + ${ue.label} + ' (' + ${ue.ects} + ' ECTS)'"></span>
+    <li th:each="annual : ${plan.annualKnowledgeBlocks}">
+        <b th:text="${annual.id}"></b>
+        <ul>
+            <li th:each="sem : ${annual.semesters}">
+                Bloc [[${sem.label}]] (Semestre [[${sem.semester}]]) – ECTS : [[${sem.ects}]]
+
+                <ul>
+                    <li th:each="entry : ${sem.unitsCoefficientAssociation}">
+                        UE : [[${entry.key.code}]] - [[${entry.key.label}]], Coefficient : [[${entry.value}]]
+                    </li>
+                </ul>
+
+                <a th:href="@{'/curriculum/sem-block/' + ${sem.code} + '/add-unit'}">+ Associer une UE</a>
+            </li>
+        </ul>
+
+        <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/add-sem-block'}">+ Ajouter un bloc semestriel</a>
     </li>
 </ul>
-<a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}">➕ Ajouter une unité d'enseignement</a>
 
-<h3>Blocs de Connaissances</h3>
-<ul>
-    <li th:each="block : ${plan.knowledgeBlocks}">
-        <span th:text="${block.code} + ' - ' + ${block.label} + ' (S' + ${block.semester} + ') — ' + ${block.ects} + ' ECTS'"></span>
-    </li>
-</ul>
-<a th:href="@{'/curriculum/' + ${plan.id} + '/add-block'}">➕ Ajouter un bloc de connaissances</a>
-
-<h3>Associations (UE ↔ BCC)</h3>
-<ul>
-    <li th:each="assoc : ${plan.associations}">
-        <span th:text="${assoc.id.teachingUnitCode} + ' → ' + ${assoc.id.blockCode} + ' (coef: ' + ${assoc.coefficient} + ')'"></span>
-    </li>
-</ul>
-<a th:href="@{'/curriculum/' + ${plan.id} + '/add-association'}">➕ Associer UE à un bloc</a>
+<hr/>
+<a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}">+ Ajouter une UE</a><br/>
+<a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}">+ Ajouter un bloc annuel</a>
 
 </body>
 </html>

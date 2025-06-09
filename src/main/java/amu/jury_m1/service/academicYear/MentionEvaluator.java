@@ -1,6 +1,6 @@
 package amu.jury_m1.service.academicYear;
 
-import amu.jury_m1.domain.result.Mention;
+import amu.jury_m1.model.result.Mention;
 
 /**
  * Business rule for mapping an average score to a final mention.

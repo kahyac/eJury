@@ -1,7 +1,7 @@
-package amu.jury_m1.domain.rule;
+package amu.jury_m1.model.rule;
 
-import amu.jury_m1.domain.result.KnowledgeBlockAnnualResult;
-import amu.jury_m1.domain.student.StudentId;
+import amu.jury_m1.model.result.KnowledgeBlockAnnualResult;
+import amu.jury_m1.model.student.StudentId;
 
 import java.time.Year;
 

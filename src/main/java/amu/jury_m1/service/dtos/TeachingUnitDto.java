@@ -15,5 +15,7 @@ public record TeachingUnitDto(
         double ects,
 
         @Positive(message = "Workload must be positive")
-        double workloadHours
+        double workloadHours,
+
+        boolean obligation
 ) {}

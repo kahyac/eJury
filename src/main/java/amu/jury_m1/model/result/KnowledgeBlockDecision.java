@@ -1,4 +1,4 @@
-package amu.jury_m1.domain.result;
+package amu.jury_m1.model.result;
 
 public enum KnowledgeBlockDecision {
     ABSENCE_JUSTIFIED,  // ABJ

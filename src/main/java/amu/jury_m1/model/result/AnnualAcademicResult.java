@@ -1,6 +1,6 @@
-package amu.jury_m1.domain.result;
+package amu.jury_m1.model.result;
 
-import amu.jury_m1.domain.student.StudentId;
+import amu.jury_m1.model.student.StudentId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

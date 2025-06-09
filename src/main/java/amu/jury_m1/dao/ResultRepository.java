@@ -1,7 +1,7 @@
 package amu.jury_m1.dao;
 
-import amu.jury_m1.domain.result.KnowledgeBlockAnnualResult;
-import amu.jury_m1.domain.student.StudentId;
+import amu.jury_m1.model.result.KnowledgeBlockAnnualResult;
+import amu.jury_m1.model.student.StudentId;
 
 import java.time.Year;
 import java.util.List;

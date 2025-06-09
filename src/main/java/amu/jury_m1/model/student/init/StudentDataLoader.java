@@ -1,7 +1,7 @@
-package amu.jury_m1.domain.student.init;
+package amu.jury_m1.model.student.init;
 
 
-import amu.jury_m1.domain.student.Student;
+import amu.jury_m1.model.student.Student;
 import amu.jury_m1.dao.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

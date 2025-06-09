@@ -1,4 +1,4 @@
-package amu.jury_m1.domain.pedagogy;
+package amu.jury_m1.model.pedagogy;
 
 import jakarta.persistence.*;
 import lombok.*;

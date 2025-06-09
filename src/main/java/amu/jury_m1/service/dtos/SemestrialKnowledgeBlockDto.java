@@ -3,7 +3,7 @@ package amu.jury_m1.service.dtos;
 import jakarta.validation.constraints.*;
 
 
-public record KnowledgeBlockDto(
+public record SemestrialKnowledgeBlockDto(
 
         @NotBlank(message = "Code cannot be blank")
         String code,

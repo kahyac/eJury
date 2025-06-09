@@ -1,7 +1,7 @@
 package amu.jury_m1.service.curriculum;
 
 import amu.jury_m1.dao.*;
-import amu.jury_m1.domain.pedagogy.*;
+import amu.jury_m1.model.pedagogy.*;
 import amu.jury_m1.service.dtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,67 +13,72 @@ public class CurriculumManagementService {
 
     private final CurriculumPlanRepository curriculumPlanRepo;
     private final TeachingUnitRepository teachingUnitRepo;
-    private final KnowledgeBlockRepository knowledgeBlockRepo;
-    private final UnitInBlockAssociationRepository associationRepo;
+    private final SemestrialKnowledgeBlockRepository semestrialKnowledgeBlockRepository;
+    private final AnnualKnowledgeBlockRepository annualKnowledgeBlockRepository;
 
     @Transactional
-    public void addTeachingUnit(String curriculumId, TeachingUnitDto dto) {
-        TeachingUnit unit = TeachingUnit.builder()
-                .code(dto.code())
-                .label(dto.label())
-                .ects(dto.ects())
-                .workloadHours(dto.workloadHours())
+    public void createCurriculumPlan(CurriculumPlanDto dto) {
+        CurriculumPlan plan = CurriculumPlan.builder()
+                .id(1L)
+                .academicYear(dto.academicYear())
                 .build();
 
-        teachingUnitRepo.save(unit);
-
-        curriculumPlanRepo.findById(curriculumId).ifPresent(plan -> {
-            plan.getTeachingUnits().add(unit);
-            curriculumPlanRepo.save(plan);
-        });
+        curriculumPlanRepo.save(plan);
     }
 
     @Transactional
-    public void addKnowledgeBlock(String curriculumId, KnowledgeBlockDto dto) {
-        KnowledgeBlock block = KnowledgeBlock.builder()
+    public void addAnnualKnowledgeBlock(AnnualKnowledgeBlockDto dto) {
+        AnnualKnowledgeBlock block = AnnualKnowledgeBlock.builder()
+                .id(dto.id())
+                .build();
+        annualKnowledgeBlockRepository.save(block);
+
+        CurriculumPlan plan = curriculumPlanRepo.findById(1L)
+                .orElseThrow(() -> new IllegalStateException("CurriculumPlan not found"));
+
+        plan.getAnnualKnowledgeBlocks().add(block);
+        curriculumPlanRepo.save(plan);
+    }
+
+    @Transactional
+    public void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto) {
+        SemestrialKnowledgeBlock block = SemestrialKnowledgeBlock.builder()
                 .code(dto.code())
                 .label(dto.label())
                 .semester(dto.semester())
                 .ects(dto.ects())
                 .build();
+        semestrialKnowledgeBlockRepository.save(block);
 
-        knowledgeBlockRepo.save(block);
+        AnnualKnowledgeBlock annual = annualKnowledgeBlockRepository.findById(annualBlockId)
+                .orElseThrow(() -> new IllegalArgumentException("Annual block not found: " + annualBlockId));
 
-        curriculumPlanRepo.findById(curriculumId).ifPresent(plan -> {
-            plan.getKnowledgeBlocks().add(block);
-            curriculumPlanRepo.save(plan);
-        });
+        annual.getSemesters().add(block);
+        annualKnowledgeBlockRepository.save(annual);
+    }
+
+
+    @Transactional
+    public void addTeachingUnit(TeachingUnitDto dto) {
+        TeachingUnit unit = TeachingUnit.builder()
+                .code(dto.code())
+                .label(dto.label())
+                .ects(dto.ects())
+                .workloadHours(dto.workloadHours())
+                .obligation(dto.obligation())
+                .build();
+        teachingUnitRepo.save(unit);
     }
 
     @Transactional
-    public void associateUnitToBlock(UnitInBlockAssociationDto dto, String curriculumId) {
-        UnitInBlockId id = new UnitInBlockId(dto.teachingUnitCode(), dto.blockCode());
+    public void associateTeachingUnitToSemestrialBlock(String blockCode, String unitCode, double coefficient) {
+        TeachingUnit unit = teachingUnitRepo.findById(unitCode)
+                .orElseThrow(() -> new IllegalArgumentException("TeachingUnit not found: " + unitCode));
 
-        UnitInBlockAssociation assoc = UnitInBlockAssociation.builder()
-                .id(id)
-                .coefficient(dto.coefficient())
-                .build();
+        SemestrialKnowledgeBlock block = semestrialKnowledgeBlockRepository.findById(blockCode)
+                .orElseThrow(() -> new IllegalArgumentException("Semestrial block not found: " + blockCode));
 
-        associationRepo.save(assoc);
-
-        curriculumPlanRepo.findById(curriculumId).ifPresent(plan -> {
-            plan.getAssociations().add(assoc);
-            curriculumPlanRepo.save(plan);
-        });
-    }
-
-    @Transactional
-    public void createCurriculumPlan(CurriculumPlanDto dto) {
-        CurriculumPlan plan = CurriculumPlan.builder()
-                .id(dto.id())
-                .academicYear(dto.academicYear())
-                .build();
-
-        curriculumPlanRepo.save(plan);
+        block.getUnitsCoefficientAssociation().put(unit, coefficient);
+        semestrialKnowledgeBlockRepository.save(block);
     }
 }

@@ -1,4 +1,4 @@
-package amu.jury_m1.domain.student;
+package amu.jury_m1.model.student;
 
 import lombok.Getter;
 import java.util.UUID;

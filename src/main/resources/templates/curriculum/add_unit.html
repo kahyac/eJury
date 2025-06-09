@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Ajouter un bloc annuel</title></head>
+<head><title>Ajouter une UE</title></head>
 <body>
-<h2>Ajouter un bloc de connaissances annuel</h2>
+<h2>Ajouter une unité d’enseignement</h2>
 
-<form th:action="@{'/curriculum/' + ${curriculumId} + '/add-annual-block'}" method="post">
-    <label>ID du bloc annuel: <input type="text" th:field="*{annualBlockDto.id}" required/></label><br/>
+<form th:action="@{'/curriculum/' + ${curriculumId} + '/add-unit'}"
+      th:object="${teachingUnitDto}" method="post">
+
+    <label>Code :</label>
+    <input type="text" th:field="*{code}" required/><br/>
+
+    <label>Libellé :</label>
+    <input type="text" th:field="*{label}" required/><br/>
+
+    <label>ECTS :</label>
+    <input type="number" step="0.1" th:field="*{ects}" required/><br/>
+
+    <label>Heures de travail :</label>
+    <input type="number" step="1" th:field="*{workloadHours}" required/><br/>
+
+    <label>Obligatoire ?</label>
+    r/>
+    <input type="checkbox" th:field="*{obligation}"/><b
     <button type="submit">Ajouter</button>
 </form>
 

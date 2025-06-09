@@ -1,6 +1,6 @@
-package amu.jury_m1.domain.result;
+package amu.jury_m1.model.result;
 
-import amu.jury_m1.domain.student.StudentId;
+import amu.jury_m1.model.student.StudentId;
 
 import java.time.Year;
 import java.util.Objects;

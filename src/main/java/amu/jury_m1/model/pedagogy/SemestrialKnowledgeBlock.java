@@ -1,4 +1,4 @@
-package amu.jury_m1.domain.pedagogy;
+package amu.jury_m1.model.pedagogy;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -35,6 +35,6 @@ public class SemestrialKnowledgeBlock {
     @CollectionTable(name = "unit_coefficients", joinColumns = @JoinColumn(name = "block_code"))
     @MapKeyJoinColumn(name = "teaching_unit_code")
     @Column(name = "coefficient")
-    private Map<TeachingUnit, Double> units = new HashMap<>();
+    private Map<TeachingUnit, Double> unitsCoefficientAssociation = new HashMap<>();
 
 }

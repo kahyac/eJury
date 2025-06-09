@@ -1,6 +1,6 @@
-package amu.jury_m1.domain;
+package amu.jury_m1.model;
 
-import amu.jury_m1.domain.student.Student;
+import amu.jury_m1.model.student.Student;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import java.time.Year;

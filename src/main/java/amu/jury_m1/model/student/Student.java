@@ -1,4 +1,4 @@
-package amu.jury_m1.domain.student;
+package amu.jury_m1.model.student;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

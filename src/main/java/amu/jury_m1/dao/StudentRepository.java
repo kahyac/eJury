@@ -1,7 +1,7 @@
 package amu.jury_m1.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import amu.jury_m1.domain.student.Student;
+import amu.jury_m1.model.student.Student;
 import org.springframework.stereotype.Repository;
 
 @Repository
