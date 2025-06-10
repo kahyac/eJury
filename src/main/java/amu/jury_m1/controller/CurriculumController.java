@@ -70,6 +70,8 @@ public class CurriculumController {
         model.addAttribute("blockCode", blockCode);
         model.addAttribute("unitCodes", teachingUnitRepository.findAll()); // <- ici on corrige !
         model.addAttribute("form", new UnitAssociationFormDto("", 1.0));
+        Long curriculumId = service.findCurriculumIdBySemBlockCode(blockCode);
+        model.addAttribute("curriculumId", curriculumId);
         return "curriculum/add_association";
     }
 

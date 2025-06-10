@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6444dd0-cfb8-4f71-a3a9-b4d2e9b4cf5f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/annual_block_edit.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/CurriculumController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/CurriculumController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/TeachingUnitRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/TeachingUnitRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/AnnualKnowledgeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/AnnualKnowledgeBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/SemestrialKnowledgeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/pedagogy/SemestrialKnowledgeBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/curriculum/CurriculumManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/curriculum/CurriculumManagementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/UnitInBlockAssociationDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_annual_block.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_annual_block.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_association.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_association.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_sem_block.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_sem_block.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_unit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_unit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/create_curriculum.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/create_curriculum.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/curriculum.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/curriculum.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

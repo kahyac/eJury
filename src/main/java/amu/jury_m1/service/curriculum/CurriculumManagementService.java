@@ -46,20 +46,23 @@ public class CurriculumManagementService {
 
     @Transactional
     public void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto) {
+        AnnualKnowledgeBlock annual = annualKnowledgeBlockRepository.findById(annualBlockId)
+                .orElseThrow(() -> new IllegalArgumentException("Annual block not found: " + annualBlockId));
+
         SemestrialKnowledgeBlock block = SemestrialKnowledgeBlock.builder()
                 .code(dto.code())
                 .label(dto.label())
                 .semester(dto.semester())
                 .ects(dto.ects())
+                .annualKnowledgeBlock(annual)
                 .build();
-        semestrialKnowledgeBlockRepository.save(block);
 
-        AnnualKnowledgeBlock annual = annualKnowledgeBlockRepository.findById(annualBlockId)
-                .orElseThrow(() -> new IllegalArgumentException("Annual block not found: " + annualBlockId));
+        semestrialKnowledgeBlockRepository.save(block);
 
         annual.getSemesters().add(block);
         annualKnowledgeBlockRepository.save(annual);
     }
+
 
 
     @Transactional
@@ -93,5 +96,11 @@ public class CurriculumManagementService {
 
         block.getUnitsCoefficientAssociation().put(unit, coefficient);
         semestrialKnowledgeBlockRepository.save(block);
+    }
+
+    public Long findCurriculumIdBySemBlockCode(String blockCode) {
+        return semestrialKnowledgeBlockRepository.findById(blockCode)
+                .map(sb -> sb.getAnnualKnowledgeBlock().getCurriculumPlan().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Bloc semestriel introuvable"));
     }
 }

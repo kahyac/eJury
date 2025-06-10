@@ -37,4 +37,7 @@ public class SemestrialKnowledgeBlock {
     @Column(name = "coefficient")
     private Map<TeachingUnit, Double> unitsCoefficientAssociation = new HashMap<>();
 
+    @ManyToOne
+    @JoinColumn(name = "annual_block_id")
+    private AnnualKnowledgeBlock annualKnowledgeBlock;
 }
