@@ -25,6 +25,11 @@
             padding: 8px;
             margin-top: 5px;
         }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
         button {
             margin-top: 15px;
             padding: 10px 20px;
@@ -40,8 +45,18 @@
 <h1>Créer une maquette pédagogique</h1>
 
 <form th:action="@{/curriculum/create}" th:object="${dto}" method="post">
+
     <label>Année universitaire :</label>
-    <input type="text" th:field="*{academicYear}" placeholder="ex : 2024/2025" required/>
+    <input type="text" th:field="*{academicYear}" placeholder="ex : 2025/2026" required/>
+    <div th:if="${#fields.hasErrors('academicYear')}" class="error">
+        <p th:errors="*{academicYear}"></p>
+    </div>
+
+    <label>Nom de la maquette :</label>
+    <input type="text" th:field="*{name}" placeholder="ex : Ingénierie du Développement Logiciel" required/>
+    <div th:if="${#fields.hasErrors('name')}" class="error">
+        <p th:errors="*{name}"></p>
+    </div>
 
     <button type="submit">Créer</button>
 </form>

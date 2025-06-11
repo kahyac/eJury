@@ -7,9 +7,11 @@ import amu.jury_m1.model.pedagogy.CurriculumPlan;
 import amu.jury_m1.service.curriculum.CurriculumManagementService;
 import amu.jury_m1.service.dtos.*;
 import amu.jury_m1.dao.CurriculumPlanRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,6 +28,69 @@ public class CurriculumController {
     private final AnnualKnowledgeBlockRepository annualKnowledgeBlockRepository;
     private final CurriculumManagementService service;
 
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        boolean exists = curriculumRepository.findById(1L).isPresent();
+        model.addAttribute("dto", new CurriculumPlanDto("", ""));
+        model.addAttribute("curriculumExists", exists);
+        return "curriculum/create_curriculum";
+    }
+
+    @PostMapping("/create")
+    public String createCurriculum(@Valid @ModelAttribute("dto") CurriculumPlanDto dto,
+                                   BindingResult result,
+                                   Model model) {
+        boolean exists = curriculumRepository.findById(1L).isPresent();
+        model.addAttribute("curriculumExists", exists);
+
+        if (result.hasErrors()) {
+            return "curriculum/create_curriculum";
+        }
+
+        service.createCurriculumPlan(dto);
+        return "redirect:/curriculum/1";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        CurriculumPlan plan = curriculumRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Maquette introuvable"));
+
+        CurriculumPlanDto dto = new CurriculumPlanDto(plan.getAcademicYear(), plan.getName());
+        model.addAttribute("dto", dto);
+        model.addAttribute("planId", plan.getId());
+        return "curriculum/edit_curriculum";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateCurriculum(@PathVariable Long id,
+                                   @Valid @ModelAttribute("dto") CurriculumPlanDto dto,
+                                   BindingResult result,
+                                   Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("planId", id);
+            return "curriculum/edit_curriculum";
+        }
+
+        CurriculumPlan plan = curriculumRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Maquette introuvable"));
+
+        plan.setAcademicYear(dto.academicYear());
+        plan.setName(dto.name());
+        curriculumRepository.save(plan);
+
+        return "redirect:/curriculum/" + id;
+    }
+
+    @GetMapping("/{id}")
+    public String viewCurriculum(@PathVariable Long id, Model model) {
+        CurriculumPlan plan = curriculumRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Curriculum not found: " + id));
+        model.addAttribute("plan", plan);
+        model.addAttribute("teachingUnits", teachingUnitRepository.findAll());
+
+        return "curriculum/curriculum";
+    }
 
     @GetMapping("/{id}/add-annual-block")
     public String showAddAnnualBlockForm(@PathVariable Long id, Model model) {
@@ -76,37 +141,6 @@ public class CurriculumController {
     }
 
 
-    @PostMapping("/sem-block/{blockCode}/add-unit")
-    public String associateUnit(@PathVariable String blockCode,
-                                @ModelAttribute("form") UnitAssociationFormDto form,
-                                Model model) {
-        try {
-            service.associateTeachingUnitToSemestrialBlock(blockCode, form.unitCode(), form.coefficient());
-        } catch (IllegalArgumentException ex) {
-            model.addAttribute("blockCode", blockCode);
-            model.addAttribute("units", teachingUnitRepository.findAll());
-            model.addAttribute("form", form);
-            model.addAttribute("errorMessage", ex.getMessage());
-            return "curriculum/add_association";
-        }
-
-        return "redirect:/curriculum/1";
-    }
-
-
-
-    // --- Display curriculum details ---
-    @GetMapping("/{id}")
-    public String viewCurriculum(@PathVariable Long id, Model model) {
-        CurriculumPlan plan = curriculumRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Curriculum not found: " + id));
-        model.addAttribute("plan", plan);
-        model.addAttribute("teachingUnits", teachingUnitRepository.findAll());
-
-        return "curriculum/curriculum";
-    }
-
-    // --- Form: Add Teaching Unit ---
     @GetMapping("/{id}/add-unit")
     public String showAddUnitForm(@PathVariable String id, Model model) {
         model.addAttribute("curriculumId", id);
@@ -123,25 +157,27 @@ public class CurriculumController {
         } catch (IllegalArgumentException ex) {
             model.addAttribute("curriculumId", id);
             model.addAttribute("teachingUnitDto", dto);
-            model.addAttribute("errorMessage", ex.getMessage()); // 👈 affiche le message
+            model.addAttribute("errorMessage", ex.getMessage());
             return "curriculum/add_unit";
         }
 
         return "redirect:/curriculum/" + id;
     }
 
+    @PostMapping("/sem-block/{blockCode}/add-unit")
+    public String associateUnit(@PathVariable String blockCode,
+                                @ModelAttribute("form") UnitAssociationFormDto form,
+                                Model model) {
+        try {
+            service.associateTeachingUnitToSemestrialBlock(blockCode, form.unitCode(), form.coefficient());
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("blockCode", blockCode);
+            model.addAttribute("units", teachingUnitRepository.findAll());
+            model.addAttribute("form", form);
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "curriculum/add_association";
+        }
 
-    @GetMapping("/create")
-    public String showCreateForm(Model model) {
-        boolean exists = curriculumRepository.findById(1L).isPresent();
-        model.addAttribute("dto", new CurriculumPlanDto("2024/2025"));
-        model.addAttribute("curriculumExists", exists); // 👈 important
-        return "curriculum/create_curriculum";
-    }
-
-    @PostMapping("/create")
-    public String createCurriculum(@ModelAttribute CurriculumPlanDto dto) {
-        service.createCurriculumPlan(dto);
         return "redirect:/curriculum/1";
     }
 
@@ -177,9 +213,4 @@ public class CurriculumController {
 
         return "redirect:/curriculum/annual/" + newId + "/edit";
     }
-
-
-
-
-
 }

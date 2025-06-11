@@ -21,6 +21,7 @@ public class CurriculumManagementService {
         CurriculumPlan plan = CurriculumPlan.builder()
                 .id(1L)
                 .academicYear(dto.academicYear())
+                .name(dto.name())
                 .build();
 
         curriculumPlanRepo.save(plan);

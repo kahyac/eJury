@@ -5,50 +5,82 @@
     <meta charset="UTF-8"/>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
             margin: 2rem auto;
-            max-width: 900px;
+            max-width: 1000px;
+            padding: 1rem;
+            background-color: #f5f8fa;
             line-height: 1.6;
         }
-        h1, h2 {
+
+        h1 {
             color: #2c3e50;
-        }
-        .section {
+            font-size: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
             margin-bottom: 2rem;
         }
+
+        h2 {
+            color: #34495e;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
         .block {
-            padding: 1rem;
-            border: 2px solid #ccc;
+            background-color: #ffffff;
+            border: 1px solid #dcdde1;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
             border-radius: 6px;
             margin-bottom: 1rem;
-            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
+
         ul {
             list-style-type: none;
             padding-left: 0;
         }
-        .ue-entry {
-            margin-left: 1rem;
-            font-size: 0.95rem;
-        }
+
         .button-link {
             display: inline-block;
-            margin: 0.4rem 0.5rem 0 0;
-            padding: 0.5rem 1rem;
-            background-color: #2ecc71;
+            margin: 0.5rem 0.5rem 0 0;
+            padding: 0.6rem 1.2rem;
+            background-color: #3498db;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
+            transition: background-color 0.2s ease;
         }
+
         .button-link:hover {
-            background-color: #27ae60;
+            background-color: #2980b9;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #2c3e50;
         }
     </style>
 </head>
 <body>
 
-<h1>Maquette pédagogique – <span th:text="${plan.academicYear}">2024/2025</span></h1>
+<h1>
+    Maquette : <span th:text="${plan.name}">Ingénierie du Développement Logiciel</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    Année : <span th:text="${plan.academicYear}">2024/2025</span>
+</h1>
+
+<div style="margin-bottom: 1.5rem;">
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/edit'}" class="button-link" style="background-color: #e67e22;">
+        ✏️ Renommer la maquette
+    </a>
+</div>
 
 <!-- Bloc annuels -->
 <div class="section" th:if="${#lists.isEmpty(plan.annualKnowledgeBlocks)}">
@@ -61,8 +93,7 @@
     <ul>
         <li th:each="annual : ${plan.annualKnowledgeBlocks}">
             <div class="block">
-                <strong>ID : </strong><span th:text="${annual.id}">M1A</span>
-                <br/>
+                <p><span class="info-label">ID du bloc :</span> <span th:text="${annual.id}">M1A</span></p>
                 <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}" class="button-link">Configurer ce bloc</a>
             </div>
         </li>
@@ -78,11 +109,11 @@
     <ul th:if="${not #lists.isEmpty(teachingUnits)}">
         <li th:each="ue : ${teachingUnits}">
             <div class="block">
-                <strong>Code :</strong> <span th:text="${ue.code}">UE101</span><br/>
-                <strong>Libellé :</strong> <span th:text="${ue.label}">Programmation</span><br/>
-                <strong>ECTS :</strong> <span th:text="${ue.ects}">6</span><br/>
-                <strong>Volume horaire :</strong> <span th:text="${ue.workloadHours}">50</span><br/>
-                <strong>Obligatoire :</strong> <span th:text="${ue.obligation ? 'Oui' : 'Non'}">Oui</span>
+                <p><span class="info-label">Code :</span> <span th:text="${ue.code}">UE101</span></p>
+                <p><span class="info-label">Libellé :</span> <span th:text="${ue.label}">Programmation</span></p>
+                <p><span class="info-label">ECTS :</span> <span th:text="${ue.ects}">6</span></p>
+                <p><span class="info-label">Volume horaire :</span> <span th:text="${ue.workloadHours}">50</span></p>
+                <p><span class="info-label">Obligatoire :</span> <span th:text="${ue.obligation ? 'Oui' : 'Non'}">Oui</span></p>
             </div>
         </li>
     </ul>

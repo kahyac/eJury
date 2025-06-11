@@ -23,6 +23,8 @@ public class CurriculumPlan {
 
     private String academicYear;
 
+    private String name;
+
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "curriculum_plan_id")
