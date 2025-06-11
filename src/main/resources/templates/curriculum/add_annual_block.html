@@ -6,33 +6,36 @@
     <style>
         body {
             font-family: "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: #f4f6f8;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 2rem;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 3rem;
         }
 
         .form-container {
-            background-color: #fff;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
-            width: 100%;
+            background-color: #ffffff;
+            padding: 2.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
             max-width: 500px;
+            width: 100%;
         }
 
         h2 {
+            text-align: center;
             color: #2c3e50;
             margin-bottom: 2rem;
-            text-align: center;
+            font-size: 1.5rem;
         }
 
         label {
             display: block;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             font-weight: 600;
+            color: #34495e;
         }
 
         input[type="text"] {
@@ -41,19 +44,25 @@
             font-size: 1rem;
             border: 1px solid #ccc;
             border-radius: 6px;
-            margin-top: 0.3rem;
             box-sizing: border-box;
+            margin-bottom: 1rem;
+        }
+
+        .error {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
         }
 
         button {
             width: 100%;
             padding: 0.75rem;
             background-color: #27ae60;
-            color: #fff;
+            color: white;
             border: none;
             border-radius: 6px;
-            font-size: 1rem;
             font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -66,9 +75,9 @@
             display: block;
             margin-top: 1.5rem;
             text-align: center;
-            text-decoration: none;
             color: #2980b9;
             font-weight: bold;
+            text-decoration: none;
         }
 
         .back-link:hover {
@@ -85,8 +94,12 @@
           th:object="${annualBlockDto}"
           method="post">
 
-        <label for="id">Identifiant du bloc annuel :</label>
-        <input id="id" type="text" th:field="*{id}" placeholder="ex: BCC-1" required/>
+        <label for="id">Identifiant du bloc :</label>
+        <input id="id" type="text" th:field="*{id}" placeholder="Ex: M1-INFO" required/>
+
+        <div th:if="${#fields.hasErrors('id')}" class="error">
+            <p th:errors="*{id}"></p>
+        </div>
 
         <button type="submit">Ajouter</button>
     </form>

@@ -44,6 +44,31 @@ public class CurriculumManagementService {
         curriculumPlanRepo.save(plan);
     }
 
+    @Transactional
+    public void renameAnnualBlock(String oldId, String newId) {
+
+        AnnualKnowledgeBlock block = annualKnowledgeBlockRepository.findById(oldId)
+                .orElseThrow(() -> new IllegalArgumentException("Bloc introuvable : " + oldId));
+
+
+        if (annualKnowledgeBlockRepository.existsById(newId)) {
+            throw new IllegalArgumentException("Un bloc avec ce nom existe déjà.");
+        }
+
+        AnnualKnowledgeBlock renamed = AnnualKnowledgeBlock.builder()
+                .id(newId)
+                .curriculumPlan(block.getCurriculumPlan())
+                .semesters(block.getSemesters())
+                .build();
+
+        CurriculumPlan plan = block.getCurriculumPlan();
+        plan.getAnnualKnowledgeBlocks().removeIf(b -> b.getId().equals(oldId));
+        plan.getAnnualKnowledgeBlocks().add(renamed);
+
+        curriculumPlanRepo.save(plan);
+    }
+
+
 
     @Transactional
     public void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto) {

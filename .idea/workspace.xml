@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c65aa74d-327e-4442-96bf-cae9e82f01b5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/rename_annual_block.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/CurriculumController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/controller/CurriculumController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/curriculum/CurriculumManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/curriculum/CurriculumManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/AnnualKnowledgeBlockDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/dtos/AnnualKnowledgeBlockDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_annual_block.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/add_annual_block.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/annual_block_edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/annual_block_edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/curriculum/curriculum.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/curriculum/curriculum.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JavaScript Debug.curriculum.html.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "Spring Boot.EJuryApplication.executor": "Run",
+    "git-widget-placeholder": "maquette__yacine",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="EJuryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="eJury" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="amu.jury_m1.EJuryApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="amu.jury_m1.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.EJuryApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+</project>

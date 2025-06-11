@@ -101,18 +101,52 @@ public class CurriculumController {
 
     @PostMapping("/{id}/add-annual-block")
     public String addAnnualBlock(@PathVariable Long id,
-                                 @ModelAttribute AnnualKnowledgeBlockDto dto,
+                                 @Valid @ModelAttribute("annualBlockDto") AnnualKnowledgeBlockDto dto,
+                                 BindingResult result,
                                  Model model) {
+        model.addAttribute("curriculumId", id);
+        if (result.hasErrors()) {
+            return "curriculum/add_annual_block";
+        }
+
         try {
             service.addAnnualKnowledgeBlock(dto);
         } catch (IllegalArgumentException ex) {
             model.addAttribute("curriculumId", id);
             model.addAttribute("annualBlockDto", dto);
-            model.addAttribute("errorMessage", ex.getMessage());
+            result.rejectValue("id", "duplicate", ex.getMessage());
             return "curriculum/add_annual_block";
         }
 
         return "redirect:/curriculum/" + id;
+    }
+
+    @GetMapping("/annual/{oldId}/rename")
+    public String showRenameAnnualBlockForm(@PathVariable String oldId, Model model) {
+        model.addAttribute("oldId", oldId);
+        model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDto(""));
+        return "curriculum/rename_annual_block";
+    }
+
+    @PostMapping("/annual/{oldId}/rename")
+    public String renameAnnualBlock(@PathVariable String oldId,
+                                    @Valid @ModelAttribute("annualBlockDto") AnnualKnowledgeBlockDto dto,
+                                    BindingResult result,
+                                    Model model) {
+        model.addAttribute("oldId", oldId);
+
+        if (result.hasErrors()) {
+            return "curriculum/rename_annual_block";
+        }
+
+        try {
+            service.renameAnnualBlock(oldId, dto.id());
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "curriculum/rename_annual_block";
+        }
+
+        return "redirect:/curriculum/1";
     }
 
 

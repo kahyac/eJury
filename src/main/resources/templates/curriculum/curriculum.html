@@ -93,8 +93,18 @@
     <ul>
         <li th:each="annual : ${plan.annualKnowledgeBlocks}">
             <div class="block">
-                <p><span class="info-label">ID du bloc :</span> <span th:text="${annual.id}">M1A</span></p>
-                <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}" class="button-link">Configurer ce bloc</a>
+                <p>
+                    <span class="info-label">Nom du bloc :</span>
+                    <span th:text="${annual.id}">M1A</span>
+                    &nbsp;
+                    <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/rename'}"
+                       class="button-link"
+                       style="background-color: #e67e22; padding: 0.3rem 0.6rem; font-size: 0.85rem;">
+                        ✏️ Renommer
+                    </a>
+                </p>
+                <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}" class="button-link">⚙️ Configurer ce bloc</a>
+
             </div>
         </li>
     </ul>
