@@ -1,13 +1,12 @@
 package amu.jury_m1.model.result;
 
-import amu.jury_m1.model.student.StudentId;
 
 import java.time.Year;
 import java.util.Objects;
 
 public class KnowledgeBlockAnnualResult {
 
-    private final StudentId studentId;
+    private final String studentId;
     private final String blockCode;
     private final Year academicYear;
 
@@ -18,7 +17,7 @@ public class KnowledgeBlockAnnualResult {
     private final AnnualDecision decision;
     private final Mention mention;
 
-    public KnowledgeBlockAnnualResult(StudentId studentId,
+    public KnowledgeBlockAnnualResult(String studentId,
                                       String blockCode,
                                       Year academicYear,
                                       double averageS1,
@@ -37,7 +36,7 @@ public class KnowledgeBlockAnnualResult {
     }
 
     // --- Fabrique statique : création d'un résultat à partir des notes ---
-    public static KnowledgeBlockAnnualResult of(StudentId studentId,
+    public static KnowledgeBlockAnnualResult of(String studentId,
                                                 String blockCode,
                                                 Year year,
                                                 double avgS1,
@@ -73,7 +72,7 @@ public class KnowledgeBlockAnnualResult {
 
     // --- Getters ---
 
-    public StudentId getStudentId() { return studentId; }
+    public String getStudentId() { return studentId; }
     public String getBlockCode() { return blockCode; }
     public Year getAcademicYear() { return academicYear; }
     public double getAverageS1() { return averageS1; }

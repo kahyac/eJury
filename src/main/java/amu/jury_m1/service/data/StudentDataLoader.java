@@ -1,16 +1,16 @@
-package amu.jury_m1.model.student.init;
+package amu.jury_m1.service.data;
 
 
 import amu.jury_m1.model.student.Student;
 import amu.jury_m1.dao.StudentRepository;
-import org.springframework.boot.CommandLineRunner;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 import java.util.stream.IntStream;
 
 @Component
-public class StudentDataLoader implements CommandLineRunner {
+public class StudentDataLoader{
 
     private final StudentRepository studentRepository;
 
@@ -18,10 +18,10 @@ public class StudentDataLoader implements CommandLineRunner {
         this.studentRepository = studentRepository;
     }
 
-    @Override
-    public void run(String... args) {
+    @PostConstruct
+    public void loadStudentData() {
         if (studentRepository.count() == 0) {
-            IntStream.rangeClosed(1, 200).forEach(i -> {
+            IntStream.rangeClosed(1, 30).forEach(i -> {
                 Student student = new Student(
                         UUID.randomUUID().toString(),
                         "Nom" + i,
@@ -30,7 +30,7 @@ public class StudentDataLoader implements CommandLineRunner {
                 );
                 studentRepository.save(student);
             });
-            System.out.println("✅ 200 étudiants générés dans la base H2.");
+            System.out.println("30 étudiants générés dans la base H2.");
         }
     }
 }

@@ -1,6 +1,5 @@
 package amu.jury_m1.model.result;
 
-import amu.jury_m1.model.student.StudentId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +14,7 @@ import java.time.Year;
 @RequiredArgsConstructor
 public class AnnualAcademicResult {
 
-    private final StudentId studentId;
+    private final String studentId;
     private final Year academicYear;
     private final double annualAverage;
     private final AnnualDecision decision;
