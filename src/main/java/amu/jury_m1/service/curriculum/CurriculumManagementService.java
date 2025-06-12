@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CurriculumManagementService {
 
-    private final CurriculumPlanRepository curriculumPlanRepo;
-    private final TeachingUnitRepository teachingUnitRepo;
+    private final CurriculumPlanRepository curriculumPlanRepository;
+    private final TeachingUnitRepository teachingUnitRepository;
     private final SemestrialKnowledgeBlockRepository semestrialKnowledgeBlockRepository;
     private final AnnualKnowledgeBlockRepository annualKnowledgeBlockRepository;
 
@@ -24,7 +24,7 @@ public class CurriculumManagementService {
                 .name(dto.name())
                 .build();
 
-        curriculumPlanRepo.save(plan);
+        curriculumPlanRepository.save(plan);
     }
 
     @Transactional
@@ -37,11 +37,11 @@ public class CurriculumManagementService {
                 .id(dto.id())
                 .build();
 
-        CurriculumPlan plan = curriculumPlanRepo.findById(1L)
+        CurriculumPlan plan = curriculumPlanRepository.findById(1L)
                 .orElseThrow(() -> new IllegalStateException("CurriculumPlan not found"));
 
         plan.getAnnualKnowledgeBlocks().add(block);
-        curriculumPlanRepo.save(plan);
+        curriculumPlanRepository.save(plan);
     }
 
     @Transactional
@@ -65,10 +65,8 @@ public class CurriculumManagementService {
         plan.getAnnualKnowledgeBlocks().removeIf(b -> b.getId().equals(oldId));
         plan.getAnnualKnowledgeBlocks().add(renamed);
 
-        curriculumPlanRepo.save(plan);
+        curriculumPlanRepository.save(plan);
     }
-
-
 
     @Transactional
     public void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto) {
@@ -89,16 +87,20 @@ public class CurriculumManagementService {
         annualKnowledgeBlockRepository.save(annual);
     }
 
-
-
     @Transactional
     public void addTeachingUnit(TeachingUnitDto dto) {
-        if (teachingUnitRepo.existsById(dto.code())) {
+        if (teachingUnitRepository.existsById(dto.code())) {
             throw new IllegalArgumentException("Une UE avec ce code existe déjà.");
         }
 
-        if (teachingUnitRepo.existsByLabel(dto.label())) {
+        if (teachingUnitRepository.existsByLabel(dto.label())) {
             throw new IllegalArgumentException("Une UE avec ce libellé existe déjà.");
+        }
+        if (dto.ects() < 0 || dto.ects() > 30) {
+            throw new IllegalArgumentException("Le nombre d’ECTS est invalide.");
+        }
+        if (dto.workloadHours() < 0 || dto.workloadHours() > 300) {
+            throw new IllegalArgumentException("Le volume horaire est invalide.");
         }
 
         TeachingUnit unit = TeachingUnit.builder()
@@ -108,13 +110,53 @@ public class CurriculumManagementService {
                 .workloadHours(dto.workloadHours())
                 .obligation(dto.obligation())
                 .build();
-        teachingUnitRepo.save(unit);
+        teachingUnitRepository.save(unit);
     }
 
+    @Transactional
+    public void updateTeachingUnit(String oldCode, TeachingUnitDto dto) {
+        TeachingUnit existing = teachingUnitRepository.findById(oldCode)
+                .orElseThrow(() -> new IllegalArgumentException("UE introuvable : " + oldCode));
+
+        boolean labelConflict = teachingUnitRepository.existsByLabel(dto.label())
+                && (!dto.code().equals(oldCode) || !dto.label().equals(existing.getLabel()));
+        if (labelConflict) {
+            throw new IllegalArgumentException("Ce libellé est déjà utilisé.");
+        }
+        if (!dto.code().equals(oldCode) && teachingUnitRepository.existsById(dto.code())) {
+            throw new IllegalArgumentException("Ce code est déjà utilisé par une autre UE.");
+        }
+        if (dto.ects() < 0 || dto.ects() > 30) {
+            throw new IllegalArgumentException("Le nombre d’ECTS est invalide.");
+        }
+        if (dto.workloadHours() < 0 || dto.workloadHours() > 300) {
+            throw new IllegalArgumentException("Le volume horaire est invalide.");
+        }
+        if (dto.code().equals(oldCode)) {
+            existing.setLabel(dto.label());
+            existing.setEcts(dto.ects());
+            existing.setWorkloadHours(dto.workloadHours());
+            existing.setObligation(dto.obligation());
+            teachingUnitRepository.save(existing);
+        }
+        else {
+            teachingUnitRepository.delete(existing);
+
+            TeachingUnit updated = TeachingUnit.builder()
+                    .code(dto.code())
+                    .label(dto.label())
+                    .ects(dto.ects())
+                    .workloadHours(dto.workloadHours())
+                    .obligation(dto.obligation())
+                    .build();
+
+            teachingUnitRepository.save(updated);
+        }
+    }
 
     @Transactional
     public void associateTeachingUnitToSemestrialBlock(String blockCode, String unitCode, double coefficient) {
-        TeachingUnit unit = teachingUnitRepo.findById(unitCode)
+        TeachingUnit unit = teachingUnitRepository.findById(unitCode)
                 .orElseThrow(() -> new IllegalArgumentException("TeachingUnit not found: " + unitCode));
 
         SemestrialKnowledgeBlock block = semestrialKnowledgeBlockRepository.findById(blockCode)
@@ -128,5 +170,11 @@ public class CurriculumManagementService {
         return semestrialKnowledgeBlockRepository.findById(blockCode)
                 .map(sb -> sb.getAnnualKnowledgeBlock().getCurriculumPlan().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Bloc semestriel introuvable"));
+    }
+
+    public String findAnnualIdBySemBlockCode(String blockCode) {
+        return semestrialKnowledgeBlockRepository.findById(blockCode)
+                .map(sb -> sb.getAnnualKnowledgeBlock().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Bloc semestriel introuvable : " + blockCode));
     }
 }
