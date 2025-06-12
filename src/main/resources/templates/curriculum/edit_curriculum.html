@@ -1,48 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <title>Modifier la maquette</title>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
+    <title>Renommer la maquette – eJury</title>
     <style>
+        :root {
+            --primary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --bg: #f4f6f9;
+            --text: #2c3e50;
+            --card: #ffffff;
+            --border: #dcdde1;
+        }
+
         body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            max-width: 600px;
-            margin: 3rem auto;
-            background-color: #f5f8fa;
+            font-family: "Segoe UI", sans-serif;
+            background-color: var(--bg);
+            margin: 0;
             padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background-color: var(--card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+            width: 100%;
         }
 
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: var(--text);
+            font-size: 1.7rem;
             margin-bottom: 2rem;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
         }
 
         label {
-            font-weight: bold;
-            margin-top: 1rem;
-            color: #34495e;
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+            margin-top: 1.2rem;
         }
 
         input[type="text"] {
-            padding: 0.6rem;
+            width: 100%;
+            padding: 0.75rem;
             margin-top: 0.3rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
             font-size: 1rem;
+            box-sizing: border-box;
         }
 
         .error {
-            color: red;
-            font-size: 0.85rem;
-            margin-top: 0.2rem;
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
         }
 
         .button-group {
@@ -52,16 +73,18 @@
         }
 
         .btn {
-            padding: 0.6rem 1.2rem;
+            padding: 0.8rem 1.6rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: bold;
-            text-decoration: none;
+            font-size: 1rem;
             cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
         }
 
         .btn-submit {
-            background-color: #27ae60;
+            background-color: var(--success);
             color: white;
         }
 
@@ -69,42 +92,52 @@
             background-color: #1e8449;
         }
 
-        .btn-cancel {
-            background-color: #e74c3c;
-            color: white;
+        .back-link {
+            display: inline-block;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 2px solid var(--primary);
+            margin-top: 2rem;
+            padding-bottom: 2px;
+            transition: color 0.2s ease, border-color 0.2s ease;
         }
 
-        .btn-cancel:hover {
-            background-color: #c0392b;
+        .back-link:hover {
+            text-decoration: none;
+            color: #2c80b9;
+            border-color: #2c80b9;
         }
     </style>
 </head>
 <body>
 
-<h1>Renommer la maquette</h1>
+<div class="form-container">
+    <h1>Renommer la maquette</h1>
 
-<form th:action="@{'/curriculum/' + ${planId} + '/edit'}" th:object="${dto}" method="post">
+    <form th:action="@{'/curriculum/' + ${planId} + '/edit'}"
+          th:object="${dto}" method="post">
 
-    <label>Année universitaire :</label>
-    <input type="text" th:field="*{academicYear}" placeholder="ex : 2025/2026" required/>
-    <div th:if="${#fields.hasErrors('academicYear')}" class="error">
-        <p th:errors="*{academicYear}"></p>
-    </div>
+        <label for="academicYear">Année universitaire :</label>
+        <input id="academicYear" type="text" th:field="*{academicYear}" placeholder="ex : 2025/2026" required/>
+        <div th:if="${#fields.hasErrors('academicYear')}" class="error">
+            <p th:errors="*{academicYear}"></p>
+        </div>
 
-    <label>Nom de la maquette :</label>
-    <input type="text" th:field="*{name}" placeholder="ex : Ingénierie du Développement Logiciel" required/>
-    <div th:if="${#fields.hasErrors('name')}" class="error">
-        <p th:errors="*{name}"></p>
-    </div>
+        <label for="name">Nom de la maquette :</label>
+        <input id="name" type="text" th:field="*{name}" placeholder="ex : Ingénierie du Développement Logiciel" required/>
+        <div th:if="${#fields.hasErrors('name')}" class="error">
+            <p th:errors="*{name}"></p>
+        </div>
 
-
-
-    <div class="button-group">
-        <button type="submit" class="btn btn-submit">Enregistrer</button>
-        <a th:href="@{'/curriculum/' + ${planId}}" class="btn btn-cancel"> Retour</a>
-    </div>
-
-</form>
+        <div class="button-group">
+            <button type="submit" class="btn btn-submit">Enregistrer</button>
+        </div>
+        <a th:href="@{'/curriculum/1'}" class="back-link">
+            ← Retour à la maquette
+        </a>
+    </form>
+</div>
 
 </body>
 </html>

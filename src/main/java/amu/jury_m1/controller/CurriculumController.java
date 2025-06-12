@@ -4,6 +4,7 @@ import amu.jury_m1.dao.AnnualKnowledgeBlockRepository;
 import amu.jury_m1.dao.TeachingUnitRepository;
 import amu.jury_m1.model.pedagogy.AnnualKnowledgeBlock;
 import amu.jury_m1.model.pedagogy.CurriculumPlan;
+import amu.jury_m1.model.pedagogy.TeachingUnit;
 import amu.jury_m1.service.curriculum.CurriculumManagementService;
 import amu.jury_m1.service.dtos.*;
 import amu.jury_m1.dao.CurriculumPlanRepository;
@@ -95,7 +96,7 @@ public class CurriculumController {
     @GetMapping("/{id}/add-annual-block")
     public String showAddAnnualBlockForm(@PathVariable Long id, Model model) {
         model.addAttribute("curriculumId", id);
-        model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDto("")); // simple DTO
+        model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDto(""));
         return "curriculum/add_annual_block";
     }
 
@@ -149,72 +150,6 @@ public class CurriculumController {
         return "redirect:/curriculum/1";
     }
 
-
-    @GetMapping("/annual/{annualId}/add-sem-block")
-    public String showAddSemBlockForm(@PathVariable String annualId, Model model) {
-        model.addAttribute("annualId", annualId);
-        model.addAttribute("semestrialDto", new SemestrialKnowledgeBlockDto("", "", 1, 0.0));
-        return "curriculum/add_sem_block";
-    }
-
-    @PostMapping("/annual/{annualId}/add-sem-block")
-    public String addSemBlock(@PathVariable String annualId,
-                              @ModelAttribute SemestrialKnowledgeBlockDto dto) {
-        service.addSemestrialBlockToAnnual(annualId, dto);
-        return "redirect:/curriculum/1";
-    }
-
-    @GetMapping("/sem-block/{blockCode}/add-unit")
-    public String showAddUnitToBlock(@PathVariable String blockCode, Model model) {
-        model.addAttribute("blockCode", blockCode);
-        model.addAttribute("unitCodes", teachingUnitRepository.findAll()); // <- ici on corrige !
-        model.addAttribute("form", new UnitAssociationFormDto("", 1.0));
-        Long curriculumId = service.findCurriculumIdBySemBlockCode(blockCode);
-        model.addAttribute("curriculumId", curriculumId);
-        return "curriculum/add_association";
-    }
-
-
-    @GetMapping("/{id}/add-unit")
-    public String showAddUnitForm(@PathVariable String id, Model model) {
-        model.addAttribute("curriculumId", id);
-        model.addAttribute("teachingUnitDto", new TeachingUnitDto("", "", 0.0, 0.0,true));
-        return "curriculum/add_unit"; // template: add_unit.html
-    }
-
-    @PostMapping("/{id}/add-unit")
-    public String addUnit(@PathVariable String id,
-                          @ModelAttribute("teachingUnitDto") TeachingUnitDto dto,
-                          Model model) {
-        try {
-            service.addTeachingUnit(dto);
-        } catch (IllegalArgumentException ex) {
-            model.addAttribute("curriculumId", id);
-            model.addAttribute("teachingUnitDto", dto);
-            model.addAttribute("errorMessage", ex.getMessage());
-            return "curriculum/add_unit";
-        }
-
-        return "redirect:/curriculum/" + id;
-    }
-
-    @PostMapping("/sem-block/{blockCode}/add-unit")
-    public String associateUnit(@PathVariable String blockCode,
-                                @ModelAttribute("form") UnitAssociationFormDto form,
-                                Model model) {
-        try {
-            service.associateTeachingUnitToSemestrialBlock(blockCode, form.unitCode(), form.coefficient());
-        } catch (IllegalArgumentException ex) {
-            model.addAttribute("blockCode", blockCode);
-            model.addAttribute("units", teachingUnitRepository.findAll());
-            model.addAttribute("form", form);
-            model.addAttribute("errorMessage", ex.getMessage());
-            return "curriculum/add_association";
-        }
-
-        return "redirect:/curriculum/1";
-    }
-
     @GetMapping("/annual/{annualId}/edit")
     public String editAnnualBlock(@PathVariable String annualId, Model model) {
         AnnualKnowledgeBlock block = annualKnowledgeBlockRepository.findById(annualId)
@@ -238,13 +173,119 @@ public class CurriculumController {
         AnnualKnowledgeBlock block = annualKnowledgeBlockRepository.findById(annualId)
                 .orElseThrow(() -> new IllegalArgumentException("Bloc non trouvé : " + annualId));
 
-        // Changer l'ID (si différent)
         if (!block.getId().equals(newId)) {
-            annualKnowledgeBlockRepository.deleteById(annualId); // Supprimer l'ancien
+            annualKnowledgeBlockRepository.deleteById(annualId);
             block.setId(newId);
-            annualKnowledgeBlockRepository.save(block); // Sauvegarder sous nouvel ID
+            annualKnowledgeBlockRepository.save(block);
         }
 
         return "redirect:/curriculum/annual/" + newId + "/edit";
+    }
+
+    @GetMapping("/annual/{annualId}/add-sem-block")
+    public String showAddSemBlockForm(@PathVariable String annualId, Model model) {
+        model.addAttribute("annualId", annualId);
+        model.addAttribute("semestrialDto", new SemestrialKnowledgeBlockDto("", "", 1, 0.0));
+        return "curriculum/add_sem_block";
+    }
+
+    @PostMapping("/annual/{annualId}/add-sem-block")
+    public String addSemBlock(@PathVariable String annualId,
+                              @ModelAttribute SemestrialKnowledgeBlockDto dto) {
+        service.addSemestrialBlockToAnnual(annualId, dto);
+        return "redirect:/curriculum/annual/" + annualId + "/edit";
+    }
+
+    @GetMapping("/sem-block/{blockCode}/add-unit")
+    public String showAddUnitToBlock(@PathVariable String blockCode, Model model) {
+        model.addAttribute("blockCode", blockCode);
+        model.addAttribute("unitCodes", teachingUnitRepository.findAll());
+        model.addAttribute("form", new UnitAssociationFormDto("", 1.0));
+
+        String annualId = service.findAnnualIdBySemBlockCode(blockCode);
+
+        model.addAttribute("annualId", annualId);
+
+        return "curriculum/add_association";
+    }
+
+    @GetMapping("/{id}/add-unit")
+    public String showAddUnitForm(@PathVariable String id, Model model) {
+        model.addAttribute("curriculumId", id);
+        model.addAttribute("teachingUnitDto", new TeachingUnitDto("", "", 0.0, 0.0,true));
+        return "curriculum/add_unit";
+    }
+
+    @PostMapping("/{id}/add-unit")
+    public String addUnit(@PathVariable String id,
+                          @Valid @ModelAttribute("teachingUnitDto") TeachingUnitDto dto,
+                          BindingResult result,
+                          Model model) {
+        model.addAttribute("curriculumId", id);
+
+        if (result.hasErrors()) {
+            return "curriculum/add_unit";
+        }
+
+        try {
+            service.addTeachingUnit(dto);
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "curriculum/add_unit";
+        }
+
+        return "redirect:/curriculum/" + id;
+    }
+
+
+    @GetMapping("/unit/{code}/edit")
+    public String showEditTeachingUnitForm(@PathVariable String code, Model model) {
+        TeachingUnit unit = teachingUnitRepository.findById(code)
+                .orElseThrow(() -> new IllegalArgumentException("UE introuvable : " + code));
+        model.addAttribute("teachingUnitDto", new TeachingUnitDto(
+                unit.getCode(), unit.getLabel(), unit.getEcts(), unit.getWorkloadHours(), unit.isObligation()
+        ));
+        return "curriculum/edit_unit";
+    }
+
+    @PostMapping("/unit/{code}/edit")
+    public String updateTeachingUnit(@PathVariable String code,
+                                     @Valid @ModelAttribute("teachingUnitDto") TeachingUnitDto dto,
+                                     BindingResult result,
+                                     Model model) {
+
+        model.addAttribute("code", code);
+
+        if (result.hasErrors()) {
+            return "curriculum/edit_unit";
+        }
+
+        try {
+            service.updateTeachingUnit(code, dto);
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("teachingUnitDto", dto);
+            return "curriculum/edit_unit";
+        }
+
+        return "redirect:/curriculum/1";
+    }
+
+
+    @PostMapping("/sem-block/{blockCode}/add-unit")
+    public String associateUnit(@PathVariable String blockCode,
+                                @ModelAttribute("form") UnitAssociationFormDto form,
+                                Model model) {
+        try {
+            service.associateTeachingUnitToSemestrialBlock(blockCode, form.unitCode(), form.coefficient());
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("blockCode", blockCode);
+            model.addAttribute("units", teachingUnitRepository.findAll());
+            model.addAttribute("form", form);
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "curriculum/add_association";
+        }
+
+        return "redirect:/curriculum/1";
     }
 }

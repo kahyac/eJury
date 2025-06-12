@@ -1,93 +1,127 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <title>Ajouter un bloc semestriel</title>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
+    <title>Ajouter un bloc semestriel – eJury</title>
     <style>
+        :root {
+            --primary: #3498db;
+            --danger: #e74c3c;
+            --bg: #f4f6f9;
+            --text: #2c3e50;
+            --card: #ffffff;
+            --border: #dcdde1;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f9fc;
-            margin: 2rem auto;
-            max-width: 700px;
+            font-family: "Segoe UI", sans-serif;
+            background-color: var(--bg);
+            margin: 0;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background-color: var(--card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+            width: 100%;
         }
 
         h2 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
+            text-align: center;
+            color: var(--text);
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
         }
 
         label {
-            margin-top: 1rem;
-            font-weight: bold;
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+            margin-top: 1.2rem;
         }
 
         input[type="text"],
         input[type="number"] {
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            width: 100%;
+            padding: 0.75rem;
             margin-top: 0.3rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
 
         button {
-            margin-top: 2rem;
-            padding: 0.7rem 1.5rem;
-            font-size: 1rem;
-            background-color: #2980b9;
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 6px;
             font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #2471a3;
+            background-color: #2d80ba;
         }
 
-        a {
-            display: inline-block;
-            margin-top: 1.5rem;
-            text-decoration: none;
-            color: #3498db;
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.8rem;
             font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
         }
 
-        a:hover {
+        .back-link:hover {
             text-decoration: underline;
+        }
+
+        .error {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
         }
     </style>
 </head>
 <body>
 
-<h2>Ajouter un bloc de connaissances semestriel</h2>
+<div class="form-container">
+    <h2>Ajouter un bloc de connaissances semestriel</h2>
 
-<form th:action="@{'/curriculum/annual/' + ${annualId} + '/add-sem-block'}" method="post">
-    <label for="code">Code :</label>
-    <input id="code" type="text" name="code" required/>
+    <form th:action="@{'/curriculum/annual/' + ${annualId} + '/add-sem-block'}" method="post">
 
-    <label for="label">Libellé :</label>
-    <input id="label" type="text" name="label" required/>
+        <label for="code">Code :</label>
+        <input id="code" type="text" name="code" required/>
 
-    <label for="semester">Semestre :</label>
-    <input id="semester" type="number" name="semester" min="1" max="2" required/>
+        <label for="label">Libellé :</label>
+        <input id="label" type="text" name="label" required/>
 
-    <label for="ects">ECTS :</label>
-    <input id="ects" type="number" step="0.1" name="ects" required/>
+        <label for="semester">Semestre :</label>
+        <input id="semester" type="number" name="semester" min="1" max="2" required/>
 
-    <button type="submit">Ajouter le bloc</button>
-</form>
+        <label for="ects">Crédits ECTS :</label>
+        <input id="ects" type="number" step="0.1" name="ects" required/>
 
-<a th:href="@{'/curriculum/1'}">← Retour à la maquette</a>
+        <button type="submit">Ajouter le bloc</button>
+    </form>
+
+    <a class="back-link" th:href="@{'/curriculum/annual/' + ${annualId} + '/edit'}">← Retour</a>
+</div>
 
 </body>
 </html>

@@ -1,110 +1,127 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <title>Ajouter un bloc annuel</title>
     <meta charset="UTF-8">
+    <title>Ajouter un bloc annuel – eJury</title>
     <style>
+        :root {
+            --primary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --text: #2c3e50;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: #f4f6f9;
             margin: 0;
-            padding: 2rem;
+            padding: 0;
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
+            padding: 2rem;
         }
 
         .form-container {
-            background-color: #ffffff;
-            padding: 2.5rem 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
-            max-width: 500px;
+            background-color: var(--card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow);
             width: 100%;
+            max-width: 480px;
         }
 
         h2 {
-            text-align: center;
-            color: #2c3e50;
+            margin-top: 0;
             margin-bottom: 2rem;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
+            color: var(--text);
+            text-align: center;
         }
 
         label {
+            font-weight: 600;
+            color: var(--text);
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #34495e;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 0.7rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
+            padding: 0.75rem;
+            border: 1px solid #dcdde1;
             border-radius: 6px;
-            box-sizing: border-box;
+            font-size: 1rem;
             margin-bottom: 1rem;
         }
 
         .error {
-            color: #c0392b;
+            color: var(--danger);
             font-size: 0.85rem;
+            margin-top: -0.5rem;
             margin-bottom: 1rem;
         }
 
         button {
             width: 100%;
-            padding: 0.75rem;
-            background-color: #27ae60;
+            padding: 0.9rem;
+            background-color: var(--success);
             color: white;
             border: none;
             border-radius: 6px;
-            font-weight: bold;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
             background-color: #219150;
+            transform: translateY(-1px);
         }
 
         .back-link {
             display: block;
             margin-top: 1.5rem;
             text-align: center;
-            color: #2980b9;
-            font-weight: bold;
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
         }
 
         .back-link:hover {
-            text-decoration: underline;
+            color: #216a94;
         }
     </style>
 </head>
 <body>
 
 <div class="form-container">
-    <h2>Ajouter un bloc de connaissances annuel</h2>
+    <h2>Ajouter un bloc annuel</h2>
 
     <form th:action="@{'/curriculum/' + ${curriculumId} + '/add-annual-block'}"
-          th:object="${annualBlockDto}"
-          method="post">
+          th:object="${annualBlockDto}" method="post">
 
-        <label for="id">Identifiant du bloc :</label>
+        <label for="id">Identifiant du bloc</label>
         <input id="id" type="text" th:field="*{id}" placeholder="Ex: M1-INFO" required/>
 
         <div th:if="${#fields.hasErrors('id')}" class="error">
             <p th:errors="*{id}"></p>
         </div>
 
-        <button type="submit">Ajouter</button>
+        <button type="submit">Ajouter le bloc</button>
     </form>
 
-    <a class="back-link" th:href="@{'/curriculum/' + ${curriculumId}}">← Retour à la maquette</a>
+    <a class="back-link" th:href="@{'/curriculum/' + ${curriculumId}}">&#8592; Retour à la maquette</a>
 </div>
 
 </body>

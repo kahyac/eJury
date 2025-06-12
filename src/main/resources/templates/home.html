@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil – eJury</title>
+    <style>
+        :root {
+            --primary: #2f80ed;
+            --accent: #27ae60;
+            --bg-light: #f5fafd;
+            --text-main: #2c3e50;
+            --text-muted: #5f6368;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+            background: var(--bg-light);
+            color: var(--text-main);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 3rem 1rem;
+            gap: 4rem;
+        }
+
+        .text-section {
+            max-width: 600px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .text-section h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .text-section p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(39, 174, 96, 0.25);
+            transition: transform 0.25s ease, background-color 0.25s ease;
+        }
+
+        .btn:hover {
+            background: #1e874b;
+            transform: scale(1.05);
+        }
+
+        .image-section {
+            max-width: 500px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .image-section img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .text-section {
+                margin-bottom: 2rem;
+            }
+
+            .text-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .image-section {
+                max-width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="text-section">
+        <h1>Bienvenue sur <strong>eJury</strong></h1>
+        <p>Simplifiez la conception et la gestion pédagogique des maquettes à Aix-Marseille Université grâce à eJury.</p>
+        <a th:if="${hasCurriculum}" th:href="@{'/curriculum/' + ${curriculumId}}" class="btn">
+            Afficher la maquette existante
+        </a>
+
+        <a th:unless="${hasCurriculum}" th:href="@{/curriculum/create}" class="btn">
+            Créer une nouvelle maquette
+        </a>
+
+    </div>
+    <div class="image-section">
+        <img src="https://www.univ-amu.fr/system/files/2024-06/AMU_Charte_graphique_24_06-03.jpg"
+             alt="Maquette universitaire moderne">
+    </div>
+</div>
+
+</body>
+</html>

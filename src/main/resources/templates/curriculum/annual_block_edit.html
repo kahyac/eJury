@@ -1,101 +1,169 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <title>Gestion du bloc annuel</title>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
+    <title>Gestion du bloc annuel – eJury</title>
     <style>
+        :root {
+            --primary: #3498db;
+            --accent: #2ecc71;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #2c3e50;
+            --muted: #7f8c8d;
+            --border: #dcdde1;
+            --danger: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background-color: #f4f6f9;
-            color: #2c3e50;
             margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             padding: 2rem;
         }
 
         .container {
-            max-width: 960px;
+            max-width: 1000px;
             margin: auto;
-            background-color: #ffffff;
-            padding: 2rem 2.5rem;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #34495e;
+            background-color: var(--card);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.9rem;
+            margin-bottom: 2rem;
+            color: var(--text);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
         }
 
         form {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
             gap: 1rem;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
-            justify-content: center;
         }
 
         label {
-            font-weight: bold;
+            font-weight: 600;
+            color: var(--text);
         }
 
         input[type="text"] {
-            padding: 0.6rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
             font-size: 1rem;
-            flex-grow: 1;
             min-width: 250px;
         }
 
-        .button, .button-link {
-            background-color: #3498db;
+        button,
+        .button-link {
+            background-color: var(--primary);
             color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 0.6rem 1.2rem;
             font-weight: bold;
-            cursor: pointer;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
             text-decoration: none;
-            transition: background-color 0.2s ease;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }
 
-        .button:hover, .button-link:hover {
-            background-color: #2980b9;
+        button:hover,
+        .button-link:hover {
+            background-color: #2c80b9;
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
         }
 
         .block {
-            background-color: #f0f4f8;
-            border-left: 5px solid #3498db;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1.2rem;
+            background-color: #f9fbfc;
+            border-left: 5px solid var(--primary);
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .block p {
+            margin: 0 0 0.6rem 0;
+            font-size: 0.95rem;
         }
 
         .ue-entry {
             margin-left: 1rem;
-            font-size: 0.95rem;
-            color: #2d3436;
+            padding-left: 0.5rem;
+            border-left: 2px solid #dcdde1;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            color: var(--text);
         }
 
         ul {
-            list-style-type: none;
+            list-style: none;
             padding-left: 0;
         }
 
         .actions {
-            margin-top: 1.5rem;
             text-align: center;
+            margin-top: 2rem;
+        }
+
+        .actions .button-link {
+            margin: 0.5rem;
+        }
+        .button-link.gray {
+            background-color: var(--muted);
+        }
+
+        .button-link.gray:hover {
+            background-color: #707b7c;
+        }
+        @media (max-width: 768px) {
+            form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        button.btn-success {
+            background-color: var(--accent);
+        }
+
+        button.btn-success:hover {
+            background-color: #27ae60;
+        }
+        .back-link {
+            display: inline-block;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 2px solid var(--primary);
+            margin-top: 2rem;
+            padding-bottom: 2px;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .back-link:hover {
+            text-decoration: none;
+            color: #2c80b9;
+            border-color: #2c80b9;
         }
     </style>
 </head>
@@ -104,15 +172,15 @@
 <div class="container">
     <h1>Gestion du bloc annuel</h1>
 
-    <!-- Formulaire de modification de l'ID -->
+    <!-- Modification de l'identifiant -->
     <form th:action="@{'/curriculum/annual/' + ${annualBlock.id} + '/update-id'}" method="post">
         <label for="newId">Identifiant du bloc :</label>
-        <input type="text" id="newId" name="newId" th:value="${annualBlock.id}" required/>
-        <button type="submit" class="button">Modifier</button>
+        <input id="newId" type="text" name="newId" th:value="${annualBlock.id}" required/>
+        <button type="submit" class="btn-success">Enregistrer</button>
     </form>
 
-    <!-- Liste des blocs semestriels -->
-    <h2>Blocs semestriels associés</h2>
+    <!-- Blocs semestriels -->
+    <h2>Blocs semestriels</h2>
     <ul>
         <li th:each="sem : ${annualBlock.semesters}">
             <div class="block">
@@ -121,17 +189,15 @@
                     <strong>Semestre :</strong> <span th:text="${sem.semester}">1</span> |
                     <strong>ECTS :</strong> <span th:text="${sem.ects}">30</span>
                 </p>
-
                 <ul>
                     <li th:each="entry : ${sem.unitsCoefficientAssociation}">
                         <div class="ue-entry">
-                            UE : <strong th:text="${entry.key.code}">UE101</strong> –
+                            UE : <strong th:text="${entry.key.code}">UE101</strong> —
                             <span th:text="${entry.key.label}">Programmation</span> |
                             Coeff. : <span th:text="${entry.value}">1.5</span>
                         </div>
                     </li>
                 </ul>
-
                 <div class="actions">
                     <a th:href="@{'/curriculum/sem-block/' + ${sem.code} + '/add-unit'}" class="button-link">
                         + Associer une UE
@@ -145,13 +211,11 @@
         <a th:href="@{'/curriculum/annual/' + ${annualBlock.id} + '/add-sem-block'}" class="button-link">
             + Ajouter un bloc semestriel
         </a>
-    </div>
 
-    <div class="actions">
-        <a th:href="@{'/curriculum/' + ${curriculumId}}" class="button-link">
-            ← Retour à la maquette
-        </a>
     </div>
+    <a th:href="@{'/curriculum/' + ${curriculumId}}" class="back-link">
+        ← Retour à la maquette
+    </a>
 </div>
 
 </body>
