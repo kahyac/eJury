@@ -6,16 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c65aa74d-327e-4442-96bf-cae9e82f01b5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/ResultRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/dao/ResultRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/AnnualAcademicResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/AnnualAcademicResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/KnowledgeBlockAnnualResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/result/KnowledgeBlockAnnualResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/rule/AnnualCalculationStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/rule/AnnualCalculationStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/rule/AnnualRuleM3C.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/rule/AnnualRuleM3C.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/student/StudentId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/student/StudentNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/amu/jury_m1/model/student/init/StudentDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/amu/jury_m1/service/data/StudentDataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/students/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/students/list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,20 +16,20 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JavaScript Debug.curriculum.html.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "Spring Boot.EJuryApplication.executor": "Run",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.curriculum.html.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;Spring Boot.EJuryApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="EJuryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
