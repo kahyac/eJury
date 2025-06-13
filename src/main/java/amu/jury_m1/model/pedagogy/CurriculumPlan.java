@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class CurriculumPlan {
 
+    @Builder.Default
     @Id
     private Long id = 1L;  // identifiant fixe car un seul parcours géré
 
