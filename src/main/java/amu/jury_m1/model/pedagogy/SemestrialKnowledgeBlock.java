@@ -31,6 +31,7 @@ public class SemestrialKnowledgeBlock {
 
     private double ects;
 
+    @Builder.Default
     @ElementCollection
     @CollectionTable(name = "unit_coefficients", joinColumns = @JoinColumn(name = "block_code"))
     @MapKeyJoinColumn(name = "teaching_unit_code")

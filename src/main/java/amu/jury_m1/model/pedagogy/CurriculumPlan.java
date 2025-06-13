@@ -19,6 +19,7 @@ import java.util.List;
 public class CurriculumPlan {
 
     @Id
+    @Builder.Default
     private Long id = 1L;  // identifiant fixe car un seul parcours géré
 
     private String academicYear;
