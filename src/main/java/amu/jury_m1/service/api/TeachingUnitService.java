@@ -11,4 +11,5 @@ public interface TeachingUnitService {
     void updateTeachingUnit(String oldCode, TeachingUnitDto dto);
     List<TeachingUnit> findAll();
     Optional<TeachingUnit> findById(String id);
+    void deleteById(String id);
 }

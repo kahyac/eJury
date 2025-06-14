@@ -77,4 +77,11 @@ public class TeachingUnitController {
 
         return "redirect:/curriculum/1";
     }
+
+    @PostMapping("/unit/{code}/delete")
+    public String deleteTeachingUnit(@PathVariable String code) {
+        teachingUnitService.deleteById(code);
+        return "redirect:/curriculum/1";
+    }
+
 }
