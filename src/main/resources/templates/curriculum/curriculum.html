@@ -192,7 +192,7 @@
                 <p><span class="info-label">Volume horaire :</span> <span th:text="${ue.workloadHours}">50</span></p>
                 <p><span class="info-label">Obligatoire :</span> <span th:text="${ue.obligation ? 'Oui' : 'Non'}">Oui</span></p>
 
-                <a th:href="@{'/curriculum/unit/' + ${ue.code} + '/edit'}"
+                <a th:href="@{'/curriculum/unit/' + ${ue.id} + '/edit'}"
                    class="button-link orange" style="font-size: 0.85rem;">
                     ✏️ Modifier
                 </a>

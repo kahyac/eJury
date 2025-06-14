@@ -39,7 +39,7 @@ public class SemestrialBlockController {
         model.addAttribute("blockId", block.getId());
         model.addAttribute("blockCode", block.getCode());
         model.addAttribute("unitCodes", teachingUnitService.findAll());
-        model.addAttribute("form", new UnitAssociationFormDto("", 1.0));
+        model.addAttribute("form", new UnitAssociationFormDto(null, 1.0));
 
         String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
 
@@ -53,7 +53,7 @@ public class SemestrialBlockController {
                                 @ModelAttribute("form") UnitAssociationFormDto form,
                                 Model model) {
         try {
-            semestrialKnowledgeBlockService.associateTeachingUnitToSemestrialBlock(blockId, form.unitCode(), form.coefficient());
+            semestrialKnowledgeBlockService.associateTeachingUnitToSemestrialBlock(blockId, form.unitId(), form.coefficient());
         } catch (IllegalArgumentException ex) {
             SemestrialKnowledgeBlock block = semestrialKnowledgeBlockService.findById(blockId);
             model.addAttribute("blockId", block.getId());

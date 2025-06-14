@@ -5,7 +5,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public record UnitAssociationFormDto(
         @NotBlank(message = "Block code cannot be blank")
-        String unitCode,
+        Long unitId,
 
         @PositiveOrZero(message = "Coefficient must be positive or 0")
         double coefficient) {}
