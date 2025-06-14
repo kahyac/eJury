@@ -5,11 +5,13 @@ import amu.jury_m1.model.student.Student;
 import amu.jury_m1.model.pedagogy.*;
 import amu.jury_m1.model.registration.PedagogicalRegistration;
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
+@DependsOn("studentDataLoader")
 public class CurriculumDataLoader {
 
     private final CurriculumPlanRepository curriculumPlanRepository;
@@ -140,6 +142,7 @@ public class CurriculumDataLoader {
         }
 
         registrationRepository.saveAll(registrations);
+        System.out.println("Étudiants présents avant attribution : " + studentRepository.count());
         System.out.println("Curriculum et IP générés pour tous les étudiants.");
     }
 }
