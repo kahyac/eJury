@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeBlockService {
+public class git pSemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeBlockService {
 
     private final SemestrialKnowledgeBlockRepository semestrialKnowledgeBlockRepository;
     private final AnnualKnowledgeBlockRepository annualKnowledgeBlockRepository;
