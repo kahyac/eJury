@@ -27,7 +27,7 @@ public class AnnualKnowledgeBlock {
     private CurriculumPlan curriculumPlan;
 
     @Builder.Default
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "year_block_id")
+    @OneToMany(mappedBy = "annualKnowledgeBlock", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SemestrialKnowledgeBlock> semesters = new ArrayList<>();
+
 }

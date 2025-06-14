@@ -129,7 +129,7 @@
         <h1>Bienvenue sur <strong>eJury</strong></h1>
         <p>Simplifiez la conception et la gestion pédagogique des maquettes à Aix-Marseille Université grâce à eJury.</p>
         <a th:if="${hasCurriculum}" th:href="@{'/curriculum/' + ${curriculumId}}" class="btn">
-            Afficher la maquette existante
+            Afficher la maquette
         </a>
 
         <a th:unless="${hasCurriculum}" th:href="@{/curriculum/create}" class="btn">
