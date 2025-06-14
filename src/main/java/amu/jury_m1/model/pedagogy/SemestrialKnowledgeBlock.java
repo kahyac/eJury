@@ -21,6 +21,9 @@ import java.util.Map;
 public class SemestrialKnowledgeBlock {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String code;
 
     private String label;

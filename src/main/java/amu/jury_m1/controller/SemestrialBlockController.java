@@ -1,5 +1,6 @@
 package amu.jury_m1.controller;
 
+import amu.jury_m1.model.pedagogy.SemestrialKnowledgeBlock;
 import amu.jury_m1.service.api.SemestrialKnowledgeBlockService;
 import amu.jury_m1.service.api.TeachingUnitService;
 import amu.jury_m1.service.dtos.SemestrialKnowledgeBlockDto;
@@ -31,27 +32,32 @@ public class SemestrialBlockController {
         return "redirect:/curriculum/annual/" + annualId + "/edit";
     }
 
-    @GetMapping("/sem-block/{blockCode}/add-unit")
-    public String showAddUnitToBlock(@PathVariable String blockCode, Model model) {
-        model.addAttribute("blockCode", blockCode);
+    @GetMapping("/sem-block/{blockId}/add-unit")
+    public String showAddUnitToBlock(@PathVariable Long blockId, Model model) {
+        SemestrialKnowledgeBlock block = semestrialKnowledgeBlockService.findById(blockId);
+
+        model.addAttribute("blockId", block.getId());
+        model.addAttribute("blockCode", block.getCode());
         model.addAttribute("unitCodes", teachingUnitService.findAll());
         model.addAttribute("form", new UnitAssociationFormDto("", 1.0));
 
-        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockCode(blockCode);
+        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
 
         model.addAttribute("annualId", annualId);
 
         return "semestrialKnowledgeBlock/add_association";
     }
 
-    @PostMapping("/sem-block/{blockCode}/add-unit")
-    public String associateUnit(@PathVariable String blockCode,
+    @PostMapping("/sem-block/{blockId}/add-unit")
+    public String associateUnit(@PathVariable Long blockId,
                                 @ModelAttribute("form") UnitAssociationFormDto form,
                                 Model model) {
         try {
-            semestrialKnowledgeBlockService.associateTeachingUnitToSemestrialBlock(blockCode, form.unitCode(), form.coefficient());
+            semestrialKnowledgeBlockService.associateTeachingUnitToSemestrialBlock(blockId, form.unitCode(), form.coefficient());
         } catch (IllegalArgumentException ex) {
-            model.addAttribute("blockCode", blockCode);
+            SemestrialKnowledgeBlock block = semestrialKnowledgeBlockService.findById(blockId);
+            model.addAttribute("blockId", block.getId());
+            model.addAttribute("blockCode",block.getCode());
             model.addAttribute("units", teachingUnitService.findAll());
             model.addAttribute("form", form);
             model.addAttribute("errorMessage", ex.getMessage());
@@ -60,4 +66,39 @@ public class SemestrialBlockController {
 
         return "redirect:/curriculum/1";
     }
+
+    @GetMapping("/sem-block/{blockId}/edit")
+    public String showEditForm(@PathVariable Long blockId, Model model) {
+        SemestrialKnowledgeBlock block = semestrialKnowledgeBlockService.findById(blockId);
+        SemestrialKnowledgeBlockDto dto = new SemestrialKnowledgeBlockDto(
+                block.getCode(), block.getLabel(), block.getSemester(), block.getEcts()
+        );
+
+        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
+
+        model.addAttribute("blockDto", dto);
+        model.addAttribute("block", block);
+        model.addAttribute("annualId", annualId);
+
+        return "semestrialKnowledgeBlock/edit_sem_block";
+    }
+
+
+    @PostMapping("/sem-block/{blockId}/edit")
+    public String updateSemBlock(@PathVariable Long blockId,
+                                 @ModelAttribute SemestrialKnowledgeBlockDto dto) {
+        semestrialKnowledgeBlockService.updateSemestrialBlock(blockId, dto);
+        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
+        return "redirect:/curriculum/annual/" + annualId + "/edit";
+    }
+
+
+    @PostMapping("/sem-block/{blockId}/delete")
+    public String deleteSemBlock(@PathVariable Long blockId) {
+        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
+        semestrialKnowledgeBlockService.deleteById(blockId);
+        return "redirect:/curriculum/annual/" + annualId + "/edit";
+    }
+
+
 }

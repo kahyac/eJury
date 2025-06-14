@@ -100,7 +100,7 @@
 <div class="container">
     <h2>Associer une unité d’enseignement au bloc <span th:text="${blockCode}">BLOC101</span></h2>
 
-    <form th:action="@{'/curriculum/sem-block/' + ${blockCode} + '/add-unit'}" method="post">
+    <form th:action="@{'/curriculum/sem-block/' + ${blockId} + '/add-unit'}" method="post">
         <label for="unitCode">Unité d’enseignement :</label>
         <select id="unitCode" name="unitCode" required>
             <option value="" disabled selected>-- Choisir une UE --</option>
@@ -110,9 +110,9 @@
         </select>
 
         <label for="coefficient">Coefficient :</label>
-        <input id="coefficient" type="number" name="coefficient" step="0.1" min="0" required/>
+        <input id="coefficient" type="number" name="coefficient" step="0.1" min="0" max="20" required/>
 
-        <button type="submit">Associer</button>
+        <button type="submit" aria-label="Associer cette UE au bloc">Associer</button>
     </form>
 
     <a th:href="@{'/curriculum/annual/' + ${annualId} +'/edit'}">← Retour</a>

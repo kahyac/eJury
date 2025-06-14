@@ -105,6 +105,9 @@ public class CurriculumDataLoader {
                 .semesters(List.of(bcc2s1, bcc2s2))
                 .build();
 
+        bcc1.getSemesters().forEach(sem -> sem.setAnnualKnowledgeBlock(bcc1));
+        bcc2.getSemesters().forEach(sem -> sem.setAnnualKnowledgeBlock(bcc2));
+
         // 4. Créer le curriculum plan
         CurriculumPlan plan = CurriculumPlan.builder()
                 .id(1L)

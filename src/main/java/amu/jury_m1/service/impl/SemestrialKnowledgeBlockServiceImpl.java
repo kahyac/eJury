@@ -8,22 +8,22 @@ import amu.jury_m1.model.pedagogy.SemestrialKnowledgeBlock;
 import amu.jury_m1.model.pedagogy.TeachingUnit;
 import amu.jury_m1.service.api.SemestrialKnowledgeBlockService;
 import amu.jury_m1.service.dtos.SemestrialKnowledgeBlockDto;
+import amu.jury_m1.service.validator.SemestrialKnowledgeBlockValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class git pSemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeBlockService {
+public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeBlockService {
 
     private final SemestrialKnowledgeBlockRepository semestrialKnowledgeBlockRepository;
     private final AnnualKnowledgeBlockRepository annualKnowledgeBlockRepository;
-    private final TeachingUnitRepository teachingUnitRepository;
+    private final SemestrialKnowledgeBlockValidator semestrialKnowledgeBlockValidator;
 
     @Transactional
     public void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto) {
-        AnnualKnowledgeBlock annual = annualKnowledgeBlockRepository.findById(annualBlockId)
-                .orElseThrow(() -> new IllegalArgumentException("Annual block not found: " + annualBlockId));
+        AnnualKnowledgeBlock annual = semestrialKnowledgeBlockValidator.validateAnnualBlockExists(annualBlockId);
 
         SemestrialKnowledgeBlock block = SemestrialKnowledgeBlock.builder()
                 .code(dto.code())
@@ -34,26 +34,46 @@ public class git pSemestrialKnowledgeBlockServiceImpl implements SemestrialKnowl
                 .build();
 
         semestrialKnowledgeBlockRepository.save(block);
-
         annual.getSemesters().add(block);
         annualKnowledgeBlockRepository.save(annual);
     }
 
     @Transactional
-    public void associateTeachingUnitToSemestrialBlock(String blockCode, String unitCode, double coefficient) {
-        TeachingUnit unit = teachingUnitRepository.findById(unitCode)
-                .orElseThrow(() -> new IllegalArgumentException("TeachingUnit not found: " + unitCode));
-
-        SemestrialKnowledgeBlock block = semestrialKnowledgeBlockRepository.findById(blockCode)
-                .orElseThrow(() -> new IllegalArgumentException("Semestrial block not found: " + blockCode));
+    public void associateTeachingUnitToSemestrialBlock(Long blockId, String unitCode, double coefficient) {
+        SemestrialKnowledgeBlock block = semestrialKnowledgeBlockValidator.validateSemestrialBlockExists(blockId);
+        TeachingUnit unit = semestrialKnowledgeBlockValidator.validateTeachingUnitExists(unitCode);
 
         block.getUnitsCoefficientAssociation().put(unit, coefficient);
         semestrialKnowledgeBlockRepository.save(block);
     }
 
-    public String findAnnualIdBySemBlockCode(String blockCode) {
-        return semestrialKnowledgeBlockRepository.findById(blockCode)
-                .map(sb -> sb.getAnnualKnowledgeBlock().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Bloc semestriel introuvable : " + blockCode));
+    public String findAnnualIdBySemBlockId(Long blockId) {
+        return semestrialKnowledgeBlockValidator.validateSemestrialBlockExists(blockId)
+                .getAnnualKnowledgeBlock()
+                .getId();
     }
+
+    @Transactional
+    @Override
+    public void updateSemestrialBlock(Long blockId, SemestrialKnowledgeBlockDto dto) {
+        SemestrialKnowledgeBlock block = semestrialKnowledgeBlockValidator.validateSemestrialBlockExists(blockId);
+
+        block.setLabel(dto.label());
+        block.setSemester(dto.semester());
+        block.setEcts(dto.ects());
+        block.setCode(dto.code());
+
+        semestrialKnowledgeBlockRepository.save(block);
+    }
+
+
+    public SemestrialKnowledgeBlock findById(Long id) {
+        return semestrialKnowledgeBlockValidator.validateSemestrialBlockExists(id);
+    }
+
+    @Transactional
+    public void deleteById(Long code) {
+        semestrialKnowledgeBlockRepository.deleteById(code);
+    }
+
 }
