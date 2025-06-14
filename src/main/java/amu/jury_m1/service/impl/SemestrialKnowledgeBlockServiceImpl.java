@@ -39,9 +39,9 @@ public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeB
     }
 
     @Transactional
-    public void associateTeachingUnitToSemestrialBlock(Long blockId, String unitCode, double coefficient) {
+    public void associateTeachingUnitToSemestrialBlock(Long blockId, Long id, double coefficient) {
         SemestrialKnowledgeBlock block = semestrialKnowledgeBlockValidator.validateSemestrialBlockExists(blockId);
-        TeachingUnit unit = semestrialKnowledgeBlockValidator.validateTeachingUnitExists(unitCode);
+        TeachingUnit unit = semestrialKnowledgeBlockValidator.validateTeachingUnitExists(id);
 
         block.getUnitsCoefficientAssociation().put(unit, coefficient);
         semestrialKnowledgeBlockRepository.save(block);

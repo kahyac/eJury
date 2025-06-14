@@ -13,7 +13,7 @@ public class TeachingUnitValidator {
     private final TeachingUnitRepository teachingUnitRepository;
 
     public void validateNewTeachingUnit(TeachingUnitDto dto) {
-        if (teachingUnitRepository.existsById(dto.code())) {
+        if (teachingUnitRepository.existsByCode(dto.code())) {
             throw new IllegalArgumentException("Une UE avec ce code existe déjà.");
         }
 
@@ -24,15 +24,16 @@ public class TeachingUnitValidator {
         validateDtoFields(dto);
     }
 
-    public void validateUpdatedTeachingUnit(String oldCode, TeachingUnitDto dto, TeachingUnit existing) {
+    public void validateUpdatedTeachingUnit(TeachingUnitDto dto, TeachingUnit existing) {
         boolean labelConflict = teachingUnitRepository.existsByLabel(dto.label())
                 && !existing.getLabel().equals(dto.label()) ;
         if (labelConflict) {
             throw new IllegalArgumentException("Ce libellé est déjà utilisé.");
         }
 
-        if (!dto.code().equals(oldCode) && teachingUnitRepository.existsById(dto.code())) {
-            throw new IllegalArgumentException("Ce code est déjà utilisé par une autre UE.");
+        boolean codeConflict = teachingUnitRepository.existsByCode(dto.code()) && !existing.getCode().equals(dto.code());
+        if (codeConflict) {
+            throw new IllegalArgumentException("Ce code est déjà utilisé.");
         }
 
         validateDtoFields(dto);

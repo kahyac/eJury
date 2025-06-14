@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface TeachingUnitService {
     void addTeachingUnit(TeachingUnitDto dto);
-    void updateTeachingUnit(String oldCode, TeachingUnitDto dto);
+    void updateTeachingUnit(Long id, TeachingUnitDto dto);
     List<TeachingUnit> findAll();
-    Optional<TeachingUnit> findById(String id);
-    void deleteById(String id);
+    Optional<TeachingUnit> findById(Long id);
+    void deleteById(Long id);
 }

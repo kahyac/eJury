@@ -15,8 +15,12 @@ import lombok.*;
  */
 public class TeachingUnit {
 
+
     @Id
-    private String code;  // Code unique
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String code;
 
     private String label;
 

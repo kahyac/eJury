@@ -27,8 +27,8 @@ public class SemestrialKnowledgeBlockValidator {
                 .orElseThrow(() -> new IllegalArgumentException("Semestrial block not found: " + blockId));
     }
 
-    public TeachingUnit validateTeachingUnitExists(String unitCode) {
-        return teachingUnitRepository.findById(unitCode)
-                .orElseThrow(() -> new IllegalArgumentException("TeachingUnit not found: " + unitCode));
+    public TeachingUnit validateTeachingUnitExists(Long id) {
+        return teachingUnitRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("TeachingUnit not found: " + id));
     }
 }

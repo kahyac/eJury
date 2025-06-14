@@ -42,33 +42,34 @@ public class TeachingUnitController {
             return "teachingUnit/add_unit";
         }
 
-        return "redirect:/curriculum/" + id;
+        return "redirect:/curriculum/1";
     }
 
-    @GetMapping("/unit/{code}/edit")
-    public String showEditTeachingUnitForm(@PathVariable String code, Model model) {
-        TeachingUnit unit = teachingUnitService.findById(code)
-                .orElseThrow(() -> new IllegalArgumentException("UE introuvable : " + code));
+    @GetMapping("/unit/{unitId}/edit")
+    public String showEditTeachingUnitForm(@PathVariable Long unitId, Model model) {
+        TeachingUnit unit = teachingUnitService.findById(unitId)
+                .orElseThrow(() -> new IllegalArgumentException("UE introuvable : " + unitId));
+        model.addAttribute("unitId", unit.getId());
         model.addAttribute("teachingUnitDto", new TeachingUnitDto(
                 unit.getCode(), unit.getLabel(), unit.getEcts(), unit.getWorkloadHours(), unit.isObligation()
         ));
         return "teachingUnit/edit_unit";
     }
 
-    @PostMapping("/unit/{code}/edit")
-    public String updateTeachingUnit(@PathVariable String code,
+    @PostMapping("/unit/{unitId}/edit")
+    public String updateTeachingUnit(@PathVariable Long unitId,
                                      @Valid @ModelAttribute("teachingUnitDto") TeachingUnitDto dto,
                                      BindingResult result,
                                      Model model) {
 
-        model.addAttribute("code", code);
+        model.addAttribute("unitId", unitId);
 
         if (result.hasErrors()) {
             return "teachingUnit/edit_unit";
         }
 
         try {
-            teachingUnitService.updateTeachingUnit(code, dto);
+            teachingUnitService.updateTeachingUnit(unitId, dto);
         } catch (IllegalArgumentException ex) {
             model.addAttribute("errorMessage", ex.getMessage());
             model.addAttribute("teachingUnitDto", dto);
@@ -78,9 +79,9 @@ public class TeachingUnitController {
         return "redirect:/curriculum/1";
     }
 
-    @PostMapping("/unit/{code}/delete")
-    public String deleteTeachingUnit(@PathVariable String code) {
-        teachingUnitService.deleteById(code);
+    @PostMapping("/unit/{unitId}/delete")
+    public String deleteTeachingUnit(@PathVariable Long unitId) {
+        teachingUnitService.deleteById(unitId);
         return "redirect:/curriculum/1";
     }
 
