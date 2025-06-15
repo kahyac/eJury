@@ -3,180 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestion du bloc annuel – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Police Inter Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
     <style>
+        /* ----------  DESIGN TOKENS  ---------- */
         :root {
-            --primary: #3498db;
-            --accent: #2ecc71;
-            --bg: #f4f6f9;
-            --card: #ffffff;
-            --text: #2c3e50;
-            --muted: #7f8c8d;
-            --border: #dcdde1;
-            --danger: #e74c3c;
+            /* COLORS  (on garde les mêmes nuances) */
+            --primary: #2f80ed;
+            --accent:  #27ae60;
+            --danger:  #e74c3c;
+            --bg:      #e9eef6;
+            --glass:   rgba(255,255,255,0.44);
+            --card:    rgba(255,255,255,0.90);
+            --text:    #21243d;
+            --border:  #e1e5f0;
+            --muted:   #95aac9;
+            --shadow:  0 8px 32px rgba(47,128,237,0.07), 0 1.5px 8px rgba(39,174,96,0.11);
+            --radius:  1.25rem;
+            /* MOTION */
+            --fade-up: fadeInUp 0.90s cubic-bezier(.6,-0.25,.47,1.33);
+            /* BUTTON SIZING  (nouvelle gestion responsive) */
+            --btn-font:   clamp(.78rem, .76rem + .18vw, .92rem);
+            --btn-py:     clamp(.34em, .38em + .18vw, .52em);
+            --btn-px:     clamp(.55em, .60em + .20vw, .85em);
+            --btn-radius: .62em;
+            --btn-gap:    .36em;
+            --btn-min-w:  9.2rem;
+            --btn-min-h:  2.7rem;
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
+        /* ----------  BASE LAYOUT  ---------- */
+        html, body {
+            min-height: 100vh;
             margin: 0;
-            font-family: "Segoe UI", sans-serif;
-            background-color: var(--bg);
+            font-family: 'Inter', "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(112deg, var(--bg) 18%, #d8e6fa 85%);
             color: var(--text);
-            padding: 2rem;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
         }
 
+        /* ----------  CONTAINER  ---------- */
         .container {
-            max-width: 1000px;
-            margin: auto;
-            background-color: var(--card);
-            border-radius: 12px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+            width: 100%;
+            max-width: 985px;
+            padding: 2.8rem 2.3rem 2.3rem 2.3rem;
+            background: var(--glass);
+            backdrop-filter: blur(22px);
+            border: 1.7px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: var(--fade-up);
+            overflow: hidden;
+            z-index: 1;
+        }
+        .container:before {
+            content: "";
+            position: absolute;
+            right: -62px;
+            top: -52px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 53%, var(--accent) 100%);
+            opacity: 0.13;
+            filter: blur(1px);
         }
 
+        /* ----------  TYPOGRAPHY  ---------- */
         h1 {
             text-align: center;
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 0.5rem;
+            font-size: 2.08rem;
+            margin-bottom: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -1.1px;
+            padding-bottom: .45rem;
+            border-bottom: 2.7px solid var(--primary);
+            background: linear-gradient(98deg,var(--primary),var(--accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
         }
+        h2 {
+            font-size: 1.31rem;
+            margin: 2.2rem 0 1rem;
+            font-weight: 700;
+            letter-spacing: .02em;
+            background: linear-gradient(92deg,var(--primary),var(--accent) 67%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        label { font-weight: 600; color: var(--primary); }
 
-        form {
+        /* ----------  BLOCKS  ---------- */
+        .block {
+            position: relative;
+            margin-bottom: 1.7rem;
+            padding: 1.5rem 1.8rem;
+            border-left: 5.5px solid var(--primary);
+            border-radius: 1rem;
+            background: var(--card);
+            box-shadow: 0 2.5px 9px rgba(39, 174, 237, 0.07);
+            transition: box-shadow 0.19s, border-color 0.22s;
+            animation: var(--fade-up);
+            z-index: 1;
+        }
+        .block:hover {
+            box-shadow: 0 4px 32px rgba(47,128,237,0.09), 0 1.5px 8px rgba(39,174,96,0.15);
+            border-left-color: var(--accent);
+        }
+        .block p {
+            margin: 0 0 0.8rem;
+            font-size: 1.03rem;
+            font-weight: 600;
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.15em;
         }
 
-        label {
-            font-weight: 600;
-        }
-
-        input[type="text"] {
-            padding: 0.7rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
-            min-width: 250px;
-        }
-
-        button,
-        .button-link {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 600;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            display: inline-block;
-        }
-
-        button:hover,
-        .button-link:hover {
-            background-color: #2c80b9;
-            transform: scale(1.05);
-        }
-
-        button.btn-success {
-            background-color: var(--accent);
-        }
-
-        button.btn-success:hover {
-            background-color: #27ae60;
-        }
-
-        .button-link.gray {
-            background-color: var(--muted);
-        }
-
-        .button-link.gray:hover {
-            background-color: #707b7c;
-        }
-
-        .button-link.danger,
-        button.danger {
-            background-color: var(--danger);
-        }
-
-        .button-link.danger:hover,
-        button.danger:hover {
-            background-color: #c0392b;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .block {
-            background-color: #f9fbfc;
-            border-left: 5px solid var(--primary);
-            padding: 1.2rem 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        }
-
-        .block p {
-            margin: 0 0 0.6rem 0;
-            font-size: 0.95rem;
-        }
-
+        /* ----------  UE ENTRY  ---------- */
         .ue-entry {
-            margin-left: 1rem;
-            padding-left: 0.5rem;
-            border-left: 2px solid #dcdde1;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.69em;
+            margin: 0 0 0.28rem 1.15rem;
+            padding-left: 0.73rem;
+            border-left: 2px solid var(--border);
+            border-radius: 0.47em;
+            font-size: 0.99rem;
+            background: rgba(245,251,254,0.60);
+            transition: background .12s;
         }
+        .ue-entry:hover { background: #f2fbf7; }
 
-        ul {
-            list-style: none;
-            padding-left: 0;
-        }
+        /* ----------  ICON  ---------- */
+        .icon { display: inline-flex; width:.9em;height:.9em; vertical-align: middle; }
 
-        .actions {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-
-        .actions .button-link,
-        .actions form {
-            margin: 0.3rem;
-        }
-
-        .back-link {
-            display: inline-block;
-            font-weight: bold;
-            color: var(--primary);
+        /* ----------  SUPER BUTTON  ---------- */
+        /* Base */
+        .btn,
+        .button-link,
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--btn-gap);
+            min-width: unset;   /* plus de largeur/hauteur mini */
+            min-height: unset;
+            padding: var(--btn-py) var(--btn-px);
+            font-size: var(--btn-font);
+            border: none;
+            border-radius: var(--btn-radius);
+            cursor: pointer;
             text-decoration: none;
-            border-bottom: 2px solid var(--primary);
-            margin-top: 2rem;
+            color: #fff;
+            background: linear-gradient(92deg,var(--primary) 67%, var(--accent));
+            box-shadow: 0 2.5px 9px rgba(39, 174, 237, 0.10);
+            transition: background 0.17s, box-shadow .14s, transform .17s;
+            user-select: none;
+            overflow: hidden;
+            position: relative;
+        }
+        .button-link.gray,
+        button.gray { background: linear-gradient(92deg,#8e9fa9 65%, var(--muted)); }
+        .button-link.danger,
+        button.danger { background: linear-gradient(98deg,#e74c3c 50%, var(--danger)); }
+
+        /* Hover / Focus */
+        .button-link:not(:disabled):hover,
+        button:not(:disabled):hover { background: linear-gradient(98deg,#246abd 50%,#218049 100%); transform: scale(1.045); box-shadow: 0 4px 32px rgba(47,128,237,0.11); z-index: 2; }
+        .button-link.gray:not(:disabled):hover,
+        button.gray:not(:disabled):hover { background: linear-gradient(90deg,#6e7c82 60%,#7f8c8d 100%); }
+        .button-link.danger:not(:disabled):hover,
+        button.danger:not(:disabled):hover { background: linear-gradient(90deg,#be2d17 70%,#e74c3c 100%); }
+        .button-link:focus-visible,
+        button:focus-visible { outline: 2px solid var(--primary); box-shadow: 0 0 0 2.5px #2f80ed44; }
+        .button-link:disabled,
+        button:disabled { opacity: 0.63; cursor: not-allowed; }
+
+        /* ----------  ACTIONS LAYOUT  ---------- */
+        /* Utilise une grille responsive pour obtenir des boutons alignés, de taille cohérente et qui se réorganisent proprement. */
+        .actions {
+            display:flex;
+            flex-wrap:wrap;
+            gap:.55rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            margin-top: 1.35rem;
+            align-items: stretch;
+        }
+        /* Les balises <form> deviennent transparentes pour laisser le bouton occuper toute la cellule */
+        .actions form { display: contents; }
+        /* Tous les boutons/links prennent 100% de la largeur de leur cellule pour une cohérence parfaite */
+        .actions .button-link,
+        .actions button { width:auto }
+        /* Variante centrée (on évite l'attribut style="justify-content:center") */
+        .actions.center { justify-items: center; }
+
+        /* ----------  BACK LINK  ---------- */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.42em;
+            margin: 2.7rem auto 0;
+            font-weight: 800;
+            font-size: 1.09rem;
+            letter-spacing: .03em;
+            color: var(--primary);
+            border-bottom: 2.5px solid var(--primary);
+            text-decoration: none;
             padding-bottom: 2px;
-            transition: color 0.2s ease, border-color 0.2s ease;
+            transition: color .19s, border-color .19s;
+        }
+        .back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* ----------  TOAST  ---------- */
+        .toast {
+            position: fixed; right: 30px; bottom: 34px; z-index: 99999;
+            display: flex; align-items: center; gap: 0.9em;
+            min-width: 210px;
+            padding: 1.15em 1.8em;
+            border-left: 5.5px solid var(--primary);
+            border-radius: var(--radius);
+            background: var(--card);
+            color: var(--text);
+            font-weight: 700; font-size: 1.01rem;
+            box-shadow: 0 7px 22px rgba(47,128,237,0.16);
+            opacity: 0; pointer-events: none; transform: translateY(40px) scale(0.98);
+            transition: opacity 0.33s, transform 0.34s;
+        }
+        .toast.show { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1.06); }
+        .toast.danger  { border-left-color: var(--danger);  color: var(--danger); }
+        .toast.success { border-left-color: var(--accent);  color: var(--accent); }
+        .toast .toast-close { margin-left: auto; background: none; border: none; color: var(--danger); font-size: 1.2em; cursor: pointer; padding: 0.04em 0.18em; }
+
+        /* ----------  RESPONSIVE  ---------- */
+        @media (max-width: 900px) {
+            .container { padding: 1.3rem 0.67rem 1.3rem; }
+            h1 { font-size: 1.45rem; }
+            h2 { font-size: 1.12rem; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 0.57rem 0.27rem 0.85rem; }
         }
 
-        .back-link:hover {
-            color: #2c80b9;
-            border-color: #2c80b9;
-        }
-
-        @media (max-width: 768px) {
-            form {
-                flex-direction: column;
-                align-items: stretch;
-            }
+        /* ----------  ANIMATIONS  ---------- */
+        @keyframes fadeInUp {
+            0%   { opacity: 0; transform: translateY(55px); }
+            100% { opacity: 1; transform: translateY(0);   }
         }
     </style>
 </head>
@@ -192,6 +274,10 @@
         <li th:each="sem : ${annualBlock.semesters}">
             <div class="block">
                 <p>
+                    <span class="icon">
+                        <!-- SVG calendar icon -->
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1em" height="1em"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 9h18"/></svg>
+                    </span>
                     <strong>Code :</strong> <span th:text="${sem.code}">SB101</span> |
                     <strong>Libellé :</strong> <span th:text="${sem.label}">Label</span> |
                     <strong>Semestre :</strong> <span th:text="${sem.semester}">1</span> |
@@ -201,14 +287,19 @@
                 <ul>
                     <li th:each="entry : ${sem.unitsCoefficientAssociation}">
                         <div class="ue-entry">
+                            <span class="icon">
+                                <!-- SVG code icon -->
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1em" height="1em"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9l2 2-2 2M15 9l-2 2 2 2"/></svg>
+                            </span>
                             UE : <strong th:text="${entry.key.code}">UE101</strong> —
                             <span th:text="${entry.key.label}">Programmation</span> |
                             Coeff. : <span th:text="${entry.value}">1.5</span>
-
-                            <form th:action="@{'/curriculum/association/' + ${sem.id} + '/' + ${entry.key.id} + '/delete'}"
-                                  method="post" style="display:inline;">
-                                <button type="submit" class="button-link danger" style="margin-left: 1rem;"
-                                        onclick="return confirm('Supprimer cette association ?')">
+                            <form th:action="@{'/curriculum/association/' + ${sem.id} + '/' + ${entry.key.id} + '/delete'}" method="post">
+                                <button type="submit" class="btn danger btn-delete-assoc" title="Supprimer l’association" data-confirm="Supprimer cette association ?">
+                                    <span class="icon">
+                                        <!-- SVG trash -->
+                                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1.1em" height="1.1em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6m5 0V4a2 2 0 1 1 4 0v2"/></svg>
+                                    </span>
                                     Supprimer
                                 </button>
                             </form>
@@ -216,494 +307,110 @@
                     </li>
                 </ul>
 
+                <!-- ACTION BUTTONS (grid) -->
                 <div class="actions">
-                    <a th:href="@{'/curriculum/sem-block/' + ${sem.id} + '/add-unit'}" class="button-link">
-                        ➕ Associer une UE
+                    <a th:href="@{'/curriculum/sem-block/' + ${sem.id} + '/add-unit'}" class="btn" title="Associer une UE">
+                        <span class="icon">
+                            <!-- SVG plus -->
+                            <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1em" height="1em"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </span>
+                        Associer une UE
                     </a>
 
-                    <a th:href="@{'/curriculum/sem-block/' + ${sem.id} + '/edit'}" class="button-link gray">
-                        ⚙️ Modifier
+                    <a th:href="@{'/curriculum/sem-block/' + ${sem.id} + '/edit'}" class="btn gray" title="Modifier ce bloc">
+                        <span class="icon">
+                            <!-- SVG settings -->
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1em" height="1em"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.52V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        </span>
+                        Modifier
                     </a>
 
-                    <form th:action="@{'/curriculum/sem-block/' + ${sem.id} + '/delete'}" method="post" style="display:inline;">
-                        <button type="submit" class="danger" onclick="return confirm('Confirmer la suppression du bloc semestriel ?')">
+                    <form th:action="@{'/curriculum/sem-block/' + ${sem.id} + '/delete'}" method="post">
+                        <button type="submit" class="btn danger btn-delete-sem" data-confirm="Confirmer la suppression du bloc semestriel ?" title="Supprimer ce bloc">
+                            <span class="icon">
+                                <!-- SVG trash -->
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1.1em" height="1.1em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6m5 0V4a2 2 0 1 1 4 0v2"/></svg>
+                            </span>
                             Supprimer
-                        </button><!DOCTYPE html>
-                        <html xmlns:th="http://www.thymeleaf.org" lang="fr">
-                        <head>
-                            <meta charset="UTF-8">
-                            <title>Gestion du bloc annuel – eJury</title>
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <!-- Police Inter Google Fonts -->
-                            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
-                            <style>
-                                :root {
-                                    --primary: #2f80ed;
-                                    --accent: #27ae60;
-                                    --danger: #e74c3c;
-                                    --bg: #e9eef6;
-                                    --glass: rgba(255,255,255,0.44);
-                                    --card: rgba(255,255,255,0.90);
-                                    --text: #21243d;
-                                    --border: #e1e5f0;
-                                    --muted: #95aac9;
-                                    --shadow: 0 8px 32px rgba(47,128,237,0.07), 0 1.5px 8px rgba(39,174,96,0.11);
-                                    --radius: 1.25rem;
-                                    --fade-up: fadeInUp 0.90s cubic-bezier(.6,-0.25,.47,1.33);
-                                }
-                                html, body {
-                                    min-height: 100vh;
-                                    margin: 0;
-                                    font-family: 'Inter', "Segoe UI", Arial, sans-serif;
-                                    background: linear-gradient(112deg, var(--bg) 18%, #d8e6fa 85%);
-                                }
-                                body {
-                                    min-height: 100dvh;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    padding: 0 1rem;
-                                    color: var(--text);
-                                }
-
-                                .container {
-                                    background: var(--glass);
-                                    backdrop-filter: blur(22px);
-                                    box-shadow: var(--shadow);
-                                    border-radius: var(--radius);
-                                    padding: 2.8rem 2.3rem 2.3rem 2.3rem;
-                                    width: 100%;
-                                    max-width: 985px;
-                                    border: 1.7px solid var(--border);
-                                    position: relative;
-                                    overflow: hidden;
-                                    animation: fadeInUp 1s;
-                                    z-index: 1;
-                                }
-                                .container:before {
-                                    content: "";
-                                    position: absolute;
-                                    right: -62px;
-                                    top: -52px;
-                                    width: 150px;
-                                    height: 150px;
-                                    background: linear-gradient(135deg, var(--primary) 53%, var(--accent) 100%);
-                                    opacity: 0.13;
-                                    border-radius: 100%;
-                                    z-index: 0;
-                                    filter: blur(1px);
-                                }
-                                h1 {
-                                    text-align: center;
-                                    font-size: 2.08rem;
-                                    margin-bottom: 1.15rem;
-                                    color: var(--primary);
-                                    font-weight: 800;
-                                    letter-spacing: -1.1px;
-                                    background: linear-gradient(98deg,var(--primary),var(--accent));
-                                    -webkit-background-clip: text;
-                                    -webkit-text-fill-color: transparent;
-                                    background-clip: text;
-                                    padding-bottom: .45rem;
-                                    border-bottom: 2.7px solid var(--primary);
-                                    position: relative;
-                                    z-index: 1;
-                                }
-                                h2 {
-                                    font-size: 1.31rem;
-                                    color: var(--primary);
-                                    margin-top: 2.2rem;
-                                    margin-bottom: 1rem;
-                                    font-weight: 700;
-                                    letter-spacing: .02em;
-                                    position: relative;
-                                    z-index: 1;
-                                    background: linear-gradient(92deg,var(--primary),var(--accent) 67%);
-                                    -webkit-background-clip: text;
-                                    -webkit-text-fill-color: transparent;
-                                    background-clip: text;
-                                }
-
-                                label {
-                                    font-weight: 600;
-                                    color: var(--primary);
-                                }
-
-                                .block {
-                                    background: var(--card);
-                                    border-left: 5.5px solid var(--primary);
-                                    padding: 1.5rem 1.8rem;
-                                    border-radius: 1rem;
-                                    margin-bottom: 1.7rem;
-                                    box-shadow: 0 2.5px 9px rgba(39, 174, 237, 0.07);
-                                    position: relative;
-                                    animation: fadeInUp 0.95s;
-                                    transition: box-shadow 0.19s, border 0.22s;
-                                    z-index: 1;
-                                }
-                                .block:hover {
-                                    box-shadow: 0 4px 32px rgba(47,128,237,0.09), 0 1.5px 8px rgba(39,174,96,0.15);
-                                    border-left: 5.5px solid var(--accent);
-                                }
-
-                                .block p {
-                                    margin: 0 0 0.8rem 0;
-                                    font-size: 1.03rem;
-                                    font-weight: 600;
-                                    color: var(--text);
-                                    display: flex;
-                                    flex-wrap: wrap;
-                                    align-items: center;
-                                    gap: 1.15em;
-                                }
-
-                                ul {
-                                    list-style: none;
-                                    padding-left: 0;
-                                    margin: 0;
-                                }
-                                .ue-entry {
-                                    margin-left: 1.15rem;
-                                    padding-left: 0.73rem;
-                                    border-left: 2px solid var(--border);
-                                    font-size: 0.99rem;
-                                    margin-bottom: 0.28rem;
-                                    background: rgba(245,251,254,0.60);
-                                    border-radius: 0.47em;
-                                    display: flex;
-                                    align-items: center;
-                                    gap: 0.69em;
-                                    transition: background .12s;
-                                    position: relative;
-                                }
-                                .ue-entry:hover {
-                                    background: #f2fbf7;
-                                }
-
-                                /* Modern action buttons */
-                                .actions {
-                                    text-align: center;
-                                    margin-top: 1.28rem;
-                                    display: flex;
-                                    gap: 0.47em;
-                                    justify-content: flex-start;
-                                    flex-wrap: wrap;
-                                }
-                                .actions .button-link,
-                                .actions form {
-                                    margin: 0;
-                                    display: inline-block;
-                                }
-
-                                .button-link,
-                                button {
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 0.47em;
-                                    background: linear-gradient(92deg,var(--primary) 67%, var(--accent));
-                                    color: #fff;
-                                    font-weight: 700;
-                                    font-family: inherit;
-                                    font-size: 1.07rem;
-                                    padding: 0.73em 1.15em;
-                                    border-radius: 0.83em;
-                                    border: none;
-                                    cursor: pointer;
-                                    box-shadow: 0 2.5px 9px rgba(39, 174, 237, 0.10);
-                                    outline: none;
-                                    transition: background 0.17s, box-shadow .14s, transform .17s;
-                                    position: relative;
-                                    overflow: hidden;
-                                    text-decoration: none;
-                                    min-width: 92px;
-                                    min-height: 43px;
-                                }
-                                .button-link.gray, button.gray {
-                                    background: linear-gradient(92deg,#8e9fa9 65%, var(--muted));
-                                    color: #fff;
-                                }
-                                .button-link.danger, button.danger {
-                                    background: linear-gradient(98deg,#e74c3c 50%, var(--danger));
-                                    color: #fff;
-                                }
-                                .button-link:not(:disabled):hover, button:not(:disabled):hover {
-                                    background: linear-gradient(98deg,#246abd 50%,#218049 100%);
-                                    transform: scale(1.045);
-                                    z-index: 2;
-                                    box-shadow: 0 4px 32px rgba(47,128,237,0.11);
-                                }
-                                .button-link.gray:hover,
-                                button.gray:hover {
-                                    background: linear-gradient(90deg,#6e7c82 60%,#7f8c8d 100%);
-                                }
-                                .button-link.danger:hover, button.danger:hover {
-                                    background: linear-gradient(90deg,#be2d17 70%,#e74c3c 100%);
-                                }
-                                .button-link:focus-visible, button:focus-visible {
-                                    outline: 2px solid var(--primary);
-                                    box-shadow: 0 0 0 2.5px #2f80ed44;
-                                }
-                                .button-link:disabled, button:disabled {
-                                    opacity: 0.63;
-                                    cursor: not-allowed;
-                                }
-
-                                .icon {
-                                    display: inline-flex;
-                                    vertical-align: middle;
-                                    width: 1.18em;
-                                    height: 1.18em;
-                                    margin-right: 0.26em;
-                                }
-
-                                .back-link {
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 0.42em;
-                                    font-weight: 800;
-                                    color: var(--primary);
-                                    text-decoration: none;
-                                    font-size: 1.09rem;
-                                    letter-spacing: .03em;
-                                    margin: 2.7rem auto 0 auto;
-                                    justify-content: flex-start;
-                                    background: none;
-                                    border: none;
-                                    cursor: pointer;
-                                    border-bottom: 2.5px solid var(--primary);
-                                    padding-bottom: 2px;
-                                    transition: color .19s, border-color .19s;
-                                    z-index: 2;
-                                }
-                                .back-link .icon {
-                                    margin-right: 0.2em;
-                                }
-                                .back-link:hover {
-                                    color: var(--accent);
-                                    border-color: var(--accent);
-                                }
-
-                                /* Toast (notification) */
-                                .toast {
-                                    position: fixed;
-                                    right: 30px;
-                                    bottom: 34px;
-                                    z-index: 99999;
-                                    background: var(--card);
-                                    color: var(--text);
-                                    padding: 1.15em 1.8em;
-                                    border-radius: var(--radius);
-                                    box-shadow: 0 7px 22px rgba(47,128,237,0.16);
-                                    display: flex;
-                                    align-items: center;
-                                    gap: 0.9em;
-                                    min-width: 210px;
-                                    font-weight: 700;
-                                    font-size: 1.01rem;
-                                    border-left: 5.5px solid var(--primary);
-                                    opacity: 0;
-                                    pointer-events: none;
-                                    transform: translateY(40px) scale(0.98);
-                                    transition: opacity 0.33s, transform 0.34s;
-                                }
-                                .toast.show {
-                                    opacity: 1;
-                                    pointer-events: auto;
-                                    transform: translateY(0) scale(1.06);
-                                }
-                                .toast .toast-close {
-                                    margin-left: auto; background: none; border: none; color: var(--danger); font-size: 1.2em; cursor: pointer;padding: 0.04em 0.18em;
-                                }
-                                .toast.danger {border-left-color: var(--danger); color: var(--danger);}
-                                .toast.success {border-left-color: var(--accent); color: var(--accent);}
-                                /* Responsive */
-                                @media (max-width: 900px) {
-                                    .container { padding: 1.3rem 0.57rem 1.13rem 0.57rem; max-width: 99vw;}
-                                    h1 {font-size: 1.23rem;}
-                                    h2 {font-size: 1.08rem;}
-                                }
-                                @media (max-width: 600px) {
-                                    .container { padding: 0.57rem 0.27rem 0.85rem 0.27rem;}
-                                }
-                                @keyframes fadeInUp {
-                                    0% { opacity: 0; transform: translateY(55px);}
-                                    100% { opacity: 1; transform: translateY(0);}
-                                }
-                            </style>
-                        </head>
-                        <body>
-
-                        <div class="container">
-                            <h1>Gestion du bloc annuel</h1>
-
-                            <h2 th:text="'Code du bloc annuel : ' + ${annualBlock.code}">Code : BCC101</h2>
-
-                            <h2>Blocs semestriels</h2>
-                            <ul>
-                                <li th:each="sem : ${annualBlock.semesters}">
-                                    <div class="block anim-fade-in">
-                                        <p>
-          <span class="icon">
-            <!-- SVG calendar icon -->
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1em" height="1em"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 9h18"/></svg>
-          </span>
-                                            <strong>Code :</strong> <span th:text="${sem.code}">SB101</span> |
-                                            <strong>Libellé :</strong> <span th:text="${sem.label}">Label</span> |
-                                            <strong>Semestre :</strong> <span th:text="${sem.semester}">1</span> |
-                                            <strong>ECTS :</strong> <span th:text="${sem.ects}">30</span>
-                                        </p>
-
-                                        <ul>
-                                            <li th:each="entry : ${sem.unitsCoefficientAssociation}">
-                                                <div class="ue-entry">
-                  <span class="icon">
-                    <!-- SVG code icon -->
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1em" height="1em"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9l2 2-2 2M15 9l-2 2 2 2"/></svg>
-                  </span>
-                                                    UE : <strong th:text="${entry.key.code}">UE101</strong> —
-                                                    <span th:text="${entry.key.label}">Programmation</span> |
-                                                    Coeff. : <span th:text="${entry.value}">1.5</span>
-                                                    <form th:action="@{'/curriculum/association/' + ${sem.id} + '/' + ${entry.key.id} + '/delete'}"
-                                                          method="post" style="display:inline;">
-                                                        <button type="submit" class="button-link danger btn-delete-assoc" title="Supprimer l’association"
-                                                                data-confirm="Supprimer cette association ?"
-                                                                style="margin-left: 0.95em;">
-                  <span class="icon">
-                    <!-- SVG trash -->
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1.1em" height="1.1em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6m5 0V4a2 2 0 1 1 4 0v2"/></svg>
-                  </span>
-                                                            Supprimer
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </li>
-                                        </ul>
-
-                                        <div class="actions">
-                                            <a th:href="@{'/curriculum/sem-block/' + ${sem.id} + '/add-unit'}" class="button-link" title="Associer une UE">
-            <span class="icon">
-              <!-- SVG plus -->
-              <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1em" height="1em"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </span>
-                                                Associer une UE
-                                            </a>
-
-                                            <a th:href="@{'/curriculum/sem-block/' + ${sem.id} + '/edit'}" class="button-link gray" title="Modifier ce bloc">
-            <span class="icon">
-              <!-- SVG settings -->
-              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1em" height="1em"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.52V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            </span>
-                                                Modifier
-                                            </a>
-
-                                            <form th:action="@{'/curriculum/sem-block/' + ${sem.id} + '/delete'}" method="post" style="display:inline;">
-                                                <button type="submit" class="button-link danger btn-delete-sem" data-confirm="Confirmer la suppression du bloc semestriel ?" title="Supprimer ce bloc">
-              <span class="icon">
-                <!-- SVG trash -->
-                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="1.1em" height="1.1em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6m5 0V4a2 2 0 1 1 4 0v2"/></svg>
-              </span>
-                                                    Supprimer
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-
-                            <div class="actions" style="justify-content: center">
-                                <a th:href="@{'/curriculum/annual/' + ${annualBlock.id} + '/add-sem-block'}" class="button-link" title="Ajouter un bloc semestriel">
-      <span class="icon">
-        <!-- SVG plus -->
-        <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1em" height="1em"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      </span>
-                                    Ajouter un bloc semestriel
-                                </a>
-                            </div>
-
-                            <a th:href="@{'/curriculum/' + ${curriculumId}}" class="back-link">
-    <span class="icon">
-      <!-- SVG arrow left -->
-      <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1.13em" height="1.13em"><polyline points="15 18 9 12 15 6"/></svg>
-    </span>
-                                Retour à la maquette
-                            </a>
-                        </div>
-
-                        <!-- Toast notification box -->
-                        <div id="toast" class="toast"></div>
-
-                        <script>
-                            // Anim fade up debut (pour edge)
-                            document.querySelectorAll('.block').forEach((el, i) => {
-                                el.style.opacity = 0;
-                                setTimeout(() => {
-                                    el.style.animation = 'fadeInUp 0.75s cubic-bezier(.6,-0.25,.47,1.33)';
-                                    el.style.opacity = 1;
-                                }, 80 + i*65);
-                            });
-
-                            // Toaster maison
-                            function showToast(message, options = {}) {
-                                const toast = document.getElementById('toast');
-                                toast.className = 'toast ' + (options.type || '');
-                                toast.innerHTML = (options.icon || '') + '<span>' + message + '</span>' +
-                                    '<button class="toast-close" title="Fermer" onclick="closeToast()">&times;</button>';
-                                setTimeout(() => {
-                                    toast.classList.add('show');
-                                }, 44);
-                                if (options.autoClose !== false) {
-                                    if (toast._timeout) clearTimeout(toast._timeout);
-                                    toast._timeout = setTimeout(closeToast, 3500);
-                                }
-                            }
-                            function closeToast() {
-                                const toast = document.getElementById('toast');
-                                toast.classList.remove('show');
-                                toast._timeout && clearTimeout(toast._timeout);
-                            }
-
-                            // Confirmation dynamique pour suppression (remplacement de confirm natif)
-                            document.querySelectorAll('button[data-confirm]').forEach(btn => {
-                                btn.addEventListener('click', function(e) {
-                                    e.preventDefault();
-                                    const form = this.closest('form');
-                                    const msg = this.getAttribute('data-confirm') || "Êtes-vous sûr ?";
-                                    showToast(msg + '<br><button class="button-link danger" id="conf-yes" style="margin-left:1.3em;">Oui</button>' +
-                                        '<button class="button-link gray" id="conf-no">Non</button>', { type: 'danger', icon: '<svg style="width:1.33em;vertical-align:middle" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1"/></svg>', autoClose: false });
-                                    setTimeout(() => {
-                                        document.getElementById('conf-yes').onclick = () => {
-                                            closeToast();
-                                            setTimeout(()=>form.submit(),90);
-                                        };
-                                        document.getElementById('conf-no').onclick = closeToast;
-                                    }, 25);
-                                });
-                            });
-
-                            // Accessibilité : ESC ferme notification
-                            window.addEventListener('keydown', e => {
-                                if (e.key === 'Escape') closeToast();
-                            });
-                        </script>
-                        </body>
-                        </html>
-
+                        </button>
                     </form>
                 </div>
             </div>
         </li>
     </ul>
 
-    <div class="actions">
-        <a th:href="@{'/curriculum/annual/' + ${annualBlock.id} + '/add-sem-block'}" class="button-link">
-            ➕ Ajouter un bloc semestriel
+    <!-- ACTIONS GLOBALES -->
+    <div class="actions center">
+        <a th:href="@{'/curriculum/annual/' + ${annualBlock.id} + '/add-sem-block'}" class="btn" title="Ajouter un bloc semestriel">
+            <span class="icon">
+                <!-- SVG plus -->
+                <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1em" height="1em"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+            Ajouter un bloc semestriel
         </a>
     </div>
 
     <a th:href="@{'/curriculum/' + ${curriculumId}}" class="back-link">
-        ← Retour à la maquette
+        <span class="icon">
+            <!-- SVG arrow left -->
+            <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1.13em" height="1.13em"><polyline points="15 18 9 12 15 6"/></svg>
+        </span>
+        Retour à la maquette
     </a>
 </div>
 
+<!-- Toast notification box -->
+<div id="toast" class="toast"></div>
+
+<script>
+    // Animation progressive d'apparition des blocs
+    document.querySelectorAll('.block').forEach((el, i) => {
+        el.style.opacity = 0;
+        setTimeout(() => {
+            el.style.animation = 'fadeInUp 0.75s cubic-bezier(.6,-0.25,.47,1.33)';
+            el.style.opacity = 1;
+        }, 80 + i * 65);
+    });
+
+    /* ----------  TOAST  ---------- */
+    function showToast(message, options = {}) {
+        const toast = document.getElementById('toast');
+        toast.className = 'toast ' + (options.type || '');
+        toast.innerHTML = (options.icon || '') + '<span>' + message + '</span>' +
+            '<button class="toast-close" title="Fermer" onclick="closeToast()">&times;</button>';
+        setTimeout(() => toast.classList.add('show'), 44);
+        if (options.autoClose !== false) {
+            if (toast._timeout) clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(closeToast, 3500);
+        }
+    }
+    function closeToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+        if (toast._timeout) clearTimeout(toast._timeout);
+    }
+
+    /* ----------  CONFIRMATION SUPPRESSION  ---------- */
+    document.querySelectorAll('button[data-confirm]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const form = this.closest('form');
+            const msg = this.getAttribute('data-confirm') || "Êtes-vous sûr ?";
+            showToast(msg + '<br><button class="btn danger" id="conf-yes" style="margin:0 0 0 1.3em;">Oui</button>' +
+                '<button class="btn gray" id="conf-no">Non</button>', {
+                type: 'danger',
+                icon: '<svg style="width:1.33em;vertical-align:middle" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1"/></svg>',
+                autoClose: false
+            });
+            setTimeout(() => {
+                document.getElementById('conf-yes').onclick = () => { closeToast(); setTimeout(() => form.submit(), 90); };
+                document.getElementById('conf-no').onclick = closeToast;
+            }, 25);
+        });
+    });
+
+    // ESC pour fermer le toast
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeToast(); });
+</script>
 </body>
 </html>
