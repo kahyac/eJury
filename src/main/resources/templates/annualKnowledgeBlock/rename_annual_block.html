@@ -3,135 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <title>Renommer un bloc annuel – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Inter Font Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
     <style>
         :root {
             --primary: #3498db;
             --accent: #2ecc71;
-            --bg: #f4f6f9;
-            --card: #ffffff;
-            --text: #2c3e50;
-            --border: #dcdde1;
             --danger: #e74c3c;
+            --bg: #f4f8fc;
+            --glass: rgba(255,255,255,0.6);
+            --card: rgba(255,255,255,0.93);
+            --text: #223147;
+            --border: #dde2ef;
+            --muted: #96a1be;
+            --shadow: 0 8px 36px 0 rgba(80,180,252,0.11), 0 1.5px 8px rgba(39,174,96,0.13);
+            --radius: 1.3rem;
         }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: "Segoe UI", sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+        html, body {
             min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(113deg, var(--bg) 60%, #e2f4f7 100%);
         }
-
+        body {
+            display: flex;
+            min-height: 100dvh;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            padding: 0 1.3rem;
+        }
         .container {
-            background-color: var(--card);
-            padding: 2.5rem 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
-            max-width: 600px;
+            position: relative;
+            background: var(--glass);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            padding: 2.8rem 2.3rem 2.3rem 2.3rem;
+            max-width: 430px;
             width: 100%;
+            border: 1.7px solid var(--border);
+            overflow: hidden;
+            animation: fadeInUp 1s;
+            z-index: 1;
+            backdrop-filter: blur(22px);
         }
-
+        .container:before {
+            content: "";
+            position: absolute;
+            right: -56px;
+            top: -45px;
+            width: 115px;
+            height: 115px;
+            background: linear-gradient(135deg, var(--primary) 53%, var(--accent) 100%);
+            opacity: 0.18;
+            border-radius: 50%;
+            z-index: 0;
+            filter: blur(1.5px);
+        }
         h2 {
             text-align: center;
-            font-size: 1.6rem;
+            font-size: 1.36rem;
             color: var(--primary);
-            margin-bottom: 2rem;
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 0.4rem;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            margin-bottom: 2.1rem;
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(98deg,var(--primary) 60%,var(--accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-bottom: .32rem;
+            border-bottom: 2.7px solid var(--primary);
             display: block;
         }
 
+        /* Inputs + form */
+        form {
+            margin: 0;
+            z-index: 3;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .form-group {
+            margin-bottom: 0.6rem;
+        }
+        label {
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.36rem;
+            letter-spacing: .03em;
+            font-size: 0.98rem;
+        }
         input[type="text"] {
             width: 100%;
-            padding: 0.6rem;
-            font-size: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            padding: 0.82rem 1.17rem;
+            font-size: 1.08rem;
+            border: 1.6px solid var(--border);
+            border-radius: 0.75em;
+            outline: none;
+            background: var(--card);
+            color: var(--text);
+            margin-bottom: 0.17rem;
+            transition: border .23s, box-shadow .19s;
+            box-shadow: 0 1.5px 5px rgba(39, 174, 237, 0.07);
         }
-
+        input[type="text"]:focus {
+            border: 1.6px solid var(--primary);
+            box-shadow: 0 1.5px 9px rgba(47,128,237,0.09);
+        }
         .error {
             color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 0.4rem;
+            font-size: 0.98rem;
+            margin-top: 0.14rem;
+            margin-bottom: 0.13rem;
+            font-weight: 500;
+            animation: shake .52s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            0% {transform: translateX(0)}
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px)}
+            20%, 40%, 60%, 80% { transform: translateX(8px)}
+            100% {transform: translateX(0)}
+        }
+        .success-message {
+            color: var(--accent);
+            background: rgba(46,204,113,.10);
+            border-left: 4.7px solid var(--accent);
+            padding: 0.8em 1em;
+            border-radius: 0.9em;
+            font-size: 0.99rem;
+            font-weight: 700;
+            margin: .27rem 0 0.9rem 0;
+            animation: fadeInUp 0.9s;
         }
 
         .btn-group {
             display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
+            justify-content: flex-end;
+            margin-top: 1.7rem;
         }
-
         .btn {
-            padding: 0.7rem 1.4rem;
-            font-size: 1rem;
-            border-radius: 6px;
-            font-weight: bold;
+            padding: 0.73rem 1.45rem;
+            font-size: 1.08rem;
+            border-radius: 0.83em;
+            font-weight: 700;
             border: none;
             cursor: pointer;
-            transition: background-color 0.2s ease;
-            text-align: center;
+            box-shadow: 0 2.5px 9px rgba(39, 174, 237, 0.10);
+            outline: none;
+            background: linear-gradient(92deg,var(--accent) 67%, var(--primary));
+            color: #fff;
+            transition: background .17s, box-shadow .17s, transform .16s;
+            position: relative;
+            min-width: 108px;
+            min-height: 44px;
         }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: white;
+        .btn:active {
+            transform: scale(0.98);
         }
-
-        .btn-primary:hover {
-            background-color: #27ae60;
+        .btn:hover, .btn:focus-visible {
+            background: linear-gradient(97deg,#169f58 45%,#2675d8 100%);
+            box-shadow: 0 8px 32px rgba(47,128,237,0.20);
+            color: #eaffec;
+        }
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            background: linear-gradient(92deg,#a2c0b8 69%, #bccdde);
         }
         .back-link {
-            display: inline-block;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            font-weight: 800;
             color: var(--primary);
             text-decoration: none;
-            border-bottom: 2px solid var(--primary);
-            margin-top: 2rem;
-            padding-bottom: 2px;
-            transition: color 0.2s ease, border-color 0.2s ease;
+            font-size: 1.09rem;
+            margin: 2.1rem auto 0 auto;
+            justify-content: flex-start;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 2.5px solid var(--primary);
+            padding-bottom: 2.5px;
+            transition: color .19s, border-color .19s;
         }
-
+        .back-link svg {
+            margin-top: -0.23em;
+        }
         .back-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
             text-decoration: none;
-            color: #2c80b9;
-            border-color: #2c80b9;
         }
-
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            right: 32px;
+            bottom: 36px;
+            z-index: 999;
+            background: var(--card);
+            color: var(--text);
+            padding: 1.15em 1.8em;
+            border-radius: var(--radius);
+            border-left: 4.7px solid var(--accent);
+            box-shadow: 0 7px 22px rgba(47,128,237,0.14);
+            font-weight: 700;
+            font-size: 1.04rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 0.33s, transform 0.29s;
+            min-width: 210px;
+            display: flex;
+            gap: 0.7em;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1.06);
+        }
+        .toast.danger {
+            border-left-color: var(--danger);
+            color: var(--danger)
+        }
+        .toast .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-size: 1.3em;
+            cursor: pointer;
+            padding: 0.04em 0.25em;
+        }
+        /* Responsive */
+        @media (max-width: 580px) {
+            .container { padding: 1.18rem 0.57rem 1.13rem 0.57rem; max-width: 99vw;}
+            h2 {font-size: 1rem;}
+        }
+        @media (max-width: 400px) {
+            .container { padding: 0.37rem 0.12rem 0.57rem 0.12rem;}
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(45px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <form th:action="@{'/curriculum/annual/' + ${annualId} + '/rename'}"
-          th:object="${annualBlockDto}" method="post">
-
-        <h2>Renommer le bloc annuel : <span th:text="${oldCode}">M1A</span></h2>
-
-        <label for="code">Nouveau code du bloc</label>
-        <input id="code" type="text" th:field="*{code}" placeholder="Ex : M1B" required/>
-        <div th:if="${#fields.hasErrors('code')}" class="error" th:errors="*{code}"></div>
-
-        <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
-
-        <div class="btn-group">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <form id="rename-form" th:action="@{'/curriculum/annual/' + ${annualId} + '/rename'}"
+          th:object="${annualBlockDto}" method="post" autocomplete="off">
+        <h2>
+            Renommer le bloc annuel :
+            <span th:text="${oldCode}">M1A</span>
+        </h2>
+        <div class="form-group">
+            <label for="code">Nouveau code du bloc</label>
+            <input id="code" type="text" th:field="*{code}" placeholder="Ex : M1B" required
+                   minlength="2" maxlength="12" autocomplete="off"/>
+            <div th:if="${#fields.hasErrors('code')}" class="error" th:errors="*{code}"></div>
         </div>
-        <a th:href="@{'/curriculum/1'}" class="back-link">
-            ← Retour à la maquette
+        <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+        <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+        <div class="btn-group">
+            <button type="submit" class="btn" id="submitBtn">Enregistrer</button>
+        </div>
+        <a th:href="@{'/curriculum/' + ${curriculumId}}" class="back-link">
+            <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1.13em" height="1.13em"><polyline points="15 18 9 12 15 6"/></svg>
+            Retour à la maquette
         </a>
     </form>
 </div>
+<!-- Toast notification -->
+<div id="toast" class="toast"></div>
 
+<script>
+    // Animation sur apparition en fade in up
+    document.querySelector('.container').style.opacity = 0;
+    setTimeout(() => {
+        document.querySelector('.container').style.animation = 'fadeInUp 0.9s cubic-bezier(.6,-0.25,.47,1.33)';
+        document.querySelector('.container').style.opacity = 1;
+    }, 90);
+
+    // Toast dynamique
+    function showToast(message, options = {}) {
+        const toast = document.getElementById('toast');
+        toast.className = 'toast' + (options.type ? ' ' + options.type : '');
+        toast.innerHTML = (options.icon || '') + '<span>' + message + '</span>' +
+            '<button class="toast-close" title="Fermer" onclick="closeToast()">&times;</button>';
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 44);
+        if (options.autoClose !== false) {
+            if (toast._timeout) clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(closeToast, options.duration || 3500);
+        }
+    }
+    function closeToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+        if (toast._timeout) clearTimeout(toast._timeout);
+    }
+    window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToast();
+    });
+
+    // Dynamique : feedback instantanée avant submit (simulateur, JS uniquement, pas côté serveur)
+    document.getElementById('rename-form').addEventListener('submit', function(e) {
+        const codeInput = document.getElementById('code');
+        if (!codeInput.value.trim()) {
+            e.preventDefault();
+            showToast("Le code du bloc ne peut pas être vide !", { type: "danger", icon: '❌' });
+            codeInput.focus();
+            codeInput.classList.add('shake');
+            setTimeout(()=>codeInput.classList.remove('shake'),600);
+            return false;
+        }
+        // Optionnel : animation bouton sur validation…
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "Enregistrement…";
+        setTimeout(()=>{
+            btn.disabled = false;
+            btn.innerText = "Enregistrer";
+        }, 1200);
+    });
+</script>
 </body>
 </html>

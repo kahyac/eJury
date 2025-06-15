@@ -1,169 +1,508 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Modifier une UE</title>
+    <title>Modifier une UE – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Font Inter + fallback -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #28c985;
+            --danger: #e74c3c;
+            --bg: #f3f8fd;
+            --glass: rgba(255,255,255,0.79);
+            --card: rgba(255,255,255,0.98);
+            --border: #e8edfa;
+            --shadow: 0 8px 36px 0 rgba(80,180,252,0.13), 0 1.5px 8px rgba(47, 128, 237,0.08);
+            --radius: 1.18rem;
+            --text: #223147;
+            --muted: #778599;
+        }
+        html, body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(120deg, var(--bg) 56%, #e0ecfa 110%);
+        }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f6f8;
-            padding: 2rem;
-            max-width: 720px;
-            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100dvh;
+            color: var(--text);
+            padding: 2.5rem 1.2rem 2.8rem 1.2rem;
         }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            margin-bottom: 1rem;
-            color: #2c3e50;
-        }
-
-        label {
-            font-weight: 600;
-            margin-top: 1rem;
-            display: block;
-        }
-
-        input[type="text"],
-        input[type="number"] {
+        .form-container {
+            max-width: 510px;
             width: 100%;
-            padding: 0.5rem;
-            margin-top: 0.3rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
+            margin-top: 3.1rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            background: var(--glass);
+            overflow: hidden;
+            padding: 2.8rem 2.25rem 2.2rem 2.25rem;
+            position: relative;
+            border: 1.6px solid var(--border);
+            backdrop-filter: blur(22px);
+            animation: fadeInScale .9s cubic-bezier(.6,-0.25,.47,1.23);
+            z-index: 2;
+        }
+        .form-container:before {
+            content: '';
+            position: absolute;
+            right: -50px; top: -77px;
+            width: 120px; height: 120px;
+            background: linear-gradient(135deg, var(--primary) 63%, var(--success) 100%);
+            opacity: 0.14;
+            border-radius: 70%;
+            z-index: 0;
+            filter: blur(5px);
+        }
+        h2 {
+            background: linear-gradient(92deg,var(--primary) 65%,var(--success) 102%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -.5px;
+            text-align: center;
+            margin: 0 0 2rem 0;
+            border-bottom: 2.1px solid var(--primary);
+            padding: 0.31rem 0 0.51rem 0;
+            z-index: 2;
+            position: relative;
+        }
+        .subtitle {
+            text-align: center;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 1.35rem;
+            font-size: 1.03rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            z-index: 3;
+            position: relative;
+        }
+        label {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.20rem;
+            font-size: 1.01rem;
+            margin-top: 1.08rem;
+            display: block;
+            z-index: 1;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 0.81rem 1.13rem;
+            font-size: 1.05rem;
+            border: 1.23px solid var(--border);
+            border-radius: 0.67em;
+            outline: none;
+            background: var(--card);
+            color: var(--text);
+            margin-bottom: 0.08rem;
+            margin-top: 0.12rem;
+            transition: border .17s, box-shadow .14s;
+            box-shadow: 0 1.3px 6px rgba(39,174,96, 0.07);
+            font-family: inherit;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            border: 1.38px solid var(--primary);
+            box-shadow: 0 1.5px 7px 0 rgba(47,128,237,0.08);
+        }
+        input[aria-invalid="true"], input.error {
+            border: 1.38px solid var(--danger);
+            color: var(--danger);
+            background: #fff7f4;
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-top: 1rem;
+            gap: 0.58em;
+            margin-top: 1.14rem;
+            user-select: none;
         }
-
         .checkbox-group input[type="checkbox"] {
-            transform: scale(1.3);
-            margin-right: 0.5rem;
+            appearance: none;
+            width: 1.25em;
+            height: 1.25em;
+            border: 1.8px solid var(--primary);
+            border-radius: 3.7px;
+            background: var(--card);
+            cursor: pointer;
+            outline: none;
+            margin: 0;
+            box-shadow: 0 1.7px 7px rgba(39,174,96,0.06);
+            transition: border .15s, box-shadow .12s;
+            position: relative;
+        }
+        .checkbox-group input[type="checkbox"]:checked {
+            background: linear-gradient(92deg, var(--primary) 66%, var(--success));
+            border-color: var(--success);
+        }
+        .checkbox-group input[type="checkbox"]:checked:after {
+            content: '';
+            position: absolute;
+            left: 4px; top: 1.8px;
+            width: 7px; height: 13px;
+            border: solid #fff;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg) scale(1.01);
+            opacity: .96;
+        }
+        .checkbox-group label {
+            padding: 0;
+            color: #29487c;
+            font-size: 1.08rem;
+            font-weight: 600;
+            margin: 0;
+            margin-left: 0.1em;
+            cursor: pointer;
         }
 
         .error {
-            color: #e74c3c;
-            font-size: 0.9rem;
-            margin-top: 0.2rem;
+            color: var(--danger);
+            font-size: 0.98rem;
+            font-weight: 500;
+            margin: 0.08rem 0 0.14rem 0;
+            animation: shake .5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        .global-error {
+            background: rgba(239,68,68,0.10);
+            border: 1.38px solid var(--danger);
+            color: var(--danger);
+            padding: 0.9em 1em;
+            border-radius: 0.8em;
+            font-size: 1.02rem;
+            font-weight: 700;
+            margin-bottom: 0.91rem;
+            margin-top: -1.1rem;
+            box-shadow: 0 2px 13px rgba(239,68,68,0.055);
+            animation: fadeInUp 0.75s;
+        }
+        .success-message {
+            color: var(--success);
+            background: rgba(55,188,139,0.08);
+            border-left: 4.5px solid var(--success);
+            padding: 0.8em 1em;
+            border-radius: 0.8em;
+            font-size: 1.03rem;
+            font-weight: 700;
+            margin: .05rem 0 0.93rem 0;
+            animation: fadeInUp 0.8s;
         }
 
-        .actions {
+        .btn-group {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 2rem;
+            justify-content: flex-end;
+            margin-top: 1.7rem;
         }
-
-        .btn {
-            padding: 0.6rem 1.4rem;
-            font-size: 1rem;
-            font-weight: bold;
+        .btn-modern {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            padding: 0.8rem 0;
+            font-size: 1.09rem;
+            border-radius: 0.82em;
+            font-weight: 700;
             border: none;
-            border-radius: 6px;
+            background: linear-gradient(95deg,var(--success) 61%,var(--primary) 97%);
+            color: #fff;
             cursor: pointer;
+            box-shadow: 0 2px 14px rgba(47,128,237,0.12);
+            outline: none;
+            min-height: 46px;
+            transition: background .16s, box-shadow .17s, transform .13s;
+            margin-top: 1.22rem;
+            z-index: 2;
+            letter-spacing: 0.011em;
         }
-
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
+        .btn-modern:active {
+            transform: scale(0.978);
         }
-
-        .btn-primary:hover {
-            background-color: #2980b9;
+        .btn-modern:hover, .btn-modern:focus-visible  {
+            background: linear-gradient(101deg,#0daa6a 49%,#235cb9 100%);
+            color: #eaffec;
+            box-shadow: 0 8px 36px rgba(47,128,237,0.14);
+        }
+        .btn-modern:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 34px; height: 34px;
+            pointer-events: none;
+            transform: translate(-50%,-50%) scale(0);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.23);
+            opacity: 0.52;
+            transition: transform .39s cubic-bezier(.45,.16,.41,1.23);
+            z-index: 0;
+        }
+        .btn-modern.wave:after {
+            transform: translate(-50%,-50%) scale(3.8);
+            opacity: 0;
+            transition: transform .33s cubic-bezier(.9,.1,.6,1.49);
         }
 
         .btn-danger {
-            background-color: #e74c3c;
-            color: white;
+            background: linear-gradient(87deg,#e74c3c 54%,#ef726e 100%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.01rem;
+            border-radius: 0.82em;
+            padding: 0.82em 0;
+            margin-top: 0.35em;
+            border: none;
+            box-shadow: 0 2.5px 16px rgba(231,76,60, 0.07);
+            width: 100%;
+            transition: background .17s, box-shadow .15s, transform .14s;
+            cursor: pointer;
+            letter-spacing: .01em;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-danger:hover, .btn-danger:focus-visible {
+            background: linear-gradient(94deg,#c70039 60%,#e74c3c 100%);
+            color: #fff9;
+            box-shadow:0 10px 32px rgba(231,76,60,0.13);
+        }
+        .btn-danger:active { transform: scale(0.98); }
+        .btn-danger:after {
+            content: '';
+            position: absolute;
+            left: 50%; top: 50%;
+            width: 30px; height: 30px;
+            pointer-events: none;
+            transform: translate(-50%,-50%) scale(0);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.18);
+            opacity: 0.54;
+            transition: transform .38s cubic-bezier(.45,.16,.41,1.23);
+        }
+        .btn-danger.wave:after {
+            transform: translate(-50%,-50%) scale(3);
+            opacity: 0;
+            transition: transform .36s cubic-bezier(.9,.1,.6,1.45);
         }
 
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
-
-        .btn-link {
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 0.3em;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            justify-content: center;
+            font-size: 1.07rem;
+            margin: 2.1rem auto 0 auto;
             background: none;
             border: none;
-            color: #3498db;
-            text-decoration: underline;
-            font-size: 0.95rem;
             cursor: pointer;
-            padding: 0;
+            border-bottom: 2.2px solid var(--primary);
+            padding-bottom: 3.2px;
+            transition: color .18s, border-color .18s;
+            width: fit-content;
         }
-
-        .top-bar {
-            margin-bottom: 1.5rem;
+        .back-link svg {
+            margin-top: -0.15em;
+            transition: transform .22s;
         }
-
-        @media (max-width: 600px) {
-            .actions {
-                flex-direction: column;
-                gap: 1rem;
-            }
+        .back-link:hover { color: var(--success); border-color: var(--success);}
+        .back-link:hover svg { transform: translateX(-3.2px);}
+        .actions {
+            display: flex;
+            justify-content: stretch;
+            align-items: stretch;
+            gap: 1.2rem;
+            margin-top: 1.8rem;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 600px){
+            body {padding: 0.45rem;}
+            .form-container {padding: 1.22rem 0.15rem 1.27rem 0.15rem; max-width: 99vw;}
+            h2 {font-size: 1.1rem;}
+            .btn-group, .actions {margin-top: 1.12rem; flex-direction: column;}
+            .back-link {margin-top: 1.38rem;}
+        }
+        /* Toast notification (réutilisable) */
+        .toast {
+            position: fixed;
+            right: 32px;
+            bottom: 39px;
+            z-index: 9999;
+            background: var(--card);
+            color: var(--text);
+            padding: 1.13em 1.7em;
+            border-radius: var(--radius);
+            border-left: 5px solid var(--success);
+            box-shadow: 0 7px 22px rgba(47,128,237,0.13);
+            font-weight: 700;
+            font-size: 1.03rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(30px) scale(0.97);
+            transition: opacity 0.35s, transform 0.26s;
+            min-width: 210px;
+            display: flex;
+            gap: 0.7em;
+            align-items: center;
+        }
+        .toast.show { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1.04);}
+        .toast.danger { border-left-color: var(--danger); color: var(--danger);}
+        .toast .toast-close { margin-left: auto; background: none; border: none; color: var(--danger); font-size: 1.25em; cursor: pointer; padding: 0.06em 0.19em;}
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.91) translateY(60px);}
+            85% { opacity: 1; transform: scale(1.015) translateY(-7px);}
+            100% { opacity: 1; transform: scale(1) translateY(0);}
+        }
+        @keyframes shake {
+            0% {transform: translateX(0)}
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-7px)}
+            20%, 40%, 60%, 80% { transform: translateX(7px)}
+            100% {transform: translateX(0)}
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(22px);}
+            100% { opacity: 1; transform: translateY(0);}
         }
     </style>
 </head>
 <body>
-<div class="card">
-
-    <div class="top-bar">
-        <h2>Modifier l’unité : <span th:text="${teachingUnitDto.code}">UE101</span></h2>
-    </div>
-
-    <div th:if="${errorMessage}" class="error" style="font-weight: bold; margin-bottom: 1rem;">
+<div class="form-container">
+    <h2>Modifier l’unité : <span th:text="${teachingUnitDto.code}">UE101</span></h2>
+    <div class="subtitle">Mettez à jour les champs de l’unité d’enseignement ci-dessous puis enregistrez.</div>
+    <div th:if="${errorMessage}" class="global-error">
         <p th:text="${errorMessage}"></p>
     </div>
-
+    <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
     <form th:action="@{'/curriculum/unit/' + ${unitId} + '/edit'}"
-          th:object="${teachingUnitDto}" method="post">
-
+          th:object="${teachingUnitDto}" method="post" id="ue-form" autocomplete="off">
         <label for="code">Code :</label>
-        <input id="code" type="text" th:field="*{code}" required/>
+        <input id="code" name="code" type="text" th:field="*{code}" required minlength="2" maxlength="12" autofocus
+               placeholder="Code UE"/>
         <div th:if="${#fields.hasErrors('code')}" class="error" th:errors="*{code}"></div>
 
         <label for="label">Libellé :</label>
-        <input id="label" type="text" th:field="*{label}" required/>
+        <input id="label" name="label" type="text" th:field="*{label}" required maxlength="80"
+               placeholder="Nom ou description de l'UE"/>
         <div th:if="${#fields.hasErrors('label')}" class="error" th:errors="*{label}"></div>
 
         <label for="ects">ECTS :</label>
-        <input id="ects" type="number" step="0.1" th:field="*{ects}" required/>
+        <input id="ects" name="ects" type="number" min="0" step="0.1" th:field="*{ects}" required maxlength="6"
+               placeholder="ex : 6"/>
         <div th:if="${#fields.hasErrors('ects')}" class="error" th:errors="*{ects}"></div>
 
         <label for="hours">Heures de travail :</label>
-        <input id="hours" type="number" step="1" th:field="*{workloadHours}" required/>
+        <input id="hours" name="hours" type="number" min="0" step="1" th:field="*{workloadHours}" required maxlength="5"
+               placeholder="Volume horaire"/>
         <div th:if="${#fields.hasErrors('workloadHours')}" class="error" th:errors="*{workloadHours}"></div>
 
         <div class="checkbox-group">
-            <input id="obligation" type="checkbox" th:field="*{obligation}"/>
+            <input id="obligation" name="obligation" type="checkbox" th:field="*{obligation}"/>
             <label for="obligation">UE obligatoire</label>
         </div>
-
         <div class="actions">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <button type="submit" class="btn-modern" id="submitBtn">
+                Enregistrer
+            </button>
         </div>
+        <a class="back-link" th:href="@{'/curriculum/1'}">
+            <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="1.07em" height="1.07em"><polyline points="15 18 9 12 15 6"/></svg>
+            Retour à la maquette
+        </a>
     </form>
-
     <form th:action="@{'/curriculum/unit/' + ${unitId} + '/delete'}" method="post"
           onsubmit="return confirm('Confirmer la suppression de cette UE ?');"
-          style="margin-top: 1rem;">
-        <button type="submit" class="btn btn-danger">Supprimer</button>
+          style="margin-top: 1.15em;">
+        <button type="submit" class="btn-danger" id="deleteBtn">🗑️ Supprimer</button>
     </form>
-
-    <div style="margin-top: 2rem;">
-        <a th:href="@{'/curriculum/1'}" class="btn-link">← Retour à la maquette</a>
-    </div>
-
 </div>
+<div id="toast" class="toast"></div>
+<script>
+    // Apparition animée du conteneur
+    document.querySelector('.form-container').style.opacity = 0;
+    setTimeout(() => {
+        document.querySelector('.form-container').style.animation = 'fadeInScale 0.8s cubic-bezier(.64,-0.24,.54,1.21)';
+        document.querySelector('.form-container').style.opacity = 1;
+    }, 60);
 
+    // Toast notification
+    function showToast(message, options = {}) {
+        const toast = document.getElementById('toast');
+        toast.className = 'toast' + (options.type ? ' ' + options.type : '');
+        toast.innerHTML = (options.icon || '') + '<span>' + message + '</span>' +
+            '<button class="toast-close" title="Fermer" onclick="closeToast()">&times;</button>';
+        setTimeout(() => toast.classList.add('show'), 20);
+        if (options.autoClose !== false) {
+            if (toast._timeout) clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(closeToast, options.duration || 3200);
+        }
+    }
+    function closeToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+        if (toast._timeout) clearTimeout(toast._timeout);
+    }
+    window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToast();
+    });
+
+    // Bouton "onde" sur submit/action
+    function waveEffect(elem, cls){
+        elem.classList.remove(cls);
+        void elem.offsetWidth;
+        elem.classList.add(cls);
+        setTimeout(()=>elem.classList.remove(cls),400);
+    }
+    document.getElementById('submitBtn').addEventListener('click', function(e){
+        waveEffect(this, "wave");
+    });
+    document.getElementById('deleteBtn').addEventListener('click', function(e){
+        waveEffect(this, "wave");
+    });
+
+    // Validation live côté client (UX)
+    document.getElementById('ue-form').addEventListener('submit', function(e) {
+        const requiredFields = ['code','label','ects','hours'];
+        let isValid = true, firstInvalid = null;
+        for (const id of requiredFields) {
+            const input = document.getElementById(id);
+            if (!input.value.trim()) {
+                isValid = false;
+                input.classList.add('error');
+                if (!firstInvalid) firstInvalid = input;
+            } else {
+                input.classList.remove('error');
+            }
+        }
+        if (!isValid) {
+            e.preventDefault();
+            showToast("Merci de remplir tous les champs requis.", { type: "danger", icon: '❌' });
+            if(firstInvalid) {
+                firstInvalid.focus();
+                setTimeout(()=>firstInvalid.classList.remove('error'),900);
+            }
+            return false;
+        }
+        // Animation du bouton lors de la soumission
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "Enregistrement…";
+        setTimeout(()=>{
+            btn.disabled = false;
+            btn.innerText = "Enregistrer";
+        }, 950);
+    });
+</script>
 </body>
 </html>

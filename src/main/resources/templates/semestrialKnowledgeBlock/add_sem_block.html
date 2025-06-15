@@ -3,125 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <title>Ajouter un bloc semestriel – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
-            --primary: #3498db;
+            --primary: #2f80ed;
+            --accent: #27ae60;
             --danger: #e74c3c;
-            --bg: #f4f6f9;
-            --text: #2c3e50;
-            --card: #ffffff;
-            --border: #dcdde1;
+            --bg: #e9eef6;
+            --glass: rgba(255,255,255,0.45);
+            --text: #21243d;
+            --border: #e1e5f0;
+            --muted: #95aac9;
+            --shadow: 0 8px 32px rgba(47,128,237,0.07), 0 1.5px 8px rgba(39,174,96,0.10);
         }
-
-        body {
-            font-family: "Segoe UI", sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+        html, body {
             min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(115deg, var(--bg) 33%, #dde6fa 100%);
         }
-
+        body {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding: 0 1rem;
+        }
+        .anim-fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(.6,-0.25,.47,1.33);
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(45px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
         .form-container {
-            background-color: var(--card);
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            max-width: 600px;
+            background: var(--glass);
+            backdrop-filter: blur(11px);
+            box-shadow: var(--shadow);
+            border-radius: 1.4rem;
+            padding: 2.6rem 2.1rem 2rem 2.1rem;
             width: 100%;
+            max-width: 470px;
+            border: 1.4px solid var(--border);
+            position: relative;
+            overflow: hidden;
         }
-
+        .form-container:before {
+            content: "";
+            position: absolute;
+            right: -48px; top: -54px;
+            width: 130px; height: 130px;
+            background: linear-gradient(135deg, var(--primary) 60%, var(--accent) 100%);
+            opacity: 0.09;
+            border-radius: 100%;
+            z-index: 0;
+        }
         h2 {
-            text-align: center;
-            color: var(--text);
+            color: var(--primary);
             font-size: 1.6rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 0.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 2.2rem;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg,var(--primary),var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 2.5px solid var(--primary);
+            padding-bottom: .3rem;
+            z-index: 1;
+            position: relative;
         }
 
         label {
             font-weight: 600;
-            color: var(--text);
-            display: block;
+            color: var(--primary);
             margin-top: 1.2rem;
+            display: block;
+            letter-spacing: .02em;
+            font-size: 1.03rem;
         }
-
-        input[type="text"],
-        input[type="number"] {
+        .input-wrap {
+            margin-top: .18rem;
+            position: relative;
+        }
+        .input-glass {
             width: 100%;
-            padding: 0.75rem;
-            margin-top: 0.3rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
-            box-sizing: border-box;
+            padding: .75rem .97rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.08rem;
+            background: rgba(255,255,255,0.87);
+            color: var(--text);
+            outline: none;
+            transition: border .18s,bg .22s,box-shadow .25s;
+            box-shadow: 0 0 0 0px var(--primary);
+        }
+        .input-glass:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px #2f80ed33;
+            background: #fff;
         }
 
         button {
             width: 100%;
-            padding: 0.8rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
+            padding: 1rem 0;
             margin-top: 2rem;
-            transition: background-color 0.3s ease;
+            appearance: none;
+            background: linear-gradient(90deg,var(--primary) 75%,var(--accent));
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.08rem;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 7px 17px rgba(47,128,237,0.13);
+            cursor: pointer;
+            transition: transform .17s,box-shadow .23s,background .21s;
+            letter-spacing: .06em;
+            position: relative;
+            overflow: hidden;
         }
-
-        button:hover {
-            background-color: #2d80ba;
+        button:active {
+            transform: scale(.98);
+            background: linear-gradient(90deg,#205ca7 50%,#218049 100%);
         }
+        button.submitting {
+            opacity: 0.8;
+            pointer-events: none;
+            background: linear-gradient(90deg,#bbb 60%,#ddd 100%);
+        }
+        button .spinner {
+            margin-left: .75em;
+            width: 1em; height: 1em;
+            display: inline-block;
+            border: 2.4px solid #fff;
+            border-radius: 50%;
+            border-top: 2.4px solid #2f80ed;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 1.8rem;
-            font-weight: bold;
+            margin-top: 2rem;
+            font-weight: 700;
             color: var(--primary);
             text-decoration: none;
+            font-size: 1.05rem;
+            letter-spacing: .04em;
+            transition: color .18s;
+            position: relative;
+            z-index: 1;
         }
-
         .back-link:hover {
+            color: var(--accent);
             text-decoration: underline;
         }
-
         .error {
             color: var(--danger);
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
+            font-size: 0.94rem;
+            margin-top: 0.33rem;
+            font-weight: 600;
+            letter-spacing: .01em;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 1.5rem 0.7rem 1.3rem 0.7rem;
+                max-width: 98vw;
+            }
+            h2 {
+                font-size: 1.18rem;
+            }
+            button {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="form-container">
-    <h2>Ajouter un bloc de connaissances semestriel</h2>
-
-    <form th:action="@{'/curriculum/annual/' + ${annualId} + '/add-sem-block'}" method="post">
-
+<div class="form-container anim-fade-in">
+    <h2>
+        <span>Ajouter un bloc de connaissances<br> semestriel</span>
+    </h2>
+    <form id="blocForm"
+          th:action="@{'/curriculum/annual/' + ${annualId} + '/add-sem-block'}"
+          method="post" autocomplete="off">
         <label for="code">Code :</label>
-        <input id="code" type="text" name="code" required/>
-
+        <div class="input-wrap">
+            <input id="code" type="text" name="code" class="input-glass" required maxlength="24" placeholder="ex: UES3A01"/>
+            <div id="error-code" class="error" style="display:none"></div>
+        </div>
         <label for="label">Libellé :</label>
-        <input id="label" type="text" name="label" required/>
-
+        <div class="input-wrap">
+            <input id="label" type="text" name="label" class="input-glass" required maxlength="150" placeholder="Nom du bloc"/>
+            <div id="error-label" class="error" style="display:none"></div>
+        </div>
         <label for="semester">Semestre :</label>
-        <input id="semester" type="number" name="semester" min="1" max="2" required/>
-
+        <div class="input-wrap">
+            <input id="semester" type="number" name="semester" min="1" max="2" class="input-glass" required placeholder="1 ou 2"/>
+            <div id="error-semester" class="error" style="display:none"></div>
+        </div>
         <label for="ects">Crédits ECTS :</label>
-        <input id="ects" type="number" step="0.1" name="ects" required/>
-
-        <button type="submit">Ajouter le bloc</button>
+        <div class="input-wrap">
+            <input id="ects" type="number" name="ects" step="0.1" min="0" max="100" class="input-glass" required placeholder="ex: 6"/>
+            <div id="error-ects" class="error" style="display:none"></div>
+        </div>
+        <button type="submit" id="submitBtn"><span id="btnText">Ajouter le bloc</span></button>
     </form>
 
-    <a class="back-link" th:href="@{'/curriculum/annual/' + ${annualId} + '/edit'}">← Retour</a>
+    <a class="back-link" th:href="@{'/curriculum/annual/' + ${annualId} + '/edit'}"
+       href="#">← Retour</a>
 </div>
+<script>
+    // -- Validation et feedback dynamique sans casser Thymeleaf --
+    const form = document.getElementById('blocForm');
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const fields = [
+        {id: 'code', error: 'error-code', check: v => !!v.trim()},
+        {id: 'label', error: 'error-label', check: v => !!v.trim()},
+        {id: 'semester', error: 'error-semester', check: v => v == "1" || v == "2"},
+        {id: 'ects', error: 'error-ects', check: v => parseFloat(v) >= 0 && parseFloat(v) <= 100}
+    ];
 
+    form.addEventListener('submit', function(e){
+        let valid = true;
+        fields.forEach(f=>{
+            const v = document.getElementById(f.id).value;
+            const err = document.getElementById(f.error);
+            if(!f.check(v)){
+                err.style.display = '';
+                if(f.id === 'semester') err.innerText = "Entrez 1 ou 2";
+                else if(f.id === 'ects') err.innerText = "Crédits entre 0 et 100";
+                else err.innerText = "Ce champ est requis";
+                valid = false;
+            } else {
+                err.style.display = 'none';
+            }
+        });
+        if(!valid){
+            e.preventDefault();
+            return;
+        }
+        // Animation bouton lors de l'envoi
+        btn.classList.add('submitting');
+        btnText.innerHTML = "Ajout en cours <span class='spinner'></span>";
+    });
+
+    // Retire le style erreur à la saisie
+    fields.forEach(f=>{
+        document.getElementById(f.id).addEventListener('input',()=>{
+            document.getElementById(f.error).style.display = 'none';
+        });
+    });
+</script>
 </body>
 </html>

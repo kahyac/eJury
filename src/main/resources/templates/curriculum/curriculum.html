@@ -6,162 +6,236 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3498db;
+            --primary: #2f80ed;
             --accent: #27ae60;
             --warning: #e67e22;
-            --bg: #f5f8fa;
-            --text: #2c3e50;
+            --bg: #f5fafd;
+            --text: #222b43;
             --subtext: #6c757d;
-            --card: #ffffff;
-            --border: #dfe6e9;
+            --card: rgba(255,255,255,0.75);
+            --border: #dbeafe;
+            --shadow-btn: 0 6px 15px rgba(39, 174, 96, 0.12);
+            --glass-blur: blur(12px);
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin:0; padding:0; }
+        html { scroll-behavior: smooth;}
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
             color: var(--text);
-            line-height: 1.6;
-            padding: 2rem;
+            background: linear-gradient(120deg, #f5fafd 70%, #d6e6ff 100%);
+            min-height: 100vh;
+            padding: 0;
         }
-
         .top-nav {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 1.2rem;
+            gap: 1rem;
+            padding: 1.2rem 2rem 0.5rem 2rem;
         }
-
+        .nav-btn {
+            background: var(--card);
+            box-shadow: 0 2px 7px rgba(47,128,237,0.08);
+            color: var(--primary);
+            backdrop-filter: var(--glass-blur);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.5rem 1.2rem;
+            border: none;
+            outline: none;
+            transition: background 0.19s, color 0.19s, transform 0.18s;
+            cursor:pointer;
+            text-decoration: none;
+            position: relative;
+            overflow:hidden;
+        }
+        .nav-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-2px) scale(1.055);
+            box-shadow: 0 8px 30px rgba(47,128,237,0.12);
+        }
         .app-header {
-            background-color: var(--card);
-            padding: 1.5rem 2rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+            margin: 1.4rem auto 2.5rem auto;
+            padding: 2.1rem 3rem;
+            background: var(--card);
+            backdrop-filter: var(--glass-blur);
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 36px rgba(47,128,237,0.09), 0 1.5px 8px rgba(39,174,96,0.11);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2.5rem;
-            border: 1px solid var(--border);
+            max-width: 900px;
+            position: relative;
         }
-
         .app-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 2.2rem;
+            font-weight: 800;
             color: var(--primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.2rem;
         }
-
         .app-header span {
-            font-size: 1rem;
+            font-size: 1.09rem;
             font-weight: 500;
             color: var(--subtext);
             margin-left: 1rem;
         }
-
-        h2 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
         .section {
-            margin-bottom: 3rem;
+            margin: 0 auto 3rem auto;
+            max-width: 840px;
+            transition: box-shadow 0.2s;
+            animation: fadeIn 1.2s cubic-bezier(0.77,0,0.175,1);
         }
-
         .block {
-            background-color: var(--card);
-            border-left: 5px solid var(--primary);
-            padding: 1.2rem 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            background: var(--card);
+            border-left: 6px solid var(--primary);
+            padding: 1.39rem 1.75rem 1.29rem 1.4rem;
+            border-radius: 16px;
+            margin-bottom: 1.1rem;
+            box-shadow: 0 6px 25px rgba(47,128,237,0.07);
+            position: relative;
+            transition: border-left 0.18s, box-shadow 0.18s;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.1rem 2.2rem;
         }
-
-        ul {
-            list-style-type: none;
-            padding-left: 0;
+        .block:hover {
+            border-left: 6px solid var(--accent);
+            box-shadow: 0 12px 30px rgba(39,174,96,0.11);
         }
-
-        .button-link {
-            display: inline-block;
-            padding: 0.6rem 1.2rem;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-top: 0.3rem;
-            margin-right: 0.5rem;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
-
-        .button-link:hover {
-            background-color: #2c80b9;
-            transform: translateY(-2px);
-        }
-
-        .button-link.orange {
-            background-color: var(--warning);
-        }
-
-        .button-link.orange:hover {
-            background-color: #cf711c;
-        }
-
-        .button-link.green {
-            background-color: var(--accent);
-        }
-
-        .button-link.green:hover {
-            background-color: #1e874b;
-        }
-        .button-small {
-            font-size: 0.85rem;
-        }
-
-        .button-submit {
-            display: inline-block;
-            padding: 0.6rem 1.2rem;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
-            margin-right: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
-
-        .button-submit:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
+        .block p { margin: 0.12rem 0 0.1rem 0; }
         .info-label {
             font-weight: 600;
-            color: var(--text);
+            color: var(--primary);
         }
-
-        @media (max-width: 768px) {
+        .block .actions, .block form {
+            margin-left: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .button-link, .button-submit {
+            display: inline-block;
+            padding: 0.56rem 1.15rem;
+            background-color: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 0.25rem;
+            margin-right: 0.3rem;
+            box-shadow: var(--shadow-btn);
+            border: none;
+            cursor:pointer;
+            transition: background .19s, transform 0.17s;
+            outline: none;
+            line-height: 1.14;
+            position: relative;
+            overflow:hidden;
+        }
+        .button-link.orange { background: var(--warning); }
+        .button-link.orange:hover { background: #cf711c; }
+        .button-link.green { background: var(--accent); }
+        .button-link.green:hover { background: #1e874b; }
+        .button-link:hover, .button-submit:hover {
+            background: #194b84;
+            color: #fff;
+            transform: translateY(-2px) scale(1.045);
+        }
+        .button-link.orange:hover { background: #cf711c; }
+        .button-link.green:hover { background: #1e874b; }
+        .button-small, .button-submit.button-small {
+            font-size: 0.92rem;
+            padding: 0.47rem 1.03rem;
+        }
+        .button-submit {
+            background-color: #e74c3c;
+        }
+        .button-submit:hover {
+            background-color: #c0392b;
+        }
+        .block form { display:inline;}
+        @media (max-width: 767px) {
             .app-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
+                gap: 1.3rem;
+                padding: 1.35rem 1rem;
             }
+            .section { padding: 0 1rem;}
+            .block { padding: 1.05rem 0.89rem 1rem 1rem;}
+            .top-nav { padding: 1rem 1rem 0.5rem 1rem;}
+        }
+        @media (max-width: 520px) {
+            .app-header h1 { font-size: 1.45rem; }
+            .app-header { padding: 1.1rem 0.42rem;}
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            0% {opacity:0;transform: translateY(24px);}
+            100% {opacity:1;transform: translateY(0);}
+        }
+        /* Toast notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background: var(--accent);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 0.9rem 1.2rem;
+            box-shadow: 0 5px 22px rgba(39,174,96,0.15);
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            bottom: 3.6rem;
+            transform: translateX(-50%);
+            font-weight:600;
+            font-size:1rem;
+            opacity:0;
+            transition: opacity 0.4s, visibility 0.45s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            animation: fadeInToast 0.6s, fadeOutToast 0.9s 2.1s;
+        }
+        @keyframes fadeInToast {
+            from {opacity: 0;bottom:2.2rem;}
+            to {opacity: 1;bottom:3.6rem;}
+        }
+        @keyframes fadeOutToast {
+            from {opacity:1;}
+            to {opacity:0;}
         }
     </style>
+    <script>
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            toast.innerText = msg;
+            toast.className = "show";
+            setTimeout(()=>toast.className=toast.className.replace("show",""), 2600);
+        }
+        // Pour les démos, afficher toast sur certains boutons (ex de class .toastable)
+        document.addEventListener('DOMContentLoaded',()=>{
+            document.querySelectorAll('.toastable').forEach(btn=>{
+                btn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    showToast(this.getAttribute('data-toast') || 'Action rapide');
+                });
+            });
+        });
+    </script>
 </head>
-
-
 <body>
+<div id="toast"></div>
 
 <div class="top-nav">
-    <a th:href="@{'/'}" class="button-link">Accueil</a>
+    <a th:href="@{'/'}" class="nav-btn" aria-label="Retour accueil">🏠 Accueil</a>
 </div>
 
 <div class="app-header">
@@ -174,12 +248,12 @@
 
 <!-- Bloc annuels -->
 <div class="section" th:if="${#lists.isEmpty(plan.annualKnowledgeBlocks)}">
-    <p>Aucun bloc annuel n’a encore été défini pour cette maquette.</p>
-    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}" class="button-link">+ Ajouter un bloc annuel</a>
+    <p style="margin-bottom:1rem;">Aucun bloc annuel n’a encore été défini pour cette maquette.</p>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}" class="button-link green">+ Ajouter un bloc annuel</a>
 </div>
 
 <div class="section" th:unless="${#lists.isEmpty(plan.annualKnowledgeBlocks)}">
-    <h2>Blocs annuels</h2>
+    <h2 style="color:var(--accent); font-size: 1.22rem;">Blocs annuels</h2>
     <ul>
         <li th:each="annual : ${plan.annualKnowledgeBlocks}">
             <div class="block">
@@ -187,31 +261,29 @@
                     <span class="info-label">Code du bloc :</span>
                     <span th:text="${annual.code}">M1A</span>
                 </p>
-                <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/rename'}"
-                   class="button-link orange" style="font-size: 0.85rem;">✏️ Renommer</a>
-                <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}" class="button-link button-small">⚙️ Configurer</a>
-                <form th:action="@{'/curriculum/annual/' + ${annual.id} + '/delete'}" method="post" style="display:inline;">
-                    <button type="submit" class="button-submit button-small"
-                            onclick="return confirm('Confirmer la suppression du bloc annuel ?')">
-                        Supprimer
-                    </button>
-                </form>
-
+                <div class="actions">
+                    <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/rename'}"
+                       class="button-link orange button-small ">✏️ Renommer</a>
+                    <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}"
+                       class="button-link button-small">⚙️ Configurer</a>
+                    <form th:action="@{'/curriculum/annual/' + ${annual.id} + '/delete'}" method="post" style="display:inline;">
+                        <button type="submit" class="button-submit button-small" onclick="return confirm('Confirmer la suppression du bloc annuel ?')">Supprimer</button>
+                    </form>
+                </div>
             </div>
         </li>
     </ul>
-    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}" class="button-link">+ Ajouter un autre bloc annuel</a>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-annual-block'}" class="button-link green ">+ Ajouter un autre bloc annuel</a>
 </div>
 
 <!-- UEs -->
 <div class="section" th:if="${#lists.isEmpty(teachingUnits)}">
-    <p>Aucune Unité d’Enseignement n’a encore été définie pour cette maquette.</p>
-    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}" class="button-link">+ Créer une UE</a>
+    <p style="margin-bottom:1rem;">Aucune Unité d’Enseignement n’a encore été définie pour cette maquette.</p>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}" class="button-link green ">+ Créer une UE</a>
 </div>
 
 <div class="section" th:unless="${#lists.isEmpty(teachingUnits)}">
-    <h2>Unités d’Enseignement (UE)</h2>
-
+    <h2 style="color:var(--primary); font-size: 1.19rem;">Unités d’Enseignement (UE)</h2>
     <ul>
         <li th:each="ue : ${teachingUnits}">
             <div class="block">
@@ -220,16 +292,14 @@
                 <p><span class="info-label">ECTS :</span> <span th:text="${ue.ects}">6</span></p>
                 <p><span class="info-label">Volume horaire :</span> <span th:text="${ue.workloadHours}">50</span></p>
                 <p><span class="info-label">Obligatoire :</span> <span th:text="${ue.obligation ? 'Oui' : 'Non'}">Oui</span></p>
-
-                <a th:href="@{'/curriculum/unit/' + ${ue.id} + '/edit'}"
-                   class="button-link orange" style="font-size: 0.85rem;">
-                    ✏️ Modifier
-                </a>
+                <div class="actions">
+                    <a th:href="@{'/curriculum/unit/' + ${ue.id} + '/edit'}"
+                       class="button-link orange button-small">✏️ Modifier</a>
+                </div>
             </div>
         </li>
     </ul>
-    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}" class="button-link">+ Créer une UE</a>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/add-unit'}" class="button-link green ">+ Créer une UE</a>
 </div>
-
 </body>
 </html>

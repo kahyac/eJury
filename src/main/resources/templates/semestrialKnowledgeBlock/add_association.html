@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Associer une UE – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts (Inter) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap">
     <style>
         :root {
-            --primary: #3498db;
+            --primary: #2f80ed;
             --accent: #27ae60;
-            --bg: #f4f6f9;
-            --card: #ffffff;
+            --bg: #f5fafd;
+            --card: #fff;
             --text: #2c3e50;
-            --border: #dcdde1;
+            --border: #e1eaf3;
         }
 
         * {
@@ -19,106 +22,209 @@
 
         body {
             margin: 0;
-            font-family: "Segoe UI", sans-serif;
-            background-color: var(--bg);
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(120deg, var(--primary) 0%, var(--bg) 100%);
             color: var(--text);
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            animation: fade-in 1s .1s both;
         }
 
         .container {
-            background-color: var(--card);
-            padding: 2.5rem 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
-            max-width: 600px;
+            background: var(--card);
+            border-radius: 1.3rem;
+            box-shadow: 0 8px 32px rgba(47,128,237,0.11), 0 1px 6px rgba(39,174,96,0.09);
+            max-width: 420px;
             width: 100%;
+            padding: 2.8rem 2.3rem 2.3rem 2.3rem;
+            animation: slide-in-up 0.8s cubic-bezier(.16,1,.3,1) 0.1s both;
+        }
+
+        @keyframes fade-in {
+            0% { opacity:0; }
+            100% { opacity:1; }
+        }
+        @keyframes slide-in-up {
+            0% { opacity: 0; transform: translateY(30px);}
+            100% { opacity:1; transform: translateY(0);}
         }
 
         h2 {
             text-align: center;
             margin-bottom: 2rem;
-            font-size: 1.6rem;
+            font-size: 1.55rem;
             color: var(--primary);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            animation: fade-in 0.8s;
+        }
+        h2 span {
+            background: var(--accent);
+            color: #fff;
+            padding: 2px 12px 4px 12px;
+            border-radius: 1rem;
+            box-shadow: 0 1px 6px rgba(39, 174, 96, 0.16);
+            margin-left: 0.2em;
+            font-size: 1rem;
+            vertical-align: middle;
         }
 
         form {
             display: flex;
             flex-direction: column;
+            gap: 1.1rem;
+            animation: fade-in 1.2s;
         }
 
         label {
-            font-weight: bold;
-            margin-top: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+            letter-spacing: -.02em;
+            font-size: 1.05rem;
         }
 
         select,
         input[type="number"] {
-            padding: 0.6rem;
-            font-size: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            border: 1.4px solid var(--border);
+            border-radius: 0.7rem;
+            padding: 0.65rem 1.1rem;
+            font-size: 1.02rem;
+            background: #fafdff;
+            transition: box-shadow .16s, border-color .18s;
+            color: var(--text);
+            font-family: inherit;
+            font-weight: 500;
+            outline: none;
+        }
+        select:focus,
+        input[type="number"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1.5px var(--primary);
+        }
+        select:disabled, input:disabled {
+            background: #ebeff3;
+            color: #bbb;
+            cursor: not-allowed;
+        }
+
+        button[type="submit"] {
             margin-top: 0.4rem;
-        }
-
-        button {
-            margin-top: 2rem;
-            padding: 0.8rem 1.5rem;
-            background-color: var(--accent);
-            color: white;
+            padding: 0.85rem 0;
+            border-radius: 0.8rem;
+            font-size: 1.15rem;
+            font-weight: 800;
+            background: linear-gradient(95deg, var(--accent) 65%, #38dfb1 120%);
+            color: #fff;
             border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1rem;
+            box-shadow: 0 6px 15px rgba(39, 174, 96, 0.19);
+            letter-spacing: .05em;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background .18s, transform .18s, box-shadow .13s;
+            outline: none;
+            will-change: transform;
+            animation: fade-in 1.5s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(95deg, #1e874b 65%, #37bf97 120%);
+            transform: scale(1.035) translateY(-2px);
+            box-shadow: 0 10px 24px -6px #27ae6044;
         }
 
-        button:hover {
-            background-color: #219150;
-        }
-
+        /* Retour link */
         a {
-            display: block;
-            text-align: center;
-            margin-top: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.7rem;
             color: var(--primary);
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1.01rem;
             text-decoration: none;
+            gap: 6px;
+            transition: color .15s;
         }
-
         a:hover {
+            color: var(--accent);
             text-decoration: underline;
         }
+        a svg {
+            width: 1.05em;
+            height: 1.05em;
+            vertical-align: middle;
+            margin-right: 2px;
+            transition: transform .17s;
+        }
+        a:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 98vw;
+                padding: 1.6rem 0.7rem;
+            }
+            h2 { font-size: 1.19rem; }
+            button[type="submit"] { font-size: 1.04rem; }
+        }
+
+        /* Small focus ripple for dynamic touch */
+        select:focus, input[type="number"]:focus {
+            animation: ripple 0.2s;
+        }
+        @keyframes ripple {
+            0% { box-shadow: 0 0 0 0 var(--primary); }
+            50% { box-shadow: 0 0 0 4px #2f80ed33; }
+            100% { box-shadow: 0 0 0 0 var(--primary); }
+        }
     </style>
+    <script>
+        // Simple dynamique UX : remove selected placeholder on first select
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectEl = document.getElementById('unitId');
+            if (selectEl) {
+                selectEl.addEventListener('change', function () {
+                    selectEl.classList.add('touched');
+                });
+            }
+        });
+    </script>
 </head>
 <body>
-
 <div class="container">
-    <h2>Associer une unité d’enseignement au bloc <span th:text="${blockCode}">BLOC101</span></h2>
+    <h2>
+        Associer une unité d’enseignement au bloc
+        <span th:text="${blockCode}">BLOC101</span>
+    </h2>
 
     <form th:action="@{'/curriculum/sem-block/' + ${blockId} + '/add-unit'}" th:object="${form}" method="post">
+        <div>
+            <label for="unitId">Unité d’enseignement :</label>
+            <select id="unitId" th:field="*{unitId}" required>
+                <option value="" disabled selected>-- Choisir une UE --</option>
+                <option th:each="ue : ${unitCodes}"
+                        th:value="${ue.id}"
+                        th:text="${ue.code} + ' – ' + ${ue.label}"></option>
+            </select>
+        </div>
 
-    <label for="unitId">Unité d’enseignement :</label>
-        <select id="unitId" th:field="*{unitId}" required>
-            <option value="" disabled selected>-- Choisir une UE --</option>
-            <option th:each="ue : ${unitCodes}"
-                    th:value="${ue.id}"
-                    th:text="${ue.code} + ' – ' + ${ue.label}"></option>
-        </select>
-
-        <label for="coefficient">Coefficient :</label>
-        <input id="coefficient" type="number" th:field="*{coefficient}" step="0.1" min="0" max="20" required/>
-
+        <div>
+            <label for="coefficient">Coefficient :</label>
+            <input id="coefficient" type="number" th:field="*{coefficient}" step="0.1" min="0" max="20" required/>
+        </div>
 
         <button type="submit" aria-label="Associer cette UE au bloc">Associer</button>
     </form>
 
-    <a th:href="@{'/curriculum/annual/' + ${annualId} +'/edit'}">← Retour</a>
+    <a th:href="@{'/curriculum/annual/' + ${annualId} +'/edit'}">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.293 16.293a1 1 0 011.414-1.414L8.414 9l5.293-5.293a1 1 0 10-1.414-1.414l-6 6a1 1 0 000 1.414l6 6z"/></svg>
+        Retour
+    </a>
 </div>
-
 </body>
 </html>

@@ -3,141 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <title>Renommer la maquette – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         :root {
-            --primary: #3498db;
+            --primary: #2f80ed;
+            --primary-hover: #1d61c7;
             --success: #27ae60;
             --danger: #e74c3c;
-            --bg: #f4f6f9;
-            --text: #2c3e50;
-            --card: #ffffff;
-            --border: #dcdde1;
+            --bg: #f4f6fb;
+            --text: #20243a;
+            --card: #fff;
+            --border: #dce5f2;
+            --shadow: 0 8px 32px rgba(47,128,237,0.12), 0 1.5px 8px rgba(39,174,96,0.10);
         }
-
+        html {
+            height: 100%;
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
         body {
-            font-family: "Segoe UI", sans-serif;
-            background-color: var(--bg);
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(120deg, #eaf6fd 0%, #f8f9fe 100%);
             margin: 0;
-            padding: 2rem;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            min-height: 100vh;
         }
-
         .form-container {
-            background-color: var(--card);
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            max-width: 600px;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            margin-top: 3.5vw;
+            padding: 2.8rem 2.5rem 2.3rem 2.5rem;
+            border-radius: 1.2rem;
+            max-width: 430px;
             width: 100%;
+            animation: fadeInScale 1.1s cubic-bezier(.77,0,.22,1);
         }
-
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.97) translateY(32px);}
+            100% { opacity: 1; transform: scale(1) translateY(0);}
+        }
         h1 {
+            margin: 0 0 1.4rem 0;
+            font-size: 2rem;
+            font-weight: 800;
             text-align: center;
-            color: var(--text);
-            font-size: 1.7rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 0.5rem;
+            color: var(--primary);
+            letter-spacing: -1px;
+            line-height: 1.12;
+            background: linear-gradient(92deg,#2f80ed 70%,#27ae60 110%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
+        form {
+            margin-top: .7rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: .3rem;
+        }
         label {
             font-weight: 600;
-            color: var(--text);
-            display: block;
+            color: var(--primary);
+            font-size: 1.1rem;
             margin-top: 1.2rem;
+            margin-bottom: .23rem;
+            display: block;
+            letter-spacing: -.5px;
         }
-
         input[type="text"] {
             width: 100%;
-            padding: 0.75rem;
-            margin-top: 0.3rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
-            box-sizing: border-box;
+            padding: .85rem 1rem;
+            border: 1.6px solid var(--border);
+            border-radius: .6rem;
+            font-size: 1.04rem;
+            outline: none;
+            background: #fafdff;
+            color: var(--text);
+            transition: border-color 0.19s, box-shadow 0.17s;
+            box-shadow: none;
         }
-
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2.5px #e3f0ff;
+            background: #fff;
+        }
         .error {
             color: var(--danger);
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
+            margin-top: .22rem;
+            font-size: .97rem;
+            padding-left: .12rem;
+            animation: shake 0.18s;
         }
-
+        @keyframes shake {
+            0% { transform: translateX(0);}
+            33% { transform: translateX(-5px);}
+            66% { transform: translateX(5px);}
+            100% { transform: translateX(0);}
+        }
         .button-group {
             display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
+            justify-content: center;
+            margin-top: 2.1rem;
         }
-
         .btn {
-            padding: 0.8rem 1.6rem;
+            padding: 0.92rem 2.2rem;
+            font-size: 1.09rem;
+            font-weight: 800;
             border: none;
-            border-radius: 6px;
+            color: #fff;
+            border-radius: 0.7rem;
+            background: linear-gradient(93deg,var(--success),var(--primary) 90%);
+            box-shadow: 0 2px 11px #2f80ed2d;
+            cursor: pointer;
+            transition: background 0.18s, transform .12s;
+            letter-spacing: -.5px;
+        }
+        .btn:hover, .btn:focus {
+            background: linear-gradient(93deg,var(--primary-hover),var(--success) 90%);
+            transform: scale(1.025) translateY(-1px);
+        }
+        .back-link {
+            margin: 1.7rem 0 0 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            color: var(--primary);
             font-weight: bold;
             font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.2s ease;
+            transition: color .17s;
         }
-
-        .btn-submit {
-            background-color: var(--success);
-            color: white;
-        }
-
-        .btn-submit:hover {
-            background-color: #1e8449;
-        }
-
-        .back-link {
-            display: inline-block;
-            font-weight: bold;
-            color: var(--primary);
-            text-decoration: none;
-            border-bottom: 2px solid var(--primary);
-            margin-top: 2rem;
-            padding-bottom: 2px;
-            transition: color 0.2s ease, border-color 0.2s ease;
-        }
-
         .back-link:hover {
-            text-decoration: none;
-            color: #2c80b9;
-            border-color: #2c80b9;
+            color: var(--success);
+            text-decoration: underline dotted;
+        }
+        .back-icon {
+            font-size: 1.17em;
+            margin-right: 2px;
+            display: inline-block;
+            transition: transform 0.13s;
+        }
+        .back-link:hover .back-icon {
+            transform: translateX(-2px);
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-container {
+                max-width: 97vw;
+                padding: 1.6rem 0.7rem 1.6rem 0.7rem;
+                margin-top: .9rem;
+            }
+            h1 {
+                font-size: 1.23rem;
+            }
+            .btn {
+                font-size: 0.99rem;
+                padding: 0.75rem 1.3rem;
+            }
         }
     </style>
+    <!-- Utilise Inter via Google Fonts pour un rendu moderne -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <div class="form-container">
     <h1>Renommer la maquette</h1>
-
-    <form th:action="@{'/curriculum/' + ${planId} + '/edit'}"
-          th:object="${dto}" method="post">
-
+    <form th:action="@{'/curriculum/' + ${planId} + '/edit'}" th:object="${dto}" method="post" autocomplete="off">
         <label for="academicYear">Année universitaire :</label>
-        <input id="academicYear" type="text" th:field="*{academicYear}" placeholder="ex : 2025/2026" required/>
+        <input id="academicYear" type="text" th:field="*{academicYear}" placeholder="ex : 2025/2026" required
+               autocomplete="off"/>
         <div th:if="${#fields.hasErrors('academicYear')}" class="error">
             <p th:errors="*{academicYear}"></p>
         </div>
 
         <label for="name">Nom de la maquette :</label>
-        <input id="name" type="text" th:field="*{name}" placeholder="ex : Ingénierie du Développement Logiciel" required/>
+        <input id="name" type="text" th:field="*{name}"
+               placeholder="ex : Ingénierie du Développement Logiciel" required autocomplete="off"/>
         <div th:if="${#fields.hasErrors('name')}" class="error">
             <p th:errors="*{name}"></p>
         </div>
 
         <div class="button-group">
-            <button type="submit" class="btn btn-submit">Enregistrer</button>
+            <button type="submit" class="btn">Enregistrer</button>
         </div>
-        <a th:href="@{'/curriculum/1'}" class="back-link">
-            ← Retour à la maquette
+        <a th:href="@{'/curriculum/' + ${planId}}" class="back-link">
+            <span class="back-icon">&larr;</span>
+            Retour à la maquette
         </a>
     </form>
 </div>
-
 </body>
 </html>
