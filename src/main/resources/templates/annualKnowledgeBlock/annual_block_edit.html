@@ -185,11 +185,7 @@
 <div class="container">
     <h1>Gestion du bloc annuel</h1>
 
-    <form th:action="@{'/curriculum/annual/' + ${annualBlock.id} + '/update-id'}" method="post">
-        <label for="newId">Identifiant du bloc :</label>
-        <input id="newId" type="text" name="newId" th:value="${annualBlock.id}" required/>
-        <button type="submit" class="btn-success">Enregistrer</button>
-    </form>
+    <h2 th:text="'Code du bloc annuel : ' + ${annualBlock.code}">Code : BCC101</h2>
 
     <h2>Blocs semestriels</h2>
     <ul>
@@ -208,6 +204,14 @@
                             UE : <strong th:text="${entry.key.code}">UE101</strong> —
                             <span th:text="${entry.key.label}">Programmation</span> |
                             Coeff. : <span th:text="${entry.value}">1.5</span>
+
+                            <form th:action="@{'/curriculum/association/' + ${sem.id} + '/' + ${entry.key.id} + '/delete'}"
+                                  method="post" style="display:inline;">
+                                <button type="submit" class="button-link danger" style="margin-left: 1rem;"
+                                        onclick="return confirm('Supprimer cette association ?')">
+                                    Supprimer
+                                </button>
+                            </form>
                         </div>
                     </li>
                 </ul>

@@ -98,12 +98,12 @@ public class CurriculumDataLoader {
 
         // 3. Regrouper dans BCC annuel
         AnnualKnowledgeBlock bcc1 = AnnualKnowledgeBlock.builder()
-                .id("BCC1")
+                .code("BCC1")
                 .semesters(List.of(bcc1s1, bcc1s2))
                 .build();
 
         AnnualKnowledgeBlock bcc2 = AnnualKnowledgeBlock.builder()
-                .id("BCC2")
+                .code("BCC2")
                 .semesters(List.of(bcc2s1, bcc2s2))
                 .build();
 

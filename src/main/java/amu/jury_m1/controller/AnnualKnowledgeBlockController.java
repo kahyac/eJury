@@ -40,33 +40,35 @@ public class AnnualKnowledgeBlockController {
         } catch (IllegalArgumentException ex) {
             model.addAttribute("curriculumId", id);
             model.addAttribute("annualBlockDto", dto);
-            result.rejectValue("id", "duplicate", ex.getMessage());
+            result.rejectValue("code", "duplicate", ex.getMessage());
             return "annualKnowledgeBlock/add_annual_block";
         }
 
         return "redirect:/curriculum/" + id;
     }
 
-    @GetMapping("/annual/{oldId}/rename")
-    public String showRenameAnnualBlockForm(@PathVariable String oldId, Model model) {
-        model.addAttribute("oldId", oldId);
+    @GetMapping("/annual/{annualId}/rename")
+    public String showRenameAnnualBlockForm(@PathVariable Long annualId, Model model) {
+        AnnualKnowledgeBlock block = annualKnowledgeBlockService.findById(annualId)
+                .orElseThrow(() -> new IllegalArgumentException("Bloc non trouvé : " + annualId));
+        model.addAttribute("oldCode", block.getCode());
+        model.addAttribute("annualId", annualId);
         model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDto(""));
         return "annualKnowledgeBlock/rename_annual_block";
     }
 
-    @PostMapping("/annual/{oldId}/rename")
-    public String renameAnnualBlock(@PathVariable String oldId,
+    @PostMapping("/annual/{annualId}/rename")
+    public String renameAnnualBlock(@PathVariable Long annualId,
                                     @Valid @ModelAttribute("annualBlockDto") AnnualKnowledgeBlockDto dto,
                                     BindingResult result,
                                     Model model) {
-        model.addAttribute("oldId", oldId);
 
         if (result.hasErrors()) {
             return "annualKnowledgeBlock/rename_annual_block";
         }
 
         try {
-            annualKnowledgeBlockService.renameAnnualBlock(oldId, dto.id());
+            annualKnowledgeBlockService.renameAnnualBlock(annualId, dto.code());
         } catch (IllegalArgumentException ex) {
             model.addAttribute("errorMessage", ex.getMessage());
             return "annualKnowledgeBlock/rename_annual_block";
@@ -76,26 +78,22 @@ public class AnnualKnowledgeBlockController {
     }
 
     @GetMapping("/annual/{annualId}/edit")
-    public String editAnnualBlock(@PathVariable String annualId, Model model) {
+    public String editAnnualBlock(@PathVariable Long annualId, Model model) {
         AnnualKnowledgeBlock block = annualKnowledgeBlockService.findById(annualId)
                 .orElseThrow(() -> new IllegalArgumentException("Bloc annuel introuvable : " + annualId));
 
-        CurriculumPlan plan = block.getCurriculumPlan();
-
-        if (plan == null) {
-            throw new IllegalStateException("Ce bloc annuel n'est rattaché à aucun plan de maquette.");
-        }
-
         model.addAttribute("annualBlock", block);
-        model.addAttribute("curriculumId", plan.getId());
+        model.addAttribute("curriculumId", block.getCurriculumPlan().getId());
 
         return "annualKnowledgeBlock/annual_block_edit";
     }
 
-    @PostMapping("/annual/{annualId}/update-id")
-    public String updateAnnualBlockId(@PathVariable String annualId,
-                                      @RequestParam String newId) {
-        annualKnowledgeBlockService.updateAnnualBlockId(annualId, newId);
-        return "redirect:/curriculum/annual/" + newId + "/edit";
+    @PostMapping("/annual/{annualId}/delete")
+    public String deleteAnnualBlock(@PathVariable Long annualId) {
+        AnnualKnowledgeBlock block = annualKnowledgeBlockService.findById(annualId)
+                .orElseThrow(() -> new IllegalArgumentException("Bloc introuvable"));
+        Long curriculumId = block.getCurriculumPlan().getId();
+        annualKnowledgeBlockService.deleteById(annualId);
+        return "redirect:/curriculum/" + curriculumId;
     }
 }

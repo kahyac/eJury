@@ -119,7 +119,29 @@
         .button-link.green:hover {
             background-color: #1e874b;
         }
+        .button-small {
+            font-size: 0.85rem;
+        }
 
+        .button-submit {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .button-submit:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
         .info-label {
             font-weight: 600;
             color: var(--text);
@@ -147,7 +169,7 @@
         <h1 th:text="${plan.name}">Nom Maquette</h1>
         <span th:text="${plan.academicYear}">2025/2026</span>
     </div>
-    <a th:href="@{'/curriculum/' + ${plan.id} + '/edit'}" class="button-link orange">✏️ Renommer</a>
+    <a th:href="@{'/curriculum/' + ${plan.id} + '/edit'}" class="button-link orange button-small">✏️ Renommer</a>
 </div>
 
 <!-- Bloc annuels -->
@@ -162,12 +184,19 @@
         <li th:each="annual : ${plan.annualKnowledgeBlocks}">
             <div class="block">
                 <p>
-                    <span class="info-label">Nom du bloc :</span>
-                    <span th:text="${annual.id}">M1A</span>
+                    <span class="info-label">Code du bloc :</span>
+                    <span th:text="${annual.code}">M1A</span>
                 </p>
                 <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/rename'}"
                    class="button-link orange" style="font-size: 0.85rem;">✏️ Renommer</a>
-                <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}" class="button-link">⚙️ Configurer</a>
+                <a th:href="@{'/curriculum/annual/' + ${annual.id} + '/edit'}" class="button-link button-small">⚙️ Configurer</a>
+                <form th:action="@{'/curriculum/annual/' + ${annual.id} + '/delete'}" method="post" style="display:inline;">
+                    <button type="submit" class="button-submit button-small"
+                            onclick="return confirm('Confirmer la suppression du bloc annuel ?')">
+                        Supprimer
+                    </button>
+                </form>
+
             </div>
         </li>
     </ul>

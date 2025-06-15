@@ -111,11 +111,10 @@
     <form th:action="@{'/curriculum/' + ${curriculumId} + '/add-annual-block'}"
           th:object="${annualBlockDto}" method="post">
 
-        <label for="id">Identifiant du bloc</label>
-        <input id="id" type="text" th:field="*{id}" placeholder="Ex: M1-INFO" required/>
-
-        <div th:if="${#fields.hasErrors('id')}" class="error">
-            <p th:errors="*{id}"></p>
+        <label for="code">Code du bloc</label>
+        <input id="code" type="text" th:field="*{code}" placeholder="Ex: M1-INFO" required/>
+        <div th:if="${#fields.hasErrors('code')}" class="error">
+            <p th:errors="*{code}"></p>
         </div>
 
         <button type="submit">Ajouter le bloc</button>

@@ -20,7 +20,10 @@ import java.util.List;
 public class AnnualKnowledgeBlock {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String code;
 
     @ManyToOne
     @JoinColumn(name = "curriculum_plan_id")
