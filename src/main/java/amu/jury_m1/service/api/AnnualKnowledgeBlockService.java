@@ -7,10 +7,9 @@ import java.util.Optional;
 
 public interface AnnualKnowledgeBlockService {
     void addAnnualKnowledgeBlock(AnnualKnowledgeBlockDto dto);
-    void renameAnnualBlock(String oldId, String newId);
-    Optional<AnnualKnowledgeBlock> findById(String id);
-    void deleteById(String id);
+    void renameAnnualBlock(Long blockId, String newCode);
+    Optional<AnnualKnowledgeBlock> findById(Long id);
+    void deleteById(Long id);
     void save(AnnualKnowledgeBlock annualKnowledgeBlock);
-    void updateAnnualBlockId(String oldId, String newId);
 
 }

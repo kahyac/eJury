@@ -19,10 +19,11 @@ public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeB
 
     private final SemestrialKnowledgeBlockRepository semestrialKnowledgeBlockRepository;
     private final AnnualKnowledgeBlockRepository annualKnowledgeBlockRepository;
+    private final TeachingUnitRepository teachingUnitRepository;
     private final SemestrialKnowledgeBlockValidator semestrialKnowledgeBlockValidator;
 
     @Transactional
-    public void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto) {
+    public void addSemestrialBlockToAnnual(Long annualBlockId, SemestrialKnowledgeBlockDto dto) {
         AnnualKnowledgeBlock annual = semestrialKnowledgeBlockValidator.validateAnnualBlockExists(annualBlockId);
 
         SemestrialKnowledgeBlock block = SemestrialKnowledgeBlock.builder()
@@ -47,7 +48,7 @@ public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeB
         semestrialKnowledgeBlockRepository.save(block);
     }
 
-    public String findAnnualIdBySemBlockId(Long blockId) {
+    public Long findAnnualIdBySemBlockId(Long blockId) {
         return semestrialKnowledgeBlockValidator.validateSemestrialBlockExists(blockId)
                 .getAnnualKnowledgeBlock()
                 .getId();
@@ -74,6 +75,18 @@ public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeB
     @Transactional
     public void deleteById(Long code) {
         semestrialKnowledgeBlockRepository.deleteById(code);
+    }
+
+    @Override
+    public void removeUnitFromSemestrialBlock(Long semestrialBlockId, Long unitId) {
+            SemestrialKnowledgeBlock semestrialBlock = semestrialKnowledgeBlockRepository.findById(semestrialBlockId)
+                    .orElseThrow(() -> new IllegalArgumentException("Bloc semestriel non trouvé"));
+
+            TeachingUnit unit = teachingUnitRepository.findById(unitId)
+                    .orElseThrow(() -> new IllegalArgumentException("UE non trouvée"));
+
+            semestrialBlock.getUnitsCoefficientAssociation().remove(unit);
+            semestrialKnowledgeBlockRepository.save(semestrialBlock);
     }
 
 }

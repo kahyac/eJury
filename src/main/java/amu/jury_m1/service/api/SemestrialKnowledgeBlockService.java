@@ -5,9 +5,10 @@ import amu.jury_m1.service.dtos.SemestrialKnowledgeBlockDto;
 
 public interface SemestrialKnowledgeBlockService {
     SemestrialKnowledgeBlock findById(Long id);
-    void addSemestrialBlockToAnnual(String annualBlockId, SemestrialKnowledgeBlockDto dto);
+    void addSemestrialBlockToAnnual(Long annualBlockId, SemestrialKnowledgeBlockDto dto);
     void associateTeachingUnitToSemestrialBlock(Long blockId, Long unitId, double coefficient);
-    String findAnnualIdBySemBlockId(Long blockId);
+    Long findAnnualIdBySemBlockId(Long blockId);
     void updateSemestrialBlock(Long blockId, SemestrialKnowledgeBlockDto dto);
     void deleteById(Long id);
+    void removeUnitFromSemestrialBlock(Long semestrialBlockId, Long unitId);
 }

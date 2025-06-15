@@ -17,7 +17,7 @@ public class SemestrialKnowledgeBlockValidator {
     private final SemestrialKnowledgeBlockRepository semestrialKnowledgeBlockRepository;
     private final TeachingUnitRepository teachingUnitRepository;
 
-    public AnnualKnowledgeBlock validateAnnualBlockExists(String annualId) {
+    public AnnualKnowledgeBlock validateAnnualBlockExists(Long annualId) {
         return annualKnowledgeBlockRepository.findById(annualId)
                 .orElseThrow(() -> new IllegalArgumentException("Annual block not found: " + annualId));
     }

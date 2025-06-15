@@ -113,15 +113,14 @@
 <body>
 
 <div class="container">
-    <form th:action="@{'/curriculum/annual/' + ${oldId} + '/rename'}"
+    <form th:action="@{'/curriculum/annual/' + ${annualId} + '/rename'}"
           th:object="${annualBlockDto}" method="post">
 
-        <h2>Renommer le bloc annuel : <span th:text="${oldId}">M1A</span></h2>
+        <h2>Renommer le bloc annuel : <span th:text="${oldCode}">M1A</span></h2>
 
-        <label for="id">Nouveau nom du bloc</label>
-        <input id="id" type="text" th:field="*{id}" placeholder="Ex : M1B" required/>
-
-        <div th:if="${#fields.hasErrors('id')}" class="error" th:errors="*{id}"></div>
+        <label for="code">Nouveau code du bloc</label>
+        <input id="code" type="text" th:field="*{code}" placeholder="Ex : M1B" required/>
+        <div th:if="${#fields.hasErrors('code')}" class="error" th:errors="*{code}"></div>
 
         <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
 

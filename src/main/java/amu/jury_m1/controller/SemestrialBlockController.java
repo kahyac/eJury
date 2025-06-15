@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/curriculum")
@@ -19,14 +20,14 @@ public class SemestrialBlockController {
     private final TeachingUnitService teachingUnitService;
 
     @GetMapping("/annual/{annualId}/add-sem-block")
-    public String showAddSemBlockForm(@PathVariable String annualId, Model model) {
+    public String showAddSemBlockForm(@PathVariable Long annualId, Model model) {
         model.addAttribute("annualId", annualId);
         model.addAttribute("semestrialDto", new SemestrialKnowledgeBlockDto("", "", 1, 0.0));
         return "semestrialKnowledgeBlock/add_sem_block";
     }
 
     @PostMapping("/annual/{annualId}/add-sem-block")
-    public String addSemBlock(@PathVariable String annualId,
+    public String addSemBlock(@PathVariable Long annualId,
                               @ModelAttribute SemestrialKnowledgeBlockDto dto) {
         semestrialKnowledgeBlockService.addSemestrialBlockToAnnual(annualId, dto);
         return "redirect:/curriculum/annual/" + annualId + "/edit";
@@ -41,7 +42,7 @@ public class SemestrialBlockController {
         model.addAttribute("unitCodes", teachingUnitService.findAll());
         model.addAttribute("form", new UnitAssociationFormDto(null, 1.0));
 
-        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
+        Long annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
 
         model.addAttribute("annualId", annualId);
 
@@ -74,7 +75,7 @@ public class SemestrialBlockController {
                 block.getCode(), block.getLabel(), block.getSemester(), block.getEcts()
         );
 
-        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
+        Long annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
 
         model.addAttribute("blockDto", dto);
         model.addAttribute("block", block);
@@ -88,17 +89,25 @@ public class SemestrialBlockController {
     public String updateSemBlock(@PathVariable Long blockId,
                                  @ModelAttribute SemestrialKnowledgeBlockDto dto) {
         semestrialKnowledgeBlockService.updateSemestrialBlock(blockId, dto);
-        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
+        Long annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
         return "redirect:/curriculum/annual/" + annualId + "/edit";
     }
 
 
     @PostMapping("/sem-block/{blockId}/delete")
     public String deleteSemBlock(@PathVariable Long blockId) {
-        String annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
+        Long annualId = semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(blockId);
         semestrialKnowledgeBlockService.deleteById(blockId);
         return "redirect:/curriculum/annual/" + annualId + "/edit";
     }
 
+    @PostMapping("/association/{semBlockId}/{unitId}/delete")
+    public String deleteUnitAssociation(@PathVariable Long semBlockId,
+                                        @PathVariable Long unitId,
+                                        RedirectAttributes redirectAttributes) {
+        semestrialKnowledgeBlockService.removeUnitFromSemestrialBlock(semBlockId, unitId);
+        redirectAttributes.addFlashAttribute("success", "Association supprimée.");
+        return "redirect:/curriculum/annual/" + semestrialKnowledgeBlockService.findAnnualIdBySemBlockId(semBlockId) + "/edit";
+    }
 
 }
