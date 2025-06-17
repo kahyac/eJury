@@ -27,8 +27,10 @@ public class SemestrialBlockResult {
     @ManyToOne @JoinColumn(name = "sem_block_id")
     private SemestrialKnowledgeBlock semBlock;
 
-    private Double average;                                   // null si statut exceptionnel
-    @Enumerated(EnumType.STRING) private ExceptionalStatus status;
+    private Double average;
+    // null si statut exceptionnel
+    @Enumerated(EnumType.STRING)
+    private ExceptionalStatus status;
 
     /* bonus appliqué (0 → 0,5) pour traçabilité        */
     private double bonusApplied;

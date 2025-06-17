@@ -26,5 +26,6 @@ public class AnnualBlockResult {
     private AnnualKnowledgeBlock annualBlock;
 
     private Double average;
-    @Enumerated(EnumType.STRING) private ExceptionalStatus status;
+    @Enumerated(EnumType.STRING)
+    private ExceptionalStatus status;
 }

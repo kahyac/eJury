@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ResultEngine {
 
-    private final SemestrialCalculator  semCalc;  // existe déjà
-    private final AnnualCalculator      annCalc;  // implémenté ci-dessus
-    private final YearDecisionCalculator yearCalc; // idem
+    private final SemestrialCalculator  semCalc;
+    private final AnnualCalculator      annCalc;
+    private final YearDecisionCalculator yearCalc;
 
     @Transactional
     public void recompute(Student s, CurriculumPlan plan,

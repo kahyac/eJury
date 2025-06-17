@@ -27,7 +27,8 @@ public class AcademicYearResult {
     @ManyToOne @JoinColumn(name = "student_id")
     private Student student;
 
-    private String academicYear;                              // ex : 2024/2025
+    private String academicYear;  // ex : 2024/2025
 
-    @Enumerated(EnumType.STRING) private AcademicDecision decision;  // ADM / AJ / ABJ / ABI / AR
+    @Enumerated(EnumType.STRING)
+    private AcademicDecision decision;  // ADM / AJ / ABJ / ABI / AR
 }

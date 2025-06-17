@@ -34,13 +34,13 @@ public class StudentController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         studentRepository.findById(id).ifPresent(student -> model.addAttribute("student", student));
         return "students/form";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteStudent(@PathVariable String id) {
+    public String deleteStudent(@PathVariable Long id) {
         studentRepository.deleteById(id);
         return "redirect:/students";
     }
