@@ -1,5 +1,6 @@
 package amu.jury_m1.model.registration;
 
+import amu.jury_m1.model.result.TeachingUnitGrade;
 import amu.jury_m1.model.student.Student;
 import amu.jury_m1.model.pedagogy.TeachingUnit;
 import jakarta.persistence.*;
@@ -14,9 +15,8 @@ import lombok.*;
 @Builder
 public class PedagogicalRegistration {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
@@ -28,5 +28,7 @@ public class PedagogicalRegistration {
 
     private int semester;
 
-    private Double grade;
+    @OneToOne(mappedBy = "registration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TeachingUnitGrade grade;
+
 }
