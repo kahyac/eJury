@@ -222,7 +222,7 @@
   <form th:action="@{/login}" th:object="${loginDto}" method="post" id="login-form" autocomplete="off">
     <label for="username">Adresse e-mail :</label>
     <input id="username" name="username" type="text" th:field="*{username}"
-           required placeholder="exemple@domain.tld" />
+           required placeholder="exemple@etu.univ-amu.f" />
     <div th:if="${#fields.hasErrors('username')}" class="error-msg" th:errors="*{username}"></div>
 
     <label for="password">Mot de passe :</label>

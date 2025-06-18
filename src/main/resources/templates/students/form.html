@@ -1,15 +1,166 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Formulaire Étudiant</title></head>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${student.id == null} ? 'Ajouter un étudiant' : 'Modifier l’étudiant'">Formulaire Étudiant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Inter & Poppins Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@700&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #37bc8b;
+            --card-bg: rgba(255,255,255,0.93);
+            --glass: rgba(255,255,255,0.75);
+            --border: #dbeafe;
+            --shadow: 0 8px 36px rgba(80,180,252,0.13), 0 1.5px 8px rgba(47,128,237,0.08);
+            --radius: 1.25rem;
+            --text: #223147;
+            --muted: #64748b;
+            --gradient: linear-gradient(92deg,var(--success) 45%,var(--primary) 97%);
+        }
+        * {box-sizing: border-box;}
+        body {
+            margin: 0;
+            font-family: 'Inter','Poppins',sans-serif;
+            background: linear-gradient(113deg,#f3f8fd 60%,#e0ecfa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            color: var(--text);
+        }
+        .form-container {
+            position: relative;
+            background: var(--glass);
+            border: 1.6px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(22px);
+            animation: fadeIn 0.8s ease-out;
+        }
+        .form-container::before {
+            content: '';
+            position: absolute;
+            width: 120px; height: 120px;
+            top: -60px; right: -50px;
+            background: var(--gradient);
+            opacity: 0.16;
+            border-radius: 70%;
+            filter: blur(2px);
+            z-index: 0;
+        }
+        h1 {
+            margin: 0 0 2rem;
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-align: center;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.3rem;
+            position: relative;
+            z-index: 1;
+        }
+        form {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        label {
+            font-weight: 600;
+            color: var(--primary);
+            display: block;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-top: 0.3rem;
+            border: 1.4px solid var(--border);
+            border-radius: 0.7rem;
+            background: var(--card-bg);
+            font-size: 1rem;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 1.5px 9px rgba(47,128,237,0.09);
+            outline: none;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .btn-submit {
+            flex: 1;
+            padding: 0.8rem;
+            background: var(--gradient);
+            border: none;
+            border-radius: 0.8rem;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-submit:hover {
+            background: linear-gradient(97deg,#169f58 41%,#3462c9 100%);
+        }
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+        .btn-back {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            border: 2px solid var(--primary);
+            border-radius: 0.8rem;
+            background: transparent;
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-back:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
 <body>
-<h1 th:text="${student.id == null} ? 'Ajouter' : 'Modifier'">Étudiant</h1>
-<form th:action="@{/students/save}" th:object="${student}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <label>Nom: <input type="text" th:field="*{lastName}"/></label><br/>
-    <label>Prénom: <input type="text" th:field="*{firstName}"/></label><br/>
-    <label>Email: <input type="email" th:field="*{email}"/></label><br/>
-    <button type="submit">Enregistrer</button>
-</form>
-<a th:href="@{/students}">⬅ Retour</a>
+<div class="form-container">
+    <h1 th:text="${student.id == null} ? 'Ajouter un étudiant' : 'Modifier l’étudiant'">Étudiant</h1>
+    <form th:action="@{/students/save}" th:object="${student}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <label>
+            Nom
+            <input type="text" th:field="*{lastName}" required/>
+        </label>
+        <label>
+            Prénom
+            <input type="text" th:field="*{firstName}" required/>
+        </label>
+        <label>
+            Email
+            <input type="email" th:field="*{email}" required/>
+        </label>
+        <div class="btn-group">
+            <button type="submit" class="btn-submit">Enregistrer</button>
+            <a th:href="@{/students}" class="btn-back">⬅ Continuer</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>

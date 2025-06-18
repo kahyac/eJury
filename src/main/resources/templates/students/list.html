@@ -1,22 +1,159 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Liste des étudiants</title></head>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des étudiants – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Inter & Poppins Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@700&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #37bc8b;
+            --error: #e74c3c;
+            --bg: #f3f8fd;
+            --glass: rgba(255,255,255,0.75);
+            --card: rgba(255,255,255,0.93);
+            --border: #dbeafe;
+            --shadow: 0 8px 36px rgba(80,180,252,0.13), 0 1.5px 8px rgba(47,128,237,0.08);
+            --radius: 1.25rem;
+            --gradient: linear-gradient(92deg, var(--success) 45%, var(--primary) 97%);
+            --text: #223147;
+            --text-muted: #64748b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter','Poppins',sans-serif;
+            background: linear-gradient(113deg, var(--bg) 60%, #e0ecfa 100%);
+            color: var(--text);
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+        .header-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 0.2rem;
+        }
+        .btn-add {
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.8rem;
+            background: var(--gradient);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform .1s, opacity .2s;
+            text-decoration: none;
+        }
+        .btn-add:hover {
+            opacity: 0.85;
+            transform: translateY(-1px) scale(1.02);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        thead th {
+            background: var(--primary);
+            color: #fff;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+        }
+        tbody tr:hover td {
+            background: rgba(47,128,237,0.05);
+        }
+        td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.1rem;
+            color: #fff;
+            border-radius: 0.6rem;
+            text-decoration: none;
+            transition: background .2s, transform .1s;
+        }
+        .action-btn.edit {
+            background: var(--gradient);
+        }
+        .action-btn.delete {
+            background: var(--error);
+        }
+        .action-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 600px) {
+            .header-section { flex-direction: column; align-items: stretch; gap: 1rem; }
+            .actions { gap: 0.3rem; }
+        }
+    </style>
+</head>
 <body>
-<h1>Étudiants</h1>
-<a th:href="@{/students/create}">➕ Ajouter un étudiant</a>
-<table border="1">
-    <tr>
-        <th>Nom</th><th>Prénom</th><th>Email</th><th>Actions</th>
-    </tr>
-    <tr th:each="student : ${students}">
-        <td th:text="${student.lastName}"></td>
-        <td th:text="${student.firstName}"></td>
-        <td th:text="${student.email}"></td>
-        <td>
-            <a th:href="@{'/students/edit/' + ${student.id}}">✏️</a>
-            <a th:href="@{'/students/delete/' + ${student.id}}">🗑️</a>
-        </td>
-    </tr> <br>
-</table>
+<div class="container">
+    <div class="header-section">
+        <h1>Étudiants</h1>
+        <a th:href="@{/students/create}" class="btn-add">➕ Ajouter un étudiant</a>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.lastName}">BELHADJ</td>
+            <td th:text="${student.firstName}">Akram</td>
+            <td th:text="${student.email}">akram.belhadj@etu.univ-amu.fr</td>
+            <td>
+                <div class="actions">
+                    <a th:href="@{|/students/edit/${student.id}|}" class="action-btn edit" title="Modifier">✏️</a>
+                    <a th:href="@{|/students/delete/${student.id}|}" class="action-btn delete" title="Supprimer">🗑️</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
