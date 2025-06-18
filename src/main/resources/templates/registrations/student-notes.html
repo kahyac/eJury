@@ -10,14 +10,17 @@
     <h1 class="mb-4 text-center">📝 Notes de l'étudiant</h1>
 
     <!-- Si aucune inscription -->
-    <div th:if="${#lists.isEmpty(registrations)}">
+    <div th:if="${#lists.isEmpty(registrationViews)}">
         <p class="text-center text-muted">Aucune inscription trouvée pour cet étudiant.</p>
     </div>
 
     <!-- Si au moins une inscription -->
-    <div th:if="${!#lists.isEmpty(registrations)}" class="card shadow-sm">
+    <div th:if="${!#lists.isEmpty(registrationViews)}" class="card shadow-sm">
         <div class="card-body">
-            <h5 class="card-title" th:text="${registrations[0].student.firstName + ' ' + registrations[0].student.lastName}"></h5>
+            <h5 class="card-title"
+                th:text="${registrationViews[0].registration.student.firstName + ' ' + registrationViews[0].registration.student.lastName}">
+            </h5>
+
 
             <table class="table table-striped mt-3">
                 <thead class="table-light">
@@ -29,13 +32,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="reg : ${registrations}">
-                    <td th:text="${reg.teachingUnit.label}"></td>
-                    <td th:text="'S' + ${reg.semester}"></td>
-                    <td th:text="${reg.grade} + ' / 20'"></td>
+                <tr th:each="view : ${registrationViews}">
+                    <td th:text="${view.registration.teachingUnit.label}"></td>
+                    <td th:text="'S' + ${view.registration.semester}"></td>
+                    <td th:text="${view.displayNote}"></td>
                     <td>
-                        <span th:if="${reg.teachingUnit.obligation}" class="badge bg-success">Obligatoire</span>
-                        <span th:if="${!reg.teachingUnit.obligation}" class="badge bg-warning text-dark">Optionnelle</span>
+                        <span th:if="${view.registration.teachingUnit.obligation}" class="badge bg-success">Obligatoire</span>
+                        <span th:if="${!view.registration.teachingUnit.obligation}" class="badge bg-warning text-dark">Optionnelle</span>
                     </td>
                 </tr>
                 </tbody>
