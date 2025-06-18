@@ -4,6 +4,8 @@ import amu.jury_m1.dao.*;
 import amu.jury_m1.model.student.Student;
 import amu.jury_m1.model.pedagogy.*;
 import amu.jury_m1.model.registration.PedagogicalRegistration;
+import amu.jury_m1.model.result.ExceptionalStatus;
+import amu.jury_m1.model.result.TeachingUnitGrade;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -18,22 +20,24 @@ public class CurriculumDataLoader {
     private final TeachingUnitRepository teachingUnitRepository;
     private final StudentRepository studentRepository;
     private final PedagogicalRegistrationRepository registrationRepository;
+    private final TeachingUnitGradeRepository gradeRepository;
 
     public CurriculumDataLoader(CurriculumPlanRepository curriculumPlanRepository,
                                 TeachingUnitRepository teachingUnitRepository,
                                 StudentRepository studentRepository,
-                                PedagogicalRegistrationRepository registrationRepository) {
+                                PedagogicalRegistrationRepository registrationRepository,
+                                TeachingUnitGradeRepository gradeRepository) {
         this.curriculumPlanRepository = curriculumPlanRepository;
         this.teachingUnitRepository = teachingUnitRepository;
         this.studentRepository = studentRepository;
         this.registrationRepository = registrationRepository;
+        this.gradeRepository = gradeRepository;
     }
 
     @PostConstruct
     public void loadCurriculumAndRegistrations() {
         if (curriculumPlanRepository.count() > 0) return;
 
-        // 1. Créer les UE
         List<TeachingUnit> ues = List.of(
                 TeachingUnit.builder().code("UE1").label("UE1 Automne").ects(7).workloadHours(70).obligation(true).build(),
                 TeachingUnit.builder().code("UE2").label("UE2 Automne").ects(6).workloadHours(60).obligation(true).build(),
@@ -48,7 +52,6 @@ public class CurriculumDataLoader {
         Map<String, TeachingUnit> ueMap = new HashMap<>();
         ues.forEach(ue -> ueMap.put(ue.getCode(), ue));
 
-        // 2. Créer les semestrial knowledge blocks
         SemestrialKnowledgeBlock bcc1s1 = SemestrialKnowledgeBlock.builder()
                 .code("BCC1S1")
                 .label("BCC1 Semestre 1")
@@ -96,7 +99,6 @@ public class CurriculumDataLoader {
                 ))
                 .build();
 
-        // 3. Regrouper dans BCC annuel
         AnnualKnowledgeBlock bcc1 = AnnualKnowledgeBlock.builder()
                 .code("BCC1")
                 .semesters(List.of(bcc1s1, bcc1s2))
@@ -110,7 +112,6 @@ public class CurriculumDataLoader {
         bcc1.getSemesters().forEach(sem -> sem.setAnnualKnowledgeBlock(bcc1));
         bcc2.getSemesters().forEach(sem -> sem.setAnnualKnowledgeBlock(bcc2));
 
-        // 4. Créer le curriculum plan
         CurriculumPlan plan = CurriculumPlan.builder()
                 .id(1L)
                 .academicYear("2024-2025")
@@ -119,32 +120,43 @@ public class CurriculumDataLoader {
                 .build();
         curriculumPlanRepository.save(plan);
 
-        // 5. Générer les IP avec notes
         Random random = new Random();
         List<PedagogicalRegistration> registrations = new ArrayList<>();
+        List<TeachingUnitGrade> grades = new ArrayList<>();
 
         for (Student student : studentRepository.findAll()) {
             for (TeachingUnit ue : ues) {
-                // Option : inclure UNE seule UE optionnelle par semestre
                 if (!ue.isObligation()) {
                     if ((ue.getCode().equals("UE3") && random.nextBoolean()) ||
                             (ue.getCode().equals("UE6") && random.nextBoolean()) ||
                             (ue.getCode().equals("UE7") && random.nextBoolean())) {
-                        // Probabilité de choisir UNE optionnelle
+                        // pass
                     } else {
                         continue;
                     }
                 }
-                registrations.add(PedagogicalRegistration.builder()
+                int semester = (ue.getCode().equals("UE5") || ue.getCode().startsWith("UE6") || ue.getCode().equals("UE7")) ? 2 : 1;
+
+                PedagogicalRegistration reg = PedagogicalRegistration.builder()
                         .student(student)
                         .teachingUnit(ue)
-                        .semester(ue.getCode().equals("UE5") || ue.getCode().startsWith("UE6") || ue.getCode().equals("UE7") ? 2 : 1)
-                        .grade(Math.round((8 + random.nextDouble() * 10) * 10.0) / 10.0)
-                        .build());
+                        .semester(semester)
+                        .build();
+                registrations.add(reg);
+
+                double note = Math.round((8 + random.nextDouble() * 10) * 10.0) / 10.0;
+                TeachingUnitGrade grade = TeachingUnitGrade.builder()
+                        .registration(reg)
+                        .grade(note)
+                        .status(ExceptionalStatus.NONE)
+                        .build();
+                grades.add(grade);
             }
         }
 
         registrationRepository.saveAll(registrations);
+        gradeRepository.saveAll(grades);
+
         System.out.println("Étudiants présents avant attribution : " + studentRepository.count());
         System.out.println("Curriculum et IP générés pour tous les étudiants.");
     }

@@ -32,7 +32,10 @@
                 <tr th:each="reg : ${registrations}">
                     <td th:text="${reg.teachingUnit.label}"></td>
                     <td th:text="'S' + ${reg.semester}"></td>
-                    <td th:text="${reg.grade} + ' / 20'"></td>
+                    <td>
+                        <span th:if="${reg.grade.status.name() == 'NONE'}" th:text="${reg.grade.grade} + ' / 20'"></span>
+                        <span th:if="${reg.grade.status.name() != 'NONE'}" class="badge bg-warning text-dark" th:text="${reg.grade.status}"></span>
+                    </td>
                     <td>
                         <span th:if="${reg.teachingUnit.obligation}" class="badge bg-success">Obligatoire</span>
                         <span th:if="${!reg.teachingUnit.obligation}" class="badge bg-warning text-dark">Optionnelle</span>
