@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Inter & Poppins Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@700&display=swap">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #37bc8b;
+            --error: #e74c3c;
+            --bg: #f3f8fd;
+            --glass: rgba(255,255,255,0.75);
+            --card: rgba(255,255,255,0.93);
+            --border: #dbeafe;
+            --shadow: 0 8px 36px 0 rgba(80,180,252,0.13), 0 1.5px 8px rgba(47,128,237,0.08);
+            --radius: 1.25rem;
+            --text: #223147;
+            --muted: #64748b;
+        }
+        html, body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', 'Poppins', sans-serif;
+            background: linear-gradient(113deg, var(--bg) 60%, #e0ecfa 100%);
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            color: var(--text);
+        }
+        .form-container {
+            background: var(--glass);
+            border: 1.6px solid var(--border);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 450px;
+            padding: 2.6rem 2.1rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInScale 1.1s cubic-bezier(.6,-0.21,.47,1.29);
+            backdrop-filter: blur(22px);
+        }
+        .form-container:before {
+            content: '';
+            position: absolute;
+            right: -56px;
+            top: -72px;
+            width: 134px;
+            height: 134px;
+            background: linear-gradient(135deg, var(--primary) 68%, var(--success) 100%);
+            opacity: 0.16;
+            border-radius: 70%;
+            z-index: 0;
+            filter: blur(2px);
+        }
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.36rem;
+            font-weight: 800;
+            margin-bottom: 2.2rem;
+            background: linear-gradient(95deg,var(--primary) 66%,var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 2.1px solid var(--primary);
+            display: block;
+            padding-bottom: 0.4rem;
+            position: relative;
+            z-index: 1;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        label {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.98rem;
+            margin-top: 1rem;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 0.79rem 1.09rem;
+            font-size: 1.09rem;
+            border: 1.4px solid var(--border);
+            border-radius: 0.7em;
+            background: var(--card);
+            color: var(--text);
+            transition: border .18s, box-shadow .16s;
+            outline: none;
+            font-family: inherit;
+        }
+        input:focus,
+        select:focus {
+            border: 1.45px solid var(--primary);
+            box-shadow: 0 1.5px 9px 0 rgba(47,128,237,0.09);
+        }
+        .error-field,
+        input[aria-invalid="true"] {
+            border: 1.45px solid var(--error);
+            background: #fff7f5;
+            color: var(--error);
+        }
+        .error-msg {
+            color: var(--error);
+            font-size: 0.98rem;
+            margin-top: 0.2rem;
+        }
+        .btn-group {
+            margin-top: 1.8rem;
+        }
+        .btn-modern {
+            width: 100%;
+            padding: 0.8rem 0;
+            font-size: 1.09rem;
+            font-weight: 700;
+            border-radius: 0.82em;
+            border: none;
+            background: linear-gradient(92deg,var(--success) 45%,var(--primary) 97%);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 2.5px 15px rgba(47,128,237,0.10);
+            transition: background .17s, transform .13s;
+            position: relative;
+            overflow: hidden;
+            min-height: 47px;
+        }
+        .btn-modern:hover {
+            background: linear-gradient(97deg,#169f58 41%,#3462c9 100%);
+        }
+        .btn-modern:active {
+            transform: scale(0.98);
+        }
+        .btn-modern::after {
+            content: '';
+            position: absolute;
+            left: 50%; top: 50%;
+            width: 34px; height: 34px;
+            background: rgba(255,255,255,0.22);
+            border-radius: 50%;
+            transform: translate(-50%,-50%) scale(0);
+            transition: transform .41s cubic-bezier(.45,.16,.41,1.23);
+        }
+        .btn-modern.wave::after {
+            transform: translate(-50%,-50%) scale(3.5);
+            opacity: 0;
+            transition: transform .34s cubic-bezier(.9,.1,.6,1.45);
+        }
+        .back-link {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            color: var(--primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 2.5px solid var(--primary);
+            padding-bottom: 3px;
+            transition: color .18s, border-color .18s;
+        }
+        .back-link:hover {
+            color: var(--success);
+            border-color: var(--success);
+        }
+        @media (max-width: 600px) {
+            .form-container { padding: 1.3rem; }
+            h2 { font-size: 1.1rem; }
+        }
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.93) translateY(40px); }
+            80% { opacity: 1; transform: scale(1.03) translateY(-3px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Inscription</h2>
+
+    <div th:if="${errorMessage}" class="error-msg">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <form th:action="@{/register}" th:object="${registerDto}" method="post" id="register-form" autocomplete="off">
+        <label for="lastName">Nom :</label>
+        <input id="lastName" name="lastName" type="text" th:field="*{lastName}"
+               required placeholder="Ex : Cristiano" />
+        <div th:if="${#fields.hasErrors('lastName')}" class="error-msg" th:errors="*{lastName}"></div>
+
+        <label for="firstName">Prénom :</label>
+        <input id="firstName" name="firstName" type="text" th:field="*{firstName}"
+               required placeholder="Ex : Ronaldo" />
+        <div th:if="${#fields.hasErrors('firstName')}" class="error-msg" th:errors="*{firstName}"></div>
+
+        <label for="email">Adresse e-mail :</label>
+        <input id="email" name="email" type="email" th:field="*{email}"
+               required placeholder="exemple@etu.univ-amu.fr" />
+        <div th:if="${#fields.hasErrors('email')}" class="error-msg" th:errors="*{email}"></div>
+
+        <label for="role">Rôle :</label>
+        <select id="role" name="role" th:field="*{role}" required>
+            <option value="" disabled selected>-- Sélectionnez un rôle --</option>
+            <option value="ETUDIANT">Étudiant</option>
+            <option value="ENSEIGNANT_UE">Enseignant UE</option>
+            <option value="RESPONSABLE_M1">Responsable M1</option>
+        </select>
+        <div th:if="${#fields.hasErrors('role')}" class="error-msg" th:errors="*{role}"></div>
+
+        <label for="password">Mot de passe :</label>
+        <input id="password" name="password" type="password" th:field="*{password}"
+               required placeholder="••••••••••" />
+        <div th:if="${#fields.hasErrors('password')}" class="error-msg" th:errors="*{password}"></div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn-modern" id="submitBtn">S’inscrire</button>
+        </div>
+    </form>
+
+    <a class="back-link" th:href="@{/login}">← J’ai déjà un compte</a>
+</div>
+
+<script>
+    // delay apparition
+    document.querySelector('.form-container').style.opacity = 0;
+    setTimeout(() => {
+        document.querySelector('.form-container').style.animation = 'fadeInScale 0.95s cubic-bezier(.6,-0.25,.47,1.33)';
+        document.querySelector('.form-container').style.opacity = 1;
+    }, 60);
+
+    // bouton wave
+    document.getElementById('submitBtn').addEventListener('click', function(){
+        this.classList.remove('wave');
+        void this.offsetWidth;
+        this.classList.add('wave');
+        setTimeout(()=> this.classList.remove('wave'), 380);
+    });
+
+    // validation basique client-side
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+        let valid = true;
+        ['lastName','firstName','email','role','password'].forEach(id => {
+            const inp = document.getElementById(id);
+            if (!inp.value.trim()) {
+                valid = false;
+                inp.classList.add('error-field');
+            } else {
+                inp.classList.remove('error-field');
+            }
+        });
+        if (!valid) {
+            e.preventDefault();
+            alert('Veuillez renseigner tous les champs obligatoires.');
+        }
+    });
+</script>
+</body>
+</html>
