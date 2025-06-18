@@ -29,7 +29,7 @@ public class RegistrationController {
 
         // Grouper les inscriptions par étudiant (par ID)
         Map<String, List<PedagogicalRegistration>> groupedByStudentId = allRegistrations.stream()
-                .collect(Collectors.groupingBy(reg -> reg.getStudent().getId()));
+                .collect(Collectors.groupingBy(reg -> String.valueOf(reg.getStudent().getId())));
 
         List<StudentRegistrationsView> views = groupedByStudentId.entrySet().stream()
                 .map(entry -> {
