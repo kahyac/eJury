@@ -56,4 +56,5 @@ public class RegistrationController {
         model.addAttribute("registrations", studentRegistrations);
         return "registrations/student-notes";
     }
+
 }
