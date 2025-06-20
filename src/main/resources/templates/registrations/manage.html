@@ -12,15 +12,16 @@
     <h3 th:text="${student.firstName + ' ' + student.lastName}"></h3>
 
     <!-- Formulaire d'ajout/modification -->
-    <form class="row g-3 mt-4" th:action="@{/registrations/edit/{studentId}(studentId=${student.id})}" method="post">
-        <input type="hidden" name="registrationId" th:value="${registrationId}"/>
+    <form class="row g-3 mt-4" th:action="@{/registrations/{studentId}/save(studentId=${student.id})}" method="post">
+        <input type="hidden" name="registrationId" th:value="${selectedRegistration?.id}" />
 
         <div class="col-md-4">
             <label class="form-label">UE</label>
-            <select class="form-select" name="teachingUnitId" required>
-                <option th:each="ue : ${teachingUnits}"
+            <select class="form-select" name="ueId" required>
+                <option th:each="ue : ${allUnits}"
                         th:value="${ue.id}"
-                        th:text="${ue.label}">
+                        th:text="${ue.label}"
+                        th:selected="${selectedRegistration != null and selectedRegistration.teachingUnit.id == ue.id}">
                 </option>
             </select>
         </div>
@@ -28,23 +29,24 @@
         <div class="col-md-2">
             <label class="form-label">Semestre</label>
             <select class="form-select" name="semester" required>
-                <option value="1">1</option>
-                <option value="2">2</option>
+                <option value="1" th:selected="${selectedRegistration?.semester == 1}">1</option>
+                <option value="2" th:selected="${selectedRegistration?.semester == 2}">2</option>
             </select>
         </div>
 
         <div class="col-md-2">
             <label class="form-label">Note</label>
-            <input type="number" step="0.1" min="0" max="20" class="form-control" name="grade"/>
+            <input type="number" step="0.1" min="0" max="20" class="form-control" name="grade"
+                   th:value="${selectedRegistration?.grade?.grade}" />
         </div>
 
         <div class="col-md-3">
             <label class="form-label">Statut exceptionnel</label>
             <select class="form-select" name="status">
-                <option value="NONE">Aucun</option>
-                <option value="AR">AR</option>
-                <option value="ABJ">ABJ</option>
-                <option value="ABI">ABI</option>
+                <option th:each="s : ${statuses}"
+                        th:value="${s}"
+                        th:text="${s}"
+                        th:selected="${selectedRegistration?.grade?.status == s}">Statut</option>
             </select>
         </div>
 
@@ -69,9 +71,9 @@
             <tbody>
             <tr th:each="reg : ${registrations}">
                 <td th:text="${reg.teachingUnit.label}"></td>
-                <td th:text="${reg.semester}"></td>
-                <td th:text="${reg.grade != null ? reg.grade + ' / 20' : '-'}"></td>
-                <td th:text="${reg.status}"></td>
+                <td th:text="'S' + ${reg.semester}"></td>
+                <td th:text="${reg.grade?.grade != null ? reg.grade.grade + ' / 20' : '-'}"></td>
+                <td th:text="${reg.grade?.status}"></td>
                 <td>
                     <a th:href="@{'/registrations/edit/' + ${reg.student.id} + '?edit=' + ${reg.id}}" class="btn btn-sm btn-warning">Modifier</a>
                     <a th:href="@{'/registrations/delete/' + ${reg.id}}" class="btn btn-sm btn-danger ms-2">Supprimer</a>

@@ -26,15 +26,23 @@ public class PedagogicalRegistrationManagementController {
     private final TeachingUnitGradeRepository gradeRepository;
 
     @GetMapping("/edit/{studentId}")
-    public String editRegistrations(@PathVariable String studentId, Model model) {
+    public String editRegistrations(@PathVariable String studentId,
+                                    @RequestParam(value = "edit", required = false) String editId,
+                                    Model model) {
         Student student = studentRepository.findById(studentId).orElseThrow();
         List<PedagogicalRegistration> registrations = registrationRepository.findByStudentId(studentId);
         List<TeachingUnit> allUnits = teachingUnitRepository.findAll();
+
+        PedagogicalRegistration selectedRegistration = null;
+        if (editId != null) {
+            selectedRegistration = registrationRepository.findById(editId).orElse(null);
+        }
 
         model.addAttribute("student", student);
         model.addAttribute("registrations", registrations);
         model.addAttribute("allUnits", allUnits);
         model.addAttribute("statuses", ExceptionalStatus.values());
+        model.addAttribute("selectedRegistration", selectedRegistration);
         return "registrations/manage";
     }
 
