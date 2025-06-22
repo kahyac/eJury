@@ -2,7 +2,7 @@ package amu.eJury.dao;
 
 import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
 import amu.eJury.model.result.SemestrialBlockResult;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

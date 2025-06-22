@@ -1,7 +1,10 @@
-package amu.eJury.model;
+package amu.eJury.model.users;
 
+import amu.eJury.model.pedagogy.TeachingUnit;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,9 +18,12 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
     private String firstName;
     private String lastName;
 
-    private boolean isResponsible;
+    @OneToOne(mappedBy = "teacher")
+    private AppUser appUser;
+
+    @OneToMany(mappedBy = "responsibleTeacher")
+    private List<TeachingUnit> teachingUnits; // UEs dont il est responsable
 }

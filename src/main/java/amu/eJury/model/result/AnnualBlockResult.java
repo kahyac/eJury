@@ -1,7 +1,7 @@
 package amu.eJury.model.result;
 
 import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import jakarta.persistence.*;
 import lombok.*;
 

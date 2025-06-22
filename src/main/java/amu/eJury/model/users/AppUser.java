@@ -1,4 +1,4 @@
-package amu.eJury.model;
+package amu.eJury.model.users;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,13 +16,19 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username; // email par ex.
+    @Column(unique = true)
+    private String email;
+
     private String password;
 
-    private boolean mustResetPassword;
+    private boolean firstLogin;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private Long linkedEntityId; // pour relier à Student ou Teacher selon le rôle
+    @OneToOne
+    private Student student;
+
+    @OneToOne
+    private Teacher teacher;
 }

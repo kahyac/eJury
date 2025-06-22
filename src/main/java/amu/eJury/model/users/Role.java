@@ -1,7 +1,7 @@
-package amu.eJury.model;
+package amu.eJury.model.users;
 
 public enum Role {
     STUDENT,
     TEACHER,
-    RESPONSIBLE
+    ADMIN
 }

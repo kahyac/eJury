@@ -1,7 +1,7 @@
 package amu.eJury.service.data;
 
 import amu.eJury.dao.StudentRepository;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

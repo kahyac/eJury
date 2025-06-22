@@ -5,7 +5,7 @@ import amu.eJury.dao.SemestrialBlockResultRepository;
 import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
 import amu.eJury.model.pedagogy.SemestrialKnowledgeBlock;
 import amu.eJury.model.result.*;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import amu.eJury.service.impl.DefaultAnnualCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

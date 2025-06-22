@@ -4,7 +4,7 @@ package amu.eJury.service.impl;
  * 1.1  BonusPolicy — aucune bonification par défaut
  * ---------------------------------------------------- */
 
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import amu.eJury.service.api.BonusPolicy;
 import org.springframework.stereotype.Component;
 

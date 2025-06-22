@@ -1,5 +1,6 @@
 package amu.eJury.model.pedagogy;
 
+import amu.eJury.model.users.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,4 +30,7 @@ public class TeachingUnit {
     private double workloadHours;
 
     private boolean obligation;
+
+    @ManyToOne
+    private Teacher responsibleTeacher;
 }

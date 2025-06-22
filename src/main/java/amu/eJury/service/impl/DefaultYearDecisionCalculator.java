@@ -5,7 +5,7 @@ import amu.eJury.dao.AcademicYearResultRepository;
 import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
 import amu.eJury.model.pedagogy.CurriculumPlan;
 import amu.eJury.model.result.*;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import amu.eJury.service.api.AnnualCalculator;
 import amu.eJury.service.api.YearDecisionCalculator;
 import lombok.RequiredArgsConstructor;

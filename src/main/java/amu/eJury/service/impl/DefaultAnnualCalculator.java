@@ -4,7 +4,7 @@ import amu.eJury.dao.AnnualBlockResultRepository;
 import amu.eJury.dao.SemestrialBlockResultRepository;
 import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
 import amu.eJury.model.result.*;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import amu.eJury.service.api.AnnualCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

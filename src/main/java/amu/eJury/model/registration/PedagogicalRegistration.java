@@ -1,7 +1,7 @@
 package amu.eJury.model.registration;
 
 import amu.eJury.model.result.TeachingUnitGrade;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import amu.eJury.model.pedagogy.TeachingUnit;
 import jakarta.persistence.*;
 import lombok.*;

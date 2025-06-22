@@ -5,7 +5,7 @@ import amu.eJury.model.pedagogy.*;
 import amu.eJury.model.registration.PedagogicalRegistration;
 import amu.eJury.model.result.ExceptionalStatus;
 import amu.eJury.model.result.TeachingUnitGrade;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;

@@ -1,5 +1,5 @@
 package amu.eJury.controller;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import amu.eJury.dao.StudentRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

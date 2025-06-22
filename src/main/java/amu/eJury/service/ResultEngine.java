@@ -2,7 +2,7 @@ package amu.eJury.service;
 
 import amu.eJury.model.pedagogy.CurriculumPlan;
 import amu.eJury.model.pedagogy.SemestrialKnowledgeBlock;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 
 import amu.eJury.service.api.AnnualCalculator;
 import amu.eJury.service.api.SemestrialCalculator;

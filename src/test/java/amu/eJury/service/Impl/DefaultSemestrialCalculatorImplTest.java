@@ -2,7 +2,7 @@ package amu.eJury.service.Impl;
 
 import amu.eJury.model.pedagogy.*;
 import amu.eJury.model.result.*;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import amu.eJury.service.api.BonusPolicy;
 import amu.eJury.service.api.StatusPropagationRule;
 import amu.eJury.service.impl.DefaultSemestrialCalculatorImpl;

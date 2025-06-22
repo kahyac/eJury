@@ -3,7 +3,7 @@ package amu.eJury.dao;
 import amu.eJury.model.pedagogy.TeachingUnit;
 import amu.eJury.model.registration.PedagogicalRegistration;
 import amu.eJury.model.result.TeachingUnitGrade;
-import amu.eJury.model.student.Student;
+import amu.eJury.model.users.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
