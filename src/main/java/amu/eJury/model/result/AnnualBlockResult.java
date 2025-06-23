@@ -9,7 +9,10 @@ import lombok.*;
  * 1.3  Résultat BCC Annuel
  *---------------------------------------------------------*/
 @Entity
-@Table(name = "annual_block_result")
+@Table(
+        name = "annual_block_result",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "annual_block_id"})
+)
 @Getter
 @Setter
 @NoArgsConstructor

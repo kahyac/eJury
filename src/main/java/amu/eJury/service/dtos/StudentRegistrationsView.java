@@ -22,13 +22,15 @@ public class StudentRegistrationsView {
     @Setter
     @Getter
     public static class UeView {
-
         private String label;
         private boolean isOptional;
+        private Long unitId;
 
-        public UeView(String label, boolean isOptional) {
+        public UeView(String label, boolean isOptional, Long unitId) {
             this.label = label;
             this.isOptional = isOptional;
+            this.unitId = unitId;
         }
     }
+
 }

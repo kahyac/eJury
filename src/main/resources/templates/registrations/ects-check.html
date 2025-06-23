@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vérification ECTS – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Police Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2f80ed;
+            --accent: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f9c74f;
+            --bg: #e9eef6;
+            --card: rgba(255,255,255,0.88);
+            --text: #21243d;
+            --border: #e1e5f0;
+            --muted: #95aac9;
+            --shadow: 0 8px 32px rgba(47,128,237,0.07), 0 1.5px 8px rgba(39,174,96,0.11);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(105deg, var(--bg) 40%, #d8e6fa 100%);
+            color: var(--text);
+            padding: 3rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card);
+            border-radius: 1.4rem;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 1rem 1.4rem;
+            border: 1px solid var(--border);
+            border-radius: 0.8rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1rem;
+        }
+
+        li strong {
+            font-weight: 600;
+            color: var(--danger);
+        }
+
+        .success {
+            background-color: #e8f8f0;
+            color: var(--accent);
+            font-weight: 600;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 1rem;
+            border: 1px solid var(--accent);
+        }
+
+        .btn-return {
+            display: inline-block;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            border: 1.5px solid var(--primary);
+            padding: 0.55rem 1.2rem;
+            border-radius: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-return:hover {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(47,128,237,0.2);
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="'Vérification des ECTS – Semestre ' + ${semester}">Vérification ECTS</h2>
+
+    <div th:if="${#maps.isEmpty(incomplets)}" class="success">
+        ✅ Tous les étudiants ont bien 30 crédits ECTS.
+    </div>
+
+    <ul th:if="${!#maps.isEmpty(incomplets)}">
+        <li th:each="entry : ${incomplets}">
+            <strong th:text="${entry.key.firstName + ' ' + entry.key.lastName}">Nom Prénom</strong>
+            <span th:text="'Il manque ' + ${entry.value} + ' crédits.'">Il manque X crédits</span>
+        </li>
+    </ul>
+
+    <a href="/registrations" class="btn-return">Retour</a>
+</div>
+</body>
+</html>

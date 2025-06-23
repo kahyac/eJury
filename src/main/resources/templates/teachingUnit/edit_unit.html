@@ -397,6 +397,14 @@
                placeholder="Nom ou description de l'UE"/>
         <div th:if="${#fields.hasErrors('label')}" class="error" th:errors="*{label}"></div>
 
+        <label for="semester">Semestre :</label>
+        <select id="semester" name="semester" th:field="*{semester}" required>
+            <option value="" disabled>Choisir un semestre</option>
+            <option value="1" th:selected="*{semester == 1}">Semestre 1</option>
+            <option value="2" th:selected="*{semester == 2}">Semestre 2</option>
+        </select>
+        <div th:if="${#fields.hasErrors('semester')}" class="error" th:errors="*{semester}"></div>
+
         <label for="ects">ECTS :</label>
         <input id="ects" name="ects" type="number" min="0" step="0.1" th:field="*{ects}" required maxlength="6"
                placeholder="ex : 6"/>

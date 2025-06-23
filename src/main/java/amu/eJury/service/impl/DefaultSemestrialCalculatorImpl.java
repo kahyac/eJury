@@ -2,6 +2,7 @@ package amu.eJury.service.impl;
 
 import amu.eJury.model.pedagogy.SemestrialKnowledgeBlock;
 import amu.eJury.model.pedagogy.TeachingUnit;
+import amu.eJury.model.registration.PedagogicalRegistration;
 import amu.eJury.model.result.ExceptionalStatus;
 import amu.eJury.model.result.SemestrialBlockResult;
 import amu.eJury.model.result.TeachingUnitGrade;
@@ -31,12 +32,17 @@ public class DefaultSemestrialCalculatorImpl implements SemestrialCalculator {
         double sum = 0, sumCoef = 0;
         ExceptionalStatus worst = ExceptionalStatus.NONE;
 
-        for (var e : block.getUnitsCoefficientAssociation().entrySet()) {
-            TeachingUnit ue = e.getKey();
-            double coef = e.getValue();
-            TeachingUnitGrade g = gradePort.gradeOf(s, ue)
-                    .orElseThrow(() -> new IllegalStateException("Grade missing"));
+        for (PedagogicalRegistration ip : gradePort.registrationsOf(s)) {
+            TeachingUnit ue = ip.getTeachingUnit();
+            if (!block.getUnitsCoefficientAssociation().containsKey(ue)) continue;
+            if (ip.getSemester() != block.getSemester()) continue;
 
+            TeachingUnitGrade g = ip.getGradeInfo();
+            if (g == null) {
+                throw new IllegalStateException("Grade missing for UE: " + ue.getLabel());
+            }
+
+            double coef = block.getUnitsCoefficientAssociation().get(ue);
             worst = statusRule.propagate(worst, g.getStatus());
 
             if (g.getStatus() == ExceptionalStatus.NONE) {
@@ -45,9 +51,15 @@ public class DefaultSemestrialCalculatorImpl implements SemestrialCalculator {
             }
         }
 
-        SemestrialBlockResult r = SemestrialBlockResult.builder()
-                .student(s).semBlock(block)
-                .status(worst).bonusApplied(0).average(null).build();
+
+        SemestrialBlockResult r = savePort.findByStudentAndBlock(s, block)
+                .orElseGet(() -> SemestrialBlockResult.builder()
+                        .student(s).semBlock(block)
+                        .build());
+
+        r.setStatus(worst);
+        r.setBonusApplied(0);
+        r.setAverage(null);
 
         if (worst == ExceptionalStatus.NONE) {
             double avg = round(sum / sumCoef, 2);
@@ -55,7 +67,9 @@ public class DefaultSemestrialCalculatorImpl implements SemestrialCalculator {
             r.setBonusApplied(bonus);
             r.setAverage(Math.min(20, avg + bonus));
         }
+
         return savePort.save(r);
+
     }
 
     private static double round(double value, int digits) {

@@ -11,6 +11,11 @@ public record TeachingUnitDto(
         @NotBlank(message = "Le libellé est obligatoire.")
         String label,
 
+        @NotBlank
+        @Min(1)
+        @Max(2)
+        int semester,
+
         @Min(value = 1, message = "Les ECTS doivent être au moins de 1.")
         @Max(value = 30, message = "Les ECTS ne peuvent dépasser 30.")
         double ects,

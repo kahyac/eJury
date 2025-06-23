@@ -20,41 +20,40 @@ public class DefaultAnnualCalculator implements AnnualCalculator {
     @Transactional
     @Override
     public AnnualBlockResult compute(Student s, AnnualKnowledgeBlock annual) {
-
-        /* Récupère les deux résultats semestriels déjà calculés */
         SemestrialBlockResult s1 = semResRepo
                 .findByStudentAndSemBlock_SemesterAndSemBlock_AnnualKnowledgeBlock(s, 1, annual)
-                .orElseThrow(() -> new IllegalStateException("Result S1 manquant"));
+                .orElse(null);
         SemestrialBlockResult s2 = semResRepo
                 .findByStudentAndSemBlock_SemesterAndSemBlock_AnnualKnowledgeBlock(s, 2, annual)
-                .orElseThrow(() -> new IllegalStateException("Result S2 manquant"));
+                .orElse(null);
 
-        /* Propagation du statut exceptionnel le plus sévère */
-        ExceptionalStatus st = propagate(s1.getStatus(), s2.getStatus());
-        if (st != ExceptionalStatus.NONE) {
-            return annualResRepo.save(
-                    AnnualBlockResult.builder()
-                            .student(s).annualBlock(annual)
-                            .status(st).average(null)
-                            .build()
-            );
+        ExceptionalStatus status;
+        Double average = null;
+
+        if (s1 == null || s2 == null) {
+            status = ExceptionalStatus.AR;
+        } else {
+            status = propagate(s1.getStatus(), s2.getStatus());
+            if (status == ExceptionalStatus.NONE) {
+                double n1 = s1.getAverage();
+                double n2 = s2.getAverage();
+                double ects1 = annual.getSemesters().get(0).getEcts();
+                double ects2 = annual.getSemesters().get(1).getEcts();
+                average = round((n1 * ects1 + n2 * ects2) / (ects1 + ects2), 2);
+            }
         }
 
-        /* Pondération par les ECTS des deux semestres */
-        double n1 = s1.getAverage();
-        double n2 = s2.getAverage();
-        double ects1 = annual.getSemesters().get(0).getEcts();
-        double ects2 = annual.getSemesters().get(1).getEcts();
+        AnnualBlockResult result = annualResRepo
+                .findByStudentAndAnnualBlock(s, annual)
+                .orElseGet(() -> AnnualBlockResult.builder()
+                        .student(s)
+                        .annualBlock(annual)
+                        .build());
 
-        double avg = round((n1 * ects1 + n2 * ects2) / (ects1 + ects2), 2);
+        result.setStatus(status);
+        result.setAverage(average);
 
-        return annualResRepo.save(
-                AnnualBlockResult.builder()
-                        .student(s).annualBlock(annual)
-                        .status(ExceptionalStatus.NONE)
-                        .average(avg)
-                        .build()
-        );
+        return annualResRepo.save(result);
     }
 
     /* ---------- utilitaires privés ---------- */

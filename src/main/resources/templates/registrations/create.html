@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvelle inscription pédagogique – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Police Inter Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <style>
+        :root {
+            --primary: #2f80ed;
+            --accent: #27ae60;
+            --danger: #e74c3c;
+            --bg: #e9eef6;
+            --glass: rgba(255,255,255,0.44);
+            --text: #21243d;
+            --border: #e1e5f0;
+            --muted: #95aac9;
+            --shadow: 0 8px 32px rgba(47,128,237,0.07), 0 1.5px 8px rgba(39,174,96,0.11);
+        }
+        html, body {
+            height: 100%;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(105deg, var(--bg) 40%, #d8e6fa 100%);
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+        .anim-fade-in {
+            animation: fadeInUp 0.85s cubic-bezier(.6,-0.25,.47,1.33);
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(45px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+        .form-container {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+            border-radius: 1.4rem;
+            padding: 2.55rem 2.1rem 2rem 2.1rem;
+            width: 100%;
+            max-width: 430px;
+            border: 1.4px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .form-container:before {
+            content: "";
+            position: absolute;
+            right: -54px; top: -58px;
+            width: 120px; height: 120px;
+            background: linear-gradient(135deg, var(--primary) 60%, var(--accent) 100%);
+            opacity: 0.10;
+            border-radius: 100%;
+            z-index: 0;
+        }
+        h2 {
+            color: var(--primary);
+            font-size: 1.41rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 2.3rem;
+            letter-spacing: -1px;
+            background: linear-gradient(98deg,var(--primary),var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 2.5px solid var(--primary);
+            padding-bottom: .28rem;
+            z-index: 1;
+            position: relative;
+        }
+        label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 1.09rem;
+            display: block;
+            letter-spacing: .01em;
+            font-size: 1.06rem;
+        }
+        .input-wrap {
+            margin-top: .13rem;
+        }
+        select {
+            width: 100%;
+            padding: .75rem .97rem;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-size: 1.09rem;
+            background: rgba(255,255,255,0.90);
+            color: var(--text);
+            outline: none;
+            font-family: inherit;
+            transition: border .19s, box-shadow .25s, background .22s;
+        }
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px #2f80ed33;
+            background: #fff;
+        }
+        button {
+            width: 100%;
+            padding: 1rem 0;
+            margin-top: 1.88rem;
+            appearance: none;
+            background: linear-gradient(90deg,var(--primary) 75%,var(--accent));
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.09rem;
+            border: none;
+            border-radius: 9px;
+            box-shadow: 0 7px 17px rgba(47,128,237,0.13);
+            cursor: pointer;
+            transition: transform .17s, box-shadow .23s, background .21s;
+            letter-spacing: .06em;
+        }
+        button:active {
+            transform: scale(.98);
+            background: linear-gradient(90deg,#246abd 50%,#218049 100%);
+        }
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 1.6rem 0.56rem 1.18rem 0.56rem;
+                max-width: 99vw;
+            }
+            h2 {
+                font-size: 1.09rem;
+            }
+            button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container anim-fade-in">
+    <h2>Nouvelle inscription pédagogique</h2>
+    <form th:action="@{/registrations/create}" th:object="${form}" method="post">
+
+        <label for="studentId">Étudiant :</label>
+        <div class="input-wrap">
+            <select id="studentId" th:field="*{studentId}" required>
+                <option value="" disabled selected>-- Choisir un étudiant --</option>
+                <option th:each="student : ${students}"
+                        th:value="${student.id}"
+                        th:text="${student.firstName + ' ' + student.lastName}"></option>
+            </select>
+        </div>
+
+        <label for="teachingUnitId">UE optionnelle :</label>
+        <div class="input-wrap">
+            <select id="teachingUnitId" th:field="*{teachingUnitId}" required>
+                <option value="" disabled selected>-- Choisir une UE --</option>
+                <option th:each="ue : ${optionalUnits}"
+                        th:value="${ue.id}"
+                        th:text="${ue.label}"></option>
+            </select>
+        </div>
+
+        <button type="submit">Valider l’inscription</button>
+    </form>
+</div>
+</body>
+</html>

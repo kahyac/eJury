@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultats – eJury</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <style>
+        :root {
+            --primary: #2f80ed;
+            --accent: #27ae60;
+            --danger: #e74c3c;
+            --bg: #f4f8fb;
+            --card: rgba(255, 255, 255, 0.85);
+            --text: #21243d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(115deg, var(--bg), #dbeeff);
+            color: var(--text);
+            padding: 2rem;
+        }
+
+        .results-container {
+            max-width: 860px;
+            margin: auto;
+            background: var(--card);
+            padding: 2.6rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 12px 34px rgba(47, 128, 237, 0.1);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 2.2rem;
+        }
+
+        h3 {
+            margin-top: 2.2rem;
+            font-size: 1.4rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3::before {
+            content: "📚";
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        li {
+            background: #fff;
+            margin-bottom: 1rem;
+            padding: 1.1rem 1.4rem;
+            border-left: 5px solid var(--primary);
+            border-radius: 0.8rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        li span {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: #e0ecff;
+            color: var(--primary);
+            margin-left: 0.4rem;
+        }
+
+        .final-result {
+            margin-top: 2.5rem;
+            padding: 1.6rem;
+            background: rgba(255,255,255,0.92);
+            border-radius: 1rem;
+            border-left: 6px solid var(--accent);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .final-result p {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 0.6rem 0;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+
+        .back-link a {
+            display: inline-block;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.8rem;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .back-link a:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.03);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+<div class="results-container">
+    <h2 th:text="'Résultats de ' + ${student.firstName} + ' ' + ${student.lastName}"></h2>
+
+    <h3>Unités d’enseignement</h3>
+    <ul>
+        <li th:each="grade : ${unitGrades}">
+            <span>
+                <strong th:text="${grade.registration.teachingUnit.label}"></strong>
+                <span class="badge" th:text="'Statut : ' + ${grade.status}"></span>
+            </span>
+            <span th:if="${grade.status.name() == 'NONE'}" th:text="'Note : ' + ${grade.grade} + '/20'"></span>
+        </li>
+    </ul>
+
+    <h3>Blocs Semestriels</h3>
+    <ul>
+        <li th:each="sb : ${semestrialResults}">
+        <span>
+            <strong th:text="'Code : ' + ${sb.semBlock.code} + ' | Libellé : ' + ${sb.semBlock.label} + ' (Semestre' + ${sb.semBlock.semester} + ')'"></strong>
+            <span class="badge" th:text="'Statut : ' + ${sb.status}"></span>
+        </span>
+            <span th:if="${sb.average != null}" th:text="'Moyenne : ' + ${sb.average}"></span>
+        </li>
+    </ul>
+
+
+    <h3>Blocs Annuels</h3>
+    <ul>
+        <li th:each="ab : ${annualResults}">
+            <span>
+                <strong th:text="${ab.annualBlock.code}"></strong>
+                <span class="badge" th:text="'Décision : ' + ${ab.status}"></span>
+            </span>
+            <span th:if="${ab.average != null}" th:text="'Moyenne : ' + ${ab.average}"></span>
+        </li>
+    </ul>
+
+    <div th:if="${yearResult != null}" class="final-result">
+        <p>
+            <span th:if="${yearResult.decision.name() == 'ADM'}">✅</span>
+            <span th:if="${yearResult.decision.name() != 'ADM'}">❌</span>
+            <span th:text="'Décision finale : ' + ${yearResult.decision}"></span>
+        </p>
+        <p th:if="${yearResult.mention != null}" th:text="'Mention : ' + ${yearResult.mention}"></p>
+    </div>
+
+    <div class="back-link">
+        <a th:href="@{/grades/view}">← Retour</a>
+    </div>
+</div>
+</body>
+</html>

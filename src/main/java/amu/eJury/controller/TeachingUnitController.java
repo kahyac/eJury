@@ -20,7 +20,7 @@ public class TeachingUnitController {
     @GetMapping("/{id}/add-unit")
     public String showAddUnitForm(@PathVariable String id, Model model) {
         model.addAttribute("curriculumId", id);
-        model.addAttribute("teachingUnitDto", new TeachingUnitDto("", "", 0.0, 0.0,true));
+        model.addAttribute("teachingUnitDto", new TeachingUnitDto("", "", 1,0.0, 0.0,true));
         return "teachingUnit/add_unit";
     }
 
@@ -51,7 +51,7 @@ public class TeachingUnitController {
                 .orElseThrow(() -> new IllegalArgumentException("UE introuvable : " + unitId));
         model.addAttribute("unitId", unit.getId());
         model.addAttribute("teachingUnitDto", new TeachingUnitDto(
-                unit.getCode(), unit.getLabel(), unit.getEcts(), unit.getWorkloadHours(), unit.isObligation()
+                unit.getCode(), unit.getLabel(), unit.getSemester(), unit.getEcts(), unit.getWorkloadHours(), unit.isObligation()
         ));
         return "teachingUnit/edit_unit";
     }

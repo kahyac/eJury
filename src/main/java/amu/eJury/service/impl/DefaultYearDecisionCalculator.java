@@ -28,38 +28,52 @@ public class DefaultYearDecisionCalculator implements YearDecisionCalculator {
         int failures = 0;
         int almost   = 0;
 
+        double totalAverage = 0.0;
+        int count = 0;
+
         /* boucle sur les blocs annuels de la maquette */
         for (AnnualKnowledgeBlock ab : plan.getAnnualKnowledgeBlocks()) {
 
             AnnualBlockResult r = annualCalc.compute(s, ab);   // (re)calcule et sauvegarde
 
-            if (r.getStatus() != ExceptionalStatus.NONE) {     // ABI / ABJ / AR → décision miroir
+            if (r.getStatus() != ExceptionalStatus.NONE) {     // ABI / ABJ / AR  -> décision miroir
                 exceptional = true;
                 break;
             }
 
             double m = r.getAverage();
+            totalAverage += m;
+            count++;
             if (m < 9.5) failures++;
             else if (m < 10) almost++;
         }
 
+        Mention mention = null;
         AcademicDecision decision;
         if (exceptional) {
             decision = AcademicDecision.valueOf(   // on reflète le statut bloquant
                     worstExceptionalStatus(s, plan).name());
         } else if (failures == 0 && almost <= 1) {
             decision = AcademicDecision.ADM;
+
+            double average = totalAverage / count;
+
+            if (average < 12) mention = Mention.PASS;
+            else if (average < 14) mention = Mention.FAIRLY_GOOD;
+            else if (average < 16) mention = Mention.GOOD;
+            else if (average < 18) mention = Mention.VERY_GOOD;
+            else mention = Mention.EXCELLENT;
+
         } else {
             decision = AcademicDecision.AJ;
         }
 
-        return yearResRepo.save(
-                AcademicYearResult.builder()
-                        .student(s)
-                        .academicYear(plan.getAcademicYear())
-                        .decision(decision)
-                        .build()
-        );
+        AcademicYearResult result = yearResRepo.findByStudent(s).orElseGet(() -> new AcademicYearResult());
+        result.setStudent(s);
+        result.setDecision(decision);
+        result.setMention(mention);
+
+        return yearResRepo.save(result);
     }
 
     /* ----------- statut exceptionnel le plus sévère ----------- */

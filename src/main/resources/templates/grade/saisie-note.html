@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Saisie des notes – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <style>
+        :root {
+            --primary: #2f80ed;
+            --accent: #27ae60;
+            --danger: #e74c3c;
+            --bg: #eef2f7;
+            --card: rgba(255,255,255,0.85);
+            --border: #ccd6e0;
+            --text: #1e2a38;
+            --muted: #8392a6;
+            --shadow: 0 12px 40px rgba(47,128,237,0.07), 0 2px 10px rgba(39,174,96,0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(115deg, var(--bg) 60%, #dbeeff);
+            color: var(--text);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            align-items: center;
+        }
+
+        .form-container {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow);
+            max-width: 650px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease-in-out;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1.8rem;
+            background: linear-gradient(100deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        label {
+            font-weight: 600;
+            margin-top: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1.6px solid var(--border);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.035);
+            transition: border 0.2s ease;
+        }
+
+        select:focus, input[type="number"]:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        button[type="submit"] {
+            margin-top: 2rem;
+            padding: 0.85rem 1.6rem;
+            font-size: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.18s ease, background 0.3s ease;
+            box-shadow: 0 8px 20px rgba(47,128,237,0.2);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px) scale(1.045);
+            background: linear-gradient(90deg,#2562bd, #1e874b);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div style="position: absolute; top: 2rem; left: 2rem;">
+    <a th:href="@{/grades/view}"
+       style="background: var(--card);
+              color: var(--primary);
+              padding: 0.6rem 1.2rem;
+              border-radius: 0.8rem;
+              text-decoration: none;
+              font-weight: 600;
+              box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+              transition: transform 0.2s;">
+        ← Retour à la consultation
+    </a>
+</div>
+<div class="form-container anim-fade-in">
+    <h2>Saisir une note ou un statut</h2>
+
+    <form th:action="@{/grades/save}" th:object="${gradeForm}" method="post">
+
+        <!-- Étudiant -->
+        <label for="studentId">Étudiant :</label>
+        <div class="input-wrap">
+            <select id="studentId" th:field="*{studentId}" required>
+                <option value="" disabled selected>-- Choisir un étudiant --</option>
+                <option th:each="student : ${students}"
+                        th:value="${student.id}"
+                        th:text="${student.firstName + ' ' + student.lastName}"></option>
+            </select>
+        </div>
+
+        <!-- UE -->
+        <label for="unitId">Unité d’enseignement :</label>
+        <div class="input-wrap">
+            <select id="unitId" th:field="*{unitId}" required>
+                <option value="" disabled selected>-- Choisir une UE --</option>
+                <option th:each="ue : ${units}"
+                        th:value="${ue.id}"
+                        th:text="${ue.label}"></option>
+            </select>
+        </div>
+
+        <!-- Statut -->
+        <label for="statusSelect">Statut :</label>
+        <div class="input-wrap">
+            <select id="statusSelect" th:field="*{status}" required onchange="toggleNoteField()">
+                <option value="NONE">Aucun (note sur 20)</option>
+                <option value="ABI">ABI</option>
+                <option value="ABJ">ABJ</option>
+                <option value="AR">AR</option>
+            </select>
+        </div>
+
+        <!-- Note -->
+        <div class="input-wrap" id="noteSection">
+            <label for="numeric">Note (sur 20) :</label>
+            <input id="numeric" type="number" th:field="*{numeric}" step="0.1" min="0" max="20" />
+        </div>
+
+        <!-- Bouton -->
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+
+<script>
+    function toggleNoteField() {
+        const status = document.getElementById("statusSelect").value;
+        const noteSection = document.getElementById("noteSection");
+        noteSection.style.display = (status === "NONE") ? "block" : "none";
+    }
+
+    window.addEventListener("DOMContentLoaded", toggleNoteField);
+</script>
+</body>
+</html>

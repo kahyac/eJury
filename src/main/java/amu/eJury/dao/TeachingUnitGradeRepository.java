@@ -7,6 +7,7 @@ import amu.eJury.model.users.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +15,5 @@ public interface TeachingUnitGradeRepository extends JpaRepository<TeachingUnitG
     Optional<TeachingUnitGrade> findByRegistration(PedagogicalRegistration reg);
     Optional<TeachingUnitGrade> findByRegistration_StudentAndRegistration_TeachingUnit(
             Student student, TeachingUnit teachingUnit);
+    List<TeachingUnitGrade> findByRegistration_Student_Id(Long studentId);
 }

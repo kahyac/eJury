@@ -92,10 +92,12 @@
         }
         .action-buttons {
             display: flex;
-            flex-direction: row;
-            gap: 2rem;
+            flex-direction: column;
+            gap: 1.2rem;
             margin-top: 2rem;
+            align-items: flex-start;
         }
+
 
         .btn {
             background: linear-gradient(100deg, var(--accent), var(--primary) 89%);
@@ -229,6 +231,12 @@
             </a>
             <a th:unless="${hasCurriculum}" th:href="@{/curriculum/create}" class="btn">
                 Créer une nouvelle maquette
+            </a>
+            <a th:href="@{/registrations}" class="btn">
+                Gestion des IP
+            </a>
+            <a th:href="@{/grades/view}" class="btn">
+                Gestion des résultats
             </a>
         </div>
     </div>

@@ -25,6 +25,8 @@ public class TeachingUnit {
 
     private String label;
 
+    private int semester;
+
     private double ects;
 
     private double workloadHours;

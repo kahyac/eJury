@@ -25,7 +25,6 @@ public class StudentDataLoader {
                     .identifiant("etudiant" + num)
                     .lastName("Nom" + num)
                     .firstName("Prenom" + num)
-                    .email("etudiant" + num + "@etu.univ-amu.fr")
                     .build();
             studentRepo.save(stu);
         });
