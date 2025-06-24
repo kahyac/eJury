@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Inter & Poppins Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@700&display=swap">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #37bc8b;
+            --accent-gradient: linear-gradient(92deg,var(--success) 45%,var(--primary) 97%);
+            --bg: #f3f8fd;
+            --glass: rgba(255,255,255,0.75);
+            --card: rgba(255,255,255,0.93);
+            --border: #dbeafe;
+            --shadow: 0 8px 36px rgba(80,180,252,0.13), 0 1.5px 8px rgba(47,128,237,0.08);
+            --radius: 1.25rem;
+            --text: #223147;
+            --text-muted: #64748b;
+            --error: #e74c3c;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter','Poppins',sans-serif;
+            background: linear-gradient(113deg,#f3f8fd 60%,#e0ecfa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--text);
+        }
+        .form-container {
+            background: var(--glass);
+            border: 1.6px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            backdrop-filter: blur(22px);
+            animation: fadeIn 1s ease-out;
+        }
+        .form-container:before {
+            content: '';
+            position: absolute;
+            width: 120px; height: 120px;
+            top: -60px; right: -50px;
+            background: linear-gradient(135deg,var(--primary) 68%,var(--success) 100%);
+            opacity: .16;
+            border-radius: 70%;
+            filter: blur(2px);
+            z-index: 0;
+        }
+        h2 {
+            margin: 0 0 1.8rem;
+            font-size: 1.5rem;
+            text-align: center;
+            background: linear-gradient(95deg,var(--primary) 66%,var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: .3rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 800;
+        }
+        form { position: relative; z-index: 1; }
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        input, select {
+            width: 100%;
+            padding: .75rem 1rem;
+            margin-top: .3rem;
+            border: 1.4px solid var(--border);
+            border-radius: .7rem;
+            background: var(--card);
+            font-size: 1rem;
+            transition: border .2s, box-shadow .2s;
+        }
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 1.5px 9px rgba(47,128,237,0.09);
+            outline: none;
+        }
+        .error-msg {
+            color: var(--error);
+            font-size: .9rem;
+            margin-top: .25rem;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .checkbox-group input {
+            width: 1.2em; height: 1.2em;
+            margin: 0; border: 1.8px solid var(--primary);
+            border-radius: 4px; background: var(--card);
+            cursor: pointer; position: relative;
+        }
+        .checkbox-group input:checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+        .checkbox-group input:checked::after {
+            content: '';
+            position: absolute; left: 4px; top: 2px;
+            width: 6px; height: 12px;
+            border: solid white; border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .checkbox-group label {
+            margin-left: .5rem;
+            color: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.8rem;
+        }
+        .btn-modern {
+            flex: 1;
+            padding: .8rem 0;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: .8rem;
+            background: var(--accent-gradient);
+            color: #fff;
+            cursor: pointer;
+            transition: background .2s, transform .1s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-modern:hover {
+            background: linear-gradient(97deg,#169f58 41%,#3462c9 100%);
+        }
+        .btn-modern:active { transform: scale(0.98); }
+        .btn-secondary {
+            flex: 1;
+            padding: .8rem;
+            text-align: center;
+            border: 2px solid var(--primary);
+            border-radius: .8rem;
+            background: transparent;
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .forgot-password {
+            text-align: right;
+            margin-top: 1rem;
+        }
+        .forgot-password a {
+            color: var(--text-muted);
+            font-size: .9rem;
+            text-decoration: none;
+            border-bottom: 1px dotted var(--text-muted);
+        }
+        .forgot-password a:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-muted);
+            font-size: .9rem;
+            text-decoration: none;
+        }
+        .back-link:hover { color: var(--primary); }
+        .toast {
+            position: fixed; right: 2rem; bottom: 2rem;
+            background: var(--card); padding: 1rem 1.5rem;
+            border-radius: var(--radius); box-shadow: var(--shadow);
+            border-left: 4px solid var(--success);
+            opacity: 0; transform: translateY(2rem) scale(.97);
+            transition: opacity .3s, transform .3s;
+            display: flex; align-items: center; gap: .5rem;
+            font-weight: 600;
+        }
+        .toast.show { opacity: 1; transform: translateY(0) scale(1.05); }
+        .toast.danger { border-left-color: var(--error); color: var(--error); }
+        .toast-close {
+            margin-left: auto; background: none; border: none;
+            font-size: 1.2rem; cursor: pointer; color: inherit;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 450px) {
+            .btn-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Connexion</h2>
+
+    <div th:if="${errorMessage}" class="error-msg">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <form th:action="@{/login}" th:object="${loginDto}" method="post" id="login-form" autocomplete="off">
+        <label for="username">Adresse e-mail :</label>
+        <input id="username" name="username" type="text" th:field="*{username}"
+               required placeholder="exemple@etu.univ-amu.f" />
+        <div th:if="${#fields.hasErrors('username')}" class="error-msg" th:errors="*{username}"></div>
+
+        <label for="password">Mot de passe :</label>
+        <input id="password" name="password" type="password" th:field="*{password}"
+               required placeholder="••••••••••" />
+        <div th:if="${#fields.hasErrors('password')}" class="error-msg" th:errors="*{password}"></div>
+
+        <div class="checkbox-group">
+            <input id="rememberMe" name="rememberMe" type="checkbox" th:field="*{rememberMe}" />
+            <label for="rememberMe">Se souvenir de moi</label>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn-modern">Se connecter</button>
+        </div>
+
+        <div class="forgot-password">
+            <a th:href="@{/reset-password}">Mot de passe oublié ?</a>
+        </div>
+    </form>
+
+    <a class="back-link" th:href="@{/}">← Retour à l’accueil</a>
+</div>
+
+<div id="toast" class="toast">
+    <span></span>
+    <button class="toast-close" onclick="closeToast()">&times;</button>
+</div>
+
+<script>
+    // apparition
+    document.querySelector('.form-container').style.opacity = 0;
+    setTimeout(() => {
+        document.querySelector('.form-container').style.animation = 'fadeIn 0.8s ease-out';
+        document.querySelector('.form-container').style.opacity = 1;
+    }, 60);
+
+    // toast helpers
+    function showToast(msg, type = '') {
+        const toast = document.getElementById('toast');
+        const span = toast.querySelector('span');
+        span.textContent = msg;
+        toast.className = 'toast' + (type ? ' ' + type : '');
+        setTimeout(() => toast.classList.add('show'), 50);
+        clearTimeout(toast._t);
+        toast._t = setTimeout(closeToast, 3000);
+    }
+    function closeToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+    }
+
+    // validation client
+    document.getElementById('login-form').addEventListener('submit', e => {
+        let ok = true;
+        ['username','password'].forEach(id => {
+            const f = document.getElementById(id);
+            if (!f.value.trim()) { ok = false; f.classList.add('error-field'); }
+            else { f.classList.remove('error-field'); }
+        });
+        if (!ok) {
+            e.preventDefault();
+            showToast('Merci de remplir tous les champs.', 'danger');
+        }
+    });
+</script>
+</body>
+</html>

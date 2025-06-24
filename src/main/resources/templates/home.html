@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Accueil – eJury</title>
@@ -216,28 +217,63 @@
     </style>
 </head>
 <body>
+<header style="width: 100%; display: flex; justify-content: flex-end; padding: 1.2rem 2rem; position: absolute; top: 0; z-index: 10;">
+    <a href="/logout" class="btn"
+       style="background: linear-gradient(90deg, #e74c3c, #c0392b); box-shadow: 0 8px 18px #e74c3c44; padding: 0.65rem 1.8rem; font-size: 0.95rem;">
+        🚪 Se déconnecter
+    </a>
+</header>
 <div class="main-bg-anim"></div>
 <div class="container">
     <div class="text-section">
         <h1>
             Bienvenue sur <strong>eJury</strong>
         </h1>
+        <p sec:authorize="isAuthenticated()">
+            Connecté en tant que :
+            <strong sec:authentication="principal.username">[email]</strong>
+            (<span sec:authentication="principal.authorities">[rôle]</span>)
+        </p>
+
         <p>
             Simplifiez la conception et la gestion pédagogique des maquettes à <span style="font-weight:700;color:var(--primary)">Aix-Marseille Université</span> grâce à <span style="font-weight:800;color:var(--accent)">eJury</span>.
         </p>
+
         <div class="action-buttons">
-            <a th:if="${hasCurriculum}" th:href="@{'/curriculum/' + ${curriculumId}}" class="btn">
+
+            <!-- ADMIN uniquement -->
+            <a sec:authorize="hasRole('ADMIN')" th:if="${hasCurriculum}" th:href="@{'/curriculum/' + ${curriculumId}}" class="btn">
                 Afficher la maquette
             </a>
-            <a th:unless="${hasCurriculum}" th:href="@{/curriculum/create}" class="btn">
+
+            <a sec:authorize="hasRole('ADMIN')" th:unless="${hasCurriculum}" th:href="@{/curriculum/create}" class="btn">
                 Créer une nouvelle maquette
             </a>
-            <a th:href="@{/registrations}" class="btn">
+
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/registrations}" class="btn">
                 Gestion des IP
             </a>
-            <a th:href="@{/grades/view}" class="btn">
+
+            <!-- TEACHER + ADMIN : Gestion des résultats -->
+            <a sec:authorize="hasAnyRole('TEACHER','ADMIN')" th:href="@{/grades/view}" class="btn">
                 Gestion des résultats
             </a>
+
+            <!-- STUDENT : Voir mes notes -->
+            <a sec:authorize="hasRole('STUDENT')" th:href="@{/grades/view}" class="btn">
+                Voir mes notes
+            </a>
+
+            <!-- ADMIN uniquement : Gestion des étudiants -->
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/students}" class="btn">
+                Gestion des étudiants
+            </a>
+
+            <!-- ADMIN uniquement : Gestion des enseignants -->
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/teachers}" class="btn">
+                Gestion des enseignants
+            </a>
+
         </div>
     </div>
     <div class="image-section">

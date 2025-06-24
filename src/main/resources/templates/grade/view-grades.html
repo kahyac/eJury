@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Consultation de note – eJury</title>
@@ -165,54 +166,59 @@
     <a th:href="@{/}" class="nav-btn">Accueil</a>
 </div>
 
-<a th:href="@{/grades/new}" class="add-btn">➕ Ajouter une note</a>
+<div sec:authorize="hasAnyRole('ADMIN', 'TEACHER')">
+    <a th:href="@{/grades/new}" class="add-btn">➕ Ajouter une note</a>
+</div>
 
 <div class="form-container">
 
     <div th:if="${message}" class="result-section" style="border-left-color: var(--primary);">
         <h3 th:text="${message}"></h3>
     </div>
-    <form th:action="@{/jury/run}" method="post" style="margin-top: 2.8rem;">
-        <button type="submit">Lancer le calcul du jury</button>
-    </form>
+    <div sec:authorize="hasRole('ADMIN')">
+        <form th:action="@{/jury/run}" method="post" style="margin-top: 2.8rem;">
+            <button type="submit">Lancer le calcul du jury</button>
+        </form>
+    </div>
 
-    <form th:action="@{/results/view}" method="post" style="margin-bottom: 2.4rem;">
-        <label for="studentSelect"><strong>Voir tous les résultats d’un étudiant :</strong></label>
+    <div sec:authorize="hasRole('STUDENT')">
+        <form th:action="@{/results/view}" method="post" style="margin-bottom: 2.4rem;">
+            <label for="studentSelect"><strong>Voir tous les résultats :</strong></label>
             <select id="studentSelect" name="studentId" required style="flex: 1;">
+                <option th:value="${currentStudent.id}"
+                        th:text="${currentStudent.firstName + ' ' + currentStudent.lastName}"
+                        selected>
+                </option>
+            </select>
+            <button type="submit" style="white-space: nowrap;">Voir résultats</button>
+        </form>
+    </div>
+
+    <div sec:authorize="hasAnyRole('ADMIN', 'TEACHER')">
+        <h2>Consulter une note</h2>
+        <form th:action="@{/grades/view}" method="post">
+            <label for="studentId">Étudiant :</label>
+            <select id="studentId" name="studentId" required>
                 <option value="" disabled selected>-- Choisir un étudiant --</option>
                 <option th:each="student : ${students}"
                         th:value="${student.id}"
                         th:text="${student.firstName + ' ' + student.lastName}"
-                        th:selected="${student.id == selectedStudentId}">
-                </option>
-
+                        th:selected="${student.id == selectedStudentId}"></option>
             </select>
-            <button type="submit" style="white-space: nowrap;">Voir résultats</button>
-    </form>
 
-    <h2>Consulter une note</h2>
+            <label for="unitId">UE :</label>
+            <select id="unitId" name="unitId" required>
+                <option value="" disabled selected>-- Choisir une UE --</option>
+                <option th:each="unit : ${units}"
+                        th:value="${unit.id}"
+                        th:text="${unit.label}"
+                        th:selected="${unit.id == selectedUnitId}"></option>
+            </select>
 
-    <form th:action="@{/grades/view}" method="post">
-        <label for="studentId">Étudiant :</label>
-        <select id="studentId" name="studentId" required>
-            <option value="" disabled selected>-- Choisir un étudiant --</option>
-            <option th:each="student : ${students}"
-                    th:value="${student.id}"
-                    th:text="${student.firstName + ' ' + student.lastName}"
-                    th:selected="${student.id == selectedStudentId}"></option>
-        </select>
+            <button type="submit">Afficher le résultat</button>
+        </form>
+    </div>
 
-        <label for="unitId">UE :</label>
-        <select id="unitId" name="unitId" required>
-            <option value="" disabled selected>-- Choisir une UE --</option>
-            <option th:each="unit : ${units}"
-                    th:value="${unit.id}"
-                    th:text="${unit.label}"
-                    th:selected="${unit.id == selectedUnitId}"></option>
-        </select>
-
-        <button type="submit">Afficher le résultat</button>
-    </form>
 
     <div th:if="${grade != null}" class="result-section">
         <h3>Résultat :</h3>

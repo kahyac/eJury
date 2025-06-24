@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Enseignant – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #27ae60;
+            --bg: #f3f8fd;
+            --card: rgba(255, 255, 255, 0.88);
+            --text: #223147;
+            --border: #dbeafe;
+            --shadow: 0 6px 28px rgba(80,180,252,0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            background: linear-gradient(120deg, var(--bg), #e1ecf7);
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 550px;
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(12px);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 0.6rem;
+            background: white;
+            font-size: 1rem;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 1.4rem;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(47,128,237,0.08);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            color: white;
+            border: none;
+            border-radius: 0.7rem;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #1fa56d, #1d4ed8);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.8rem;
+            text-align: center;
+            width: 100%;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+<div class="form-card">
+    <h1 th:text="${form.id == null} ? 'Ajouter un enseignant' : 'Modifier l’enseignant'"></h1>
+
+    <form th:action="@{/teachers/save}" th:object="${form}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Prénom :</label>
+        <input type="text" th:field="*{firstName}" required />
+
+        <label>Nom :</label>
+        <input type="text" th:field="*{lastName}" required />
+
+        <label>Email :</label>
+        <input type="email" th:field="*{email}" required />
+
+        <label>Responsable d’UE :</label>
+        <select th:field="*{ueId}" required>
+            <option value="" disabled selected>-- Sélectionnez une UE --</option>
+            <option th:each="ue : ${ues}" th:value="${ue.id}" th:text="${ue.label}"></option>
+        </select>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <a class="back-link" th:href="@{/teachers}">← Retour à la liste</a>
+</div>
+</body>
+</html>

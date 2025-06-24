@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des enseignants – eJury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --danger: #e74c3c;
+            --success: #37bc8b;
+            --bg: #f3f8fd;
+            --card: rgba(255, 255, 255, 0.85);
+            --text: #223147;
+            --muted: #64748b;
+            --shadow: 0 6px 28px rgba(80,180,252,0.1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            background: linear-gradient(120deg, var(--bg), #e1ebf7);
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .add-btn {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            background: var(--success);
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.7rem;
+            transition: background 0.2s ease;
+        }
+
+        .add-btn:hover {
+            background: #1fa173;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.9rem 1rem;
+        }
+
+        thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f6f9ff;
+        }
+
+        tbody tr:hover {
+            background-color: #e4f0ff;
+        }
+
+        .action-btn {
+            margin-right: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.4rem 0.7rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .edit-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .top-nav {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            background: var(--card);
+            box-shadow: 0 2px 7px rgba(47,128,237,0.08);
+            color: var(--primary);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.5rem 1.2rem;
+            border: none;
+            outline: none;
+            transition: background 0.19s, color 0.19s, transform 0.18s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-2px) scale(1.055);
+            box-shadow: 0 8px 30px rgba(47,128,237,0.12);
+        }
+
+    </style>
+</head>
+<body>
+<div class="top-nav">
+    <a th:href="@{/}" class="nav-btn">Accueil</a>
+</div>
+
+<div class="container">
+    <h1>Enseignants</h1>
+
+    <a th:href="@{/teachers/create}" class="add-btn">➕ Ajouter un enseignant</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="teacher : ${teachers}">
+            <td th:text="${teacher.lastName}">Nom</td>
+            <td th:text="${teacher.firstName}">Prénom</td>
+            <td th:text="${teacher.appUser != null ? teacher.appUser.email : '—'}">Email</td>
+            <td>
+                <a th:href="@{'/teachers/edit/' + ${teacher.id}}" class="action-btn edit-btn">✏️ Modifier</a>
+                <a th:href="@{'/teachers/delete/' + ${teacher.id}}" class="action-btn delete-btn"
+                   onclick="return confirm('Supprimer cet enseignant ?');">🗑️ Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+

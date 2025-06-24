@@ -1,15 +1,150 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Formulaire Étudiant</title></head>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${form.id() == null} ? 'Ajouter un étudiant' : 'Modifier l’étudiant'">Formulaire Étudiant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #37bc8b;
+            --bg: #f3f8fd;
+            --glass: rgba(255,255,255,0.75);
+            --card: rgba(255,255,255,0.93);
+            --border: #dbeafe;
+            --shadow: 0 8px 36px rgba(80,180,252,0.13), 0 1.5px 8px rgba(47,128,237,0.08);
+            --radius: 1.25rem;
+            --text: #223147;
+            --muted: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(113deg, #f3f8fd 60%, #e0ecfa 100%);
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+        }
+
+        .form-card {
+            background: var(--glass);
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 100%;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            animation: fadeIn 0.8s ease;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            background: linear-gradient(95deg,var(--primary),var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: .8rem 1rem;
+            border: 1.4px solid var(--border);
+            border-radius: .8rem;
+            background: var(--card);
+            font-size: 1rem;
+            margin-top: .3rem;
+            transition: border .2s, box-shadow .2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 1.5px 9px rgba(47,128,237,0.09);
+            outline: none;
+        }
+
+        .btn-submit {
+            margin-top: 1.5rem;
+            width: 100%;
+            background: linear-gradient(92deg,var(--success) 45%,var(--primary) 97%);
+            border: none;
+            color: white;
+            padding: .9rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: .9rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(92deg,#169f58 45%,#1c4cd7 97%);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 1.4rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
 <body>
-<h1 th:text="${student.id == null} ? 'Ajouter' : 'Modifier'">Étudiant</h1>
-<form th:action="@{/students/save}" th:object="${student}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <label>Nom: <input type="text" th:field="*{lastName}"/></label><br/>
-    <label>Prénom: <input type="text" th:field="*{firstName}"/></label><br/>
-    <label>Email: <input type="email" th:field="*{email}"/></label><br/>
-    <button type="submit">Enregistrer</button>
-</form>
-<a th:href="@{/students}">⬅ Retour</a>
+<div class="form-card">
+    <h1 th:text="${form.id() == null} ? 'Ajouter un étudiant' : 'Modifier l’étudiant'"></h1>
+
+    <form th:action="@{/students/save}" th:object="${form}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <label for="firstName">Nom :
+            <input type="text" id="firstName" th:field="*{firstName}" required />
+        </label>
+
+        <label for="lastName">Prénom :
+            <input type="text" id="lastName" th:field="*{lastName}" required />
+        </label>
+
+        <label for="email">Email :
+            <input type="email" id="email" th:field="*{email}" required />
+        </label>
+
+        <button type="submit" class="btn-submit">Enregistrer</button>
+    </form>
+
+    <a class="back-link" th:href="@{/students}">← Retour à la liste</a>
+</div>
 </body>
 </html>
