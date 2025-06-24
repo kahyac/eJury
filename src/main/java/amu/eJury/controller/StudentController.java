@@ -1,19 +1,30 @@
 package amu.eJury.controller;
-import amu.eJury.model.users.Student;
+
+import amu.eJury.dao.AppUserRepository;
 import amu.eJury.dao.StudentRepository;
+import amu.eJury.model.users.AppUser;
+import amu.eJury.model.users.Role;
+import amu.eJury.model.users.Student;
+import amu.eJury.service.dtos.StudentUserDto;
+import amu.eJury.service.impl.EmailService;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Controller
+@AllArgsConstructor
 @RequestMapping("/students")
 public class StudentController {
 
     private final StudentRepository studentRepository;
+    private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public StudentController(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
 
     @GetMapping
     public String listStudents(Model model) {
@@ -23,19 +34,43 @@ public class StudentController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("student", new Student());
+        model.addAttribute("form", new StudentUserDto(null, "", "", ""));
         return "students/form";
     }
 
     @PostMapping("/save")
-    public String saveStudent(@ModelAttribute Student student) {
+    public String saveStudent(@ModelAttribute("form") StudentUserDto form) {
+        // Crée l'étudiant
+        Student student = Student.builder()
+                .firstName(form.firstName())
+                .lastName(form.lastName())
+                .build();
         studentRepository.save(student);
+
+        // Crée l'utilisateur associé
+        String rawPassword = UUID.randomUUID().toString().substring(0, 8);
+        AppUser appUser = AppUser.builder()
+                .email(form.email())
+                .password(passwordEncoder.encode(rawPassword))
+                .firstLogin(true)
+                .role(Role.STUDENT)
+                .student(student)
+                .build();
+        appUserRepository.save(appUser);
+
+        // Envoi e-mail avec mot de passe
+        emailService.sendNewUserEmail(form.email(), rawPassword);
+
         return "redirect:/students";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        studentRepository.findById(id).ifPresent(student -> model.addAttribute("student", student));
+        studentRepository.findById(id).ifPresent(student -> {
+            String email = student.getAppUser() != null ? student.getAppUser().getEmail() : "";
+            model.addAttribute("form",
+                    new StudentUserDto(student.getId(), student.getFirstName(), student.getLastName(), email));
+        });
         return "students/form";
     }
 

@@ -13,5 +13,5 @@ public interface TeachingUnitRepository extends JpaRepository<TeachingUnit, Long
     boolean existsByLabel(String label);
     List<TeachingUnit> findByObligationFalse();
     List<TeachingUnit> findByObligationTrue();
-    Optional<TeachingUnit> findByCode(String code);
+    Optional<TeachingUnit> findByResponsibleTeacherId(Long id);;
 }

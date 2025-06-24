@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -16,15 +17,18 @@ public class HomeController {
     private final CurriculumPlanRepository curriculumRepository;
 
     @GetMapping("/")
-    public String showHomePage(Model model) {
-        Optional<CurriculumPlan> existingPlan = curriculumRepository.findById(1L);
+    public String showHomePage(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
 
-        existingPlan.ifPresent(plan -> {
+        curriculumRepository.findById(1L).ifPresent(plan -> {
             model.addAttribute("hasCurriculum", true);
             model.addAttribute("curriculumId", plan.getId());
         });
 
         return "home";
     }
+
 
 }
