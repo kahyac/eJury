@@ -111,6 +111,11 @@
     </style>
 </head>
 <body>
+<div th:if="${errorMessage}"
+     style="background: #fdecea; color: #c0392b; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; text-align: center; font-weight: 600;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
 <div style="position: absolute; top: 2rem; left: 2rem;">
     <a th:href="@{/grades/view}"
        style="background: var(--card);
@@ -126,10 +131,14 @@
 </div>
 <div class="form-container anim-fade-in">
     <h2>Saisir une note ou un statut</h2>
+    <div th:if="${successMessage}" style="background: #d5f5e3; color: #1e8449; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; text-align: center; font-weight: 600;">
+        <p th:text="${successMessage}"></p>
+    </div>
 
-    <form th:action="@{/grades/save}" th:object="${gradeForm}" method="post">
+    <form th:action="@{/grades/save}" th:object="${gradeForm}" method="post" onsubmit="return validateForm();">
 
-        <!-- Étudiant -->
+
+    <!-- Étudiant -->
         <label for="studentId">Étudiant :</label>
         <div class="input-wrap">
             <select id="studentId" th:field="*{studentId}" required>
@@ -178,6 +187,22 @@
         const status = document.getElementById("statusSelect").value;
         const noteSection = document.getElementById("noteSection");
         noteSection.style.display = (status === "NONE") ? "block" : "none";
+    }
+
+    function validateForm() {
+        const status = document.getElementById("statusSelect").value;
+        const noteInput = document.getElementById("numeric");
+
+        if (status === "NONE") {
+            const note = parseFloat(noteInput.value);
+            if (isNaN(note) || note < 0 || note > 20) {
+                alert("Veuillez entrer une note valide entre 0 et 20 si le statut est 'NONE'.");
+                noteInput.focus();
+                return false;
+            }
+        }
+
+        return true;
     }
 
     window.addEventListener("DOMContentLoaded", toggleNoteField);

@@ -35,17 +35,53 @@ public class RegistrationController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("form", new PedagogicalRegistrationForm(null, null, 1));
+        model.addAttribute("form",
+                new PedagogicalRegistrationForm(null, null, 1));
         model.addAttribute("students", studentRepository.findAll());
         model.addAttribute("optionalUnits", teachingUnitRepository.findByObligationFalse());
         return "registrations/create";
     }
 
     @PostMapping("/create")
-    public String submitForm(@ModelAttribute PedagogicalRegistrationForm form) {
-        Student student = studentRepository.findById(form.studentId()).orElseThrow();
-        TeachingUnit ue = teachingUnitRepository.findById(form.teachingUnitId()).orElseThrow();
+    public String submitForm(@ModelAttribute PedagogicalRegistrationForm form,
+                             RedirectAttributes redirectAttributes) {
 
+        Student student = studentRepository.findById(form.studentId())
+                .orElseThrow(() -> new IllegalArgumentException("Étudiant introuvable."));
+        TeachingUnit ue = teachingUnitRepository.findById(form.teachingUnitId())
+                .orElseThrow(() -> new IllegalArgumentException("UE introuvable."));
+
+        // 1. Vérifier correspondance semestre ↔ UE
+        if (ue.getSemester() != form.semester()) {
+            redirectAttributes.addFlashAttribute("error", "Le semestre sélectionné ne correspond pas à celui de l’UE choisie.");
+            return "redirect:/registrations/create";
+        }
+
+        // 2. Vérifier si l'étudiant est déjà inscrit à cette UE
+        boolean alreadyExists = registrationRepository
+                .findByStudentAndTeachingUnit(student, ue)
+                .isPresent();
+        if (alreadyExists) {
+            redirectAttributes.addFlashAttribute("error", "Cet(te) étudiant(e) est déjà inscrit(e) à cette UE.");
+            return "redirect:/registrations/create";
+        }
+
+        // 3. Vérifier si ECTS dépasse 30
+        List<PedagogicalRegistration> existingRegs = registrationRepository
+                .findByStudentIdAndSemester(form.studentId(), form.semester());
+
+        int currentEcts = existingRegs.stream()
+                .mapToInt(reg -> (int) reg.getTeachingUnit().getEcts())
+                .sum();
+
+        int newUeEcts = (int) ue.getEcts();
+
+        if (currentEcts + newUeEcts > 30) {
+            redirectAttributes.addFlashAttribute("error", "Impossible d’ajouter cette UE : vous dépasseriez 30 ECTS pour le semestre.");
+            return "redirect:/registrations/create";
+        }
+
+        // 4. Si tout est OK, enregistrer
         PedagogicalRegistration registration = PedagogicalRegistration.builder()
                 .student(student)
                 .teachingUnit(ue)
@@ -53,8 +89,12 @@ public class RegistrationController {
                 .build();
 
         registrationRepository.save(registration);
+        redirectAttributes.addFlashAttribute("success", "Inscription pédagogique enregistrée avec succès.");
         return "redirect:/registrations";
     }
+
+
+
 
     @GetMapping
     public String getGroupedRegistrations(Model model) {
@@ -100,7 +140,7 @@ public class RegistrationController {
     }
 
 
-    @PostMapping("/registrations/{studentId}/unit/{unitId}/delete")
+    @PostMapping("/{studentId}/unit/{unitId}/delete")
     public String deletePedagogicalRegistration(@PathVariable Long studentId,
                                                 @PathVariable Long unitId,
                                                 RedirectAttributes redirectAttributes) {

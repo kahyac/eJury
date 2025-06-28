@@ -31,14 +31,15 @@ public class CurriculumDataLoader {
         if (planRepo.count() > 0) return;                   // déjà chargé
 
         /* 1 ────────── UE */
+        /* 1 ────────── UE */
         List<TeachingUnit> ues = List.of(
-                TeachingUnit.builder().code("UE1").label("UE1 Automne").ects(7).workloadHours(70).obligation(true).build(),
-                TeachingUnit.builder().code("UE2").label("UE2 Automne").ects(6).workloadHours(60).obligation(true).build(),
-                TeachingUnit.builder().code("UE3").label("UE3 Automne").ects(2).workloadHours(20).obligation(false).build(),
-                TeachingUnit.builder().code("UE4").label("UE4 Automne").ects(6).workloadHours(60).obligation(true).build(),
-                TeachingUnit.builder().code("UE5").label("UE5 Printemps").ects(4).workloadHours(40).obligation(true).build(),
-                TeachingUnit.builder().code("UE6").label("UE6 Printemps").ects(10).workloadHours(100).obligation(false).build(),
-                TeachingUnit.builder().code("UE7").label("UE7 Printemps").ects(2.5).workloadHours(25).obligation(false).build()
+                TeachingUnit.builder().code("SINA09A").label("Réseaux").semester(1).ects(7).workloadHours(70).obligation(true).build(),
+                TeachingUnit.builder().code("SINA09B").label("Complexité").semester(1).ects(6).workloadHours(60).obligation(true).build(),
+                TeachingUnit.builder().code("SINAX01").label("Cryptographie").semester(1).ects(2).workloadHours(20).obligation(false).build(),
+                TeachingUnit.builder().code("SINA09D").label("Programmation Objet Concurrente").semester(1).ects(15).workloadHours(60).obligation(true).build(),
+                TeachingUnit.builder().code("SINB34B").label("Des Conteneurs au Cloud : Principes et Administrations").semester(2).ects(15).workloadHours(40).obligation(true).build(),
+                TeachingUnit.builder().code("SINB34A").label("Interface Homme-Machine").semester(2).ects(15).workloadHours(100).obligation(false).build(),
+                TeachingUnit.builder().code("SINBX07").label("Informatique Quantique").semester(2).ects(15).workloadHours(25).obligation(false).build()
         );
         ueRepo.saveAll(ues);
         Map<String, TeachingUnit> ueByCode = ues.stream()
@@ -48,32 +49,32 @@ public class CurriculumDataLoader {
         SemestrialKnowledgeBlock bcc1S1 = SemestrialKnowledgeBlock.builder()
                 .code("BCC1S1").label("BCC1 Semestre 1").semester(1).ects(26)
                 .unitsCoefficientAssociation(Map.of(
-                        ueByCode.get("UE1"), 7.0,
-                        ueByCode.get("UE2"), 6.0,
-                        ueByCode.get("UE3"), 2.0,
-                        ueByCode.get("UE4"), 6.0))
+                        ueByCode.get("SINA09A"), 7.0,
+                        ueByCode.get("SINA09B"), 6.0,
+                        ueByCode.get("SINAX01"), 2.0,
+                        ueByCode.get("SINA09D"), 6.0))
                 .build();
 
         SemestrialKnowledgeBlock bcc1S2 = SemestrialKnowledgeBlock.builder()
                 .code("BCC1S2").label("BCC1 Semestre 2").semester(2).ects(9)
                 .unitsCoefficientAssociation(Map.of(
-                        ueByCode.get("UE5"), 4.0))
+                        ueByCode.get("SINB34B"), 4.0))
                 .build();
 
         SemestrialKnowledgeBlock bcc2S1 = SemestrialKnowledgeBlock.builder()
                 .code("BCC2S1").label("BCC2 Semestre 1").semester(1).ects(12)
                 .unitsCoefficientAssociation(Map.of(
-                        ueByCode.get("UE1"), 6.0,
-                        ueByCode.get("UE2"), 7.0,
-                        ueByCode.get("UE3"), 2.0))
+                        ueByCode.get("SINA09A"), 6.0,
+                        ueByCode.get("SINA09B"), 7.0,
+                        ueByCode.get("SINAX01"), 2.0))
                 .build();
 
         SemestrialKnowledgeBlock bcc2S2 = SemestrialKnowledgeBlock.builder()
                 .code("BCC2S2").label("BCC2 Semestre 2").semester(2).ects(13)
                 .unitsCoefficientAssociation(Map.of(
-                        ueByCode.get("UE6"), 6.0,
-                        ueByCode.get("UE5"), 5.0,
-                        ueByCode.get("UE7"), 2.5))
+                        ueByCode.get("SINB34A"), 6.0,
+                        ueByCode.get("SINB34B"), 5.0,
+                        ueByCode.get("SINBX07"), 2.5))
                 .build();
 
         /* 3 ────────── BCC annuels */
@@ -100,6 +101,19 @@ public class CurriculumDataLoader {
         List<TeachingUnitGrade>       notes = new ArrayList<>();
 
         List<Student> students = studentRepo.findAll();
+
+        if (students.size() >= 3) {
+            students.get(0).setLastName("KARTOUT");
+            students.get(0).setFirstName("Ahmed Yacine");
+
+            students.get(1).setLastName("BELHADJ");
+            students.get(1).setFirstName("Akram Djalal");
+
+            students.get(2).setLastName("MUFUTA MULUMBA");
+            students.get(2).setFirstName("Nathan");
+
+            studentRepo.saveAll(students.subList(0, 3));
+        }
         int studentIndex = 0;
 
         for (Student stu : students) {
@@ -107,7 +121,7 @@ public class CurriculumDataLoader {
             boolean optedUE2 = false;
 
             for (TeachingUnit ue : ues) {
-                int semester = (ue.getCode().startsWith("UE5") || ue.getCode().startsWith("UE6") || ue.getCode().equals("UE7")) ? 2 : 1;
+                int semester = (ue.getCode().startsWith("SINB34B") || ue.getCode().startsWith("SINB34A") || ue.getCode().equals("SINBX07")) ? 2 : 1;
 
                 // Assigner exactement une UE optionnelle par semestre
                 if (!ue.isObligation()) {
@@ -130,7 +144,7 @@ public class CurriculumDataLoader {
                 switch (studentIndex) {
                     case 0 -> {
                         // Étudiant 0 : ABI sur UE1
-                        if (ue.getCode().equals("UE1")) {
+                        if (ue.getCode().equals("SINA09A")) {
                             grade = null;
                             status = ExceptionalStatus.ABI;
                         } else {
@@ -140,7 +154,7 @@ public class CurriculumDataLoader {
                     }
                     case 1 -> {
                         // Étudiant 1 : ABJ sur UE2
-                        if (ue.getCode().equals("UE2")) {
+                        if (ue.getCode().equals("SINA09B")) {
                             grade = null;
                             status = ExceptionalStatus.ABJ;
                         } else {
@@ -150,7 +164,7 @@ public class CurriculumDataLoader {
                     }
                     case 2 -> {
                         // Étudiant 2 : AR sur UE3
-                        if (ue.getCode().equals("UE3")) {
+                        if (ue.getCode().equals("SINAX01")) {
                             grade = null;
                             status = ExceptionalStatus.AR;
                         } else {
@@ -160,10 +174,10 @@ public class CurriculumDataLoader {
                     }
                     case 3 -> {
                         // Étudiant 3 : ABI sur UE1, ABJ sur UE4
-                        if (ue.getCode().equals("UE1")) {
+                        if (ue.getCode().equals("SINA09A")) {
                             grade = null;
                             status = ExceptionalStatus.ABI;
-                        } else if (ue.getCode().equals("UE4")) {
+                        } else if (ue.getCode().equals("SINA09D")) {
                             grade = null;
                             status = ExceptionalStatus.ABJ;
                         } else {
@@ -173,10 +187,10 @@ public class CurriculumDataLoader {
                     }
                     case 4 -> {
                         // Étudiant 4 : ABJ sur UE5, AR sur UE6
-                        if (ue.getCode().equals("UE5")) {
+                        if (ue.getCode().equals("SINB34B")) {
                             grade = null;
                             status = ExceptionalStatus.ABJ;
-                        } else if (ue.getCode().equals("UE6")) {
+                        } else if (ue.getCode().equals("SINB34A")) {
                             grade = null;
                             status = ExceptionalStatus.AR;
                         } else {

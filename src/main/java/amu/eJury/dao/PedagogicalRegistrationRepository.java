@@ -14,4 +14,5 @@ public interface PedagogicalRegistrationRepository extends JpaRepository<Pedagog
     List<PedagogicalRegistration> findByStudentId(Long studentId);
     Optional<PedagogicalRegistration> findByStudentIdAndTeachingUnitId(Long studentId, Long teachingUnitId);
     List<PedagogicalRegistration> findByStudent(Student student);
+    List<PedagogicalRegistration> findByStudentIdAndSemester(Long studentId, int semester);
 }

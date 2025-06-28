@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
@@ -42,7 +43,8 @@ public class TeacherController {
     }
 
     @PostMapping("/save")
-    public String saveTeacher(@ModelAttribute("form") TeacherDto form) {
+    public String saveTeacher(@ModelAttribute("form") TeacherDto form,
+                              RedirectAttributes redirectAttributes) {
         Teacher teacher = Teacher.builder()
                 .firstName(form.firstName())
                 .lastName(form.lastName())
@@ -64,7 +66,7 @@ public class TeacherController {
         teachingUnitRepository.save(ue);
 
         emailService.sendNewUserEmail(form.email(), rawPassword);
-
+        redirectAttributes.addFlashAttribute("successMessage", "L’enseignant a été ajouté avec succès.");
         return "redirect:/teachers";
     }
 

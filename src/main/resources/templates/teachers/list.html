@@ -148,6 +148,10 @@
     </style>
 </head>
 <body>
+<div th:if="${successMessage}"
+     style="background: #d5f5e3; color: #1e8449; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; text-align: center; font-weight: 600;">
+    <p th:text="${successMessage}"></p>
+</div>
 <div class="top-nav">
     <a th:href="@{/}" class="nav-btn">Accueil</a>
 </div>

@@ -122,6 +122,10 @@
 <body>
 <div class="form-card">
     <h1 th:text="${form.id == null} ? 'Ajouter un enseignant' : 'Modifier l’enseignant'"></h1>
+    <div th:if="${successMessage}"
+         style="background: #d5f5e3; color: #1e8449; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; text-align: center; font-weight: 600;">
+        <p th:text="${successMessage}"></p>
+    </div>
 
     <form th:action="@{/teachers/save}" th:object="${form}" method="post">
         <input type="hidden" th:field="*{id}" />

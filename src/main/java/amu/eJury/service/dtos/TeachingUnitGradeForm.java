@@ -15,6 +15,7 @@ public record TeachingUnitGradeForm(
         @NotNull
         String status,  // "NONE", "ABI", "ABJ", "AR"
 
+
         @Min(0)
         @Max(20)
         Double numeric // null sauf si status = "NONE"

@@ -13,5 +13,5 @@ public record PedagogicalRegistrationForm(
         Long teachingUnitId,
 
         @NotNull
-        @Min(1) @Max(2) int semester
+        @Min(1) @Max(2) Integer semester
 ) {}

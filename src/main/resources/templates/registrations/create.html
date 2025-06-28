@@ -141,6 +141,9 @@
 <body>
 <div class="form-container anim-fade-in">
     <h2>Nouvelle inscription pédagogique</h2>
+    <div th:if="${error}" style="color: var(--danger); font-weight: 600; margin-bottom: 1rem;" th:text="${error}"></div>
+    <div th:if="${success}" style="color: var(--accent); font-weight: 600; margin-bottom: 1rem;" th:text="${success}"></div>
+
     <form th:action="@{/registrations/create}" th:object="${form}" method="post">
 
         <label for="studentId">Étudiant :</label>
@@ -153,6 +156,13 @@
             </select>
         </div>
 
+        <label for="semester">Semestre :</label>
+        <select id="semester" th:field="*{semester}" required>
+            <option value="" disabled selected>-- Choisir un semestre --</option>
+            <option value="1">Semestre 1</option>
+            <option value="2">Semestre 2</option>
+        </select>
+
         <label for="teachingUnitId">UE optionnelle :</label>
         <div class="input-wrap">
             <select id="teachingUnitId" th:field="*{teachingUnitId}" required>
@@ -164,6 +174,10 @@
         </div>
 
         <button type="submit">Valider l’inscription</button>
+        <a th:href="@{/registrations}" style="display:block; text-align:center; margin-top:1rem; font-weight:600; color:var(--primary); text-decoration:none;">
+            ← Retour aux inscriptions
+        </a>
+
     </form>
 </div>
 </body>

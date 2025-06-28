@@ -30,20 +30,37 @@ public class TeachingUnitGradeController {
     private final AppUserRepository appUserRepository;
 
     @GetMapping("/new")
-    public String showForm(Model model) {
-        model.addAttribute("gradeForm", new TeachingUnitGradeForm(null, null, "NONE", null)); // ✅ nécessaire
+    public String showForm(Model model,
+                           @ModelAttribute("currentUser") AppUser currentUser) {
+
+        model.addAttribute("gradeForm",
+                new TeachingUnitGradeForm(null, null, "NONE", null));
         model.addAttribute("students", studentRepository.findAll());
-        model.addAttribute("units", teachingUnitRepository.findAll());
+
+        if (currentUser.getTeacher() != null) {
+            model.addAttribute("units", currentUser.getTeacher().getTeachingUnits());
+        } else {
+            model.addAttribute("units", teachingUnitRepository.findAll());
+        }
+
         return "grade/saisie-note";
     }
+
 
     @PostMapping("/save")
     public String saveGrade(@ModelAttribute("gradeForm") TeachingUnitGradeForm form,
                             RedirectAttributes redirectAttributes) {
 
-        PedagogicalRegistration registration = pedagogicalRegistrationRepository
-                .findByStudentIdAndTeachingUnitId(form.studentId(), form.unitId())
-                .orElseThrow(() -> new IllegalArgumentException("Inscription pédagogique introuvable"));
+        var registrationOpt = pedagogicalRegistrationRepository
+                .findByStudentIdAndTeachingUnitId(form.studentId(), form.unitId());
+
+        if (registrationOpt.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Impossible d’enregistrer : l’étudiant sélectionné n’est pas inscrit à cette unité d’enseignement.");
+            return "redirect:/grades/new";
+        }
+
+        PedagogicalRegistration registration = registrationOpt.get();
 
         TeachingUnitGrade grade = registration.getGradeInfo();
 
@@ -92,6 +109,7 @@ public class TeachingUnitGradeController {
     public String displayGrade(@RequestParam Long studentId,
                                @RequestParam Long unitId,
                                @ModelAttribute("currentStudent") Student currentStudent,
+                               @ModelAttribute("currentUser") AppUser currentUser,
                                Model model,
                                RedirectAttributes redirectAttributes) {
 
@@ -111,16 +129,18 @@ public class TeachingUnitGradeController {
             model.addAttribute("grade", grade);
         }
 
+        // Affichage correct selon le type d'utilisateur
         model.addAttribute("students", currentStudent != null
-                ? java.util.List.of(currentStudent)
+                ? List.of(currentStudent)
                 : studentRepository.findAll());
 
-        model.addAttribute("units", teachingUnitRepository.findAll());
+        model.addAttribute("units", currentUser.getTeacher().getTeachingUnits());
         model.addAttribute("selectedStudentId", studentId);
         model.addAttribute("selectedUnitId", unitId);
 
         return "grade/view-grades";
     }
+
 
 
     @ModelAttribute("currentStudent")

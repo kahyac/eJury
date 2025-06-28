@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
@@ -39,7 +40,8 @@ public class StudentController {
     }
 
     @PostMapping("/save")
-    public String saveStudent(@ModelAttribute("form") StudentUserDto form) {
+    public String saveStudent(@ModelAttribute("form") StudentUserDto form,
+                              RedirectAttributes redirectAttributes) {
         // Crée l'étudiant
         Student student = Student.builder()
                 .firstName(form.firstName())
@@ -61,6 +63,8 @@ public class StudentController {
         // Envoi e-mail avec mot de passe
         emailService.sendNewUserEmail(form.email(), rawPassword);
 
+        redirectAttributes.addFlashAttribute("successMessage", "L’étudiant a été ajouté avec succès.");
+
         return "redirect:/students";
     }
 
@@ -75,8 +79,10 @@ public class StudentController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteStudent(@PathVariable Long id) {
+    public String deleteStudent(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         studentRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("successMessage", "L’étudiant a été supprimé avec succès.");
         return "redirect:/students";
     }
+
 }
