@@ -5,6 +5,25 @@
     <title>Résultats – eJury</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
     <style>
+        form button {
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--primary);
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        form button:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.03);
+        }
+
         :root {
             --primary: #2f80ed;
             --accent: #27ae60;

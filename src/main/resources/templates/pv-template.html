@@ -125,5 +125,13 @@
         Ce document est généré automatiquement et ne contient pas de liens interactifs.
     </div>
 </div>
+<div style="margin-top: 2rem; text-align: right;">
+    <img th:src="'data:image/png;base64,' + ${signatureBase64}" alt="Signature" style="height: 80px;" />
+</div>
+<div style="margin-top: 3rem; text-align: right; font-size: 0.9rem; color: #444;">
+    <p>Fait le <span th:text="${#dates.format(now, 'dd/MM/yyyy à HH:mm')}"></span></p>
+    <p>Signature : <strong>eJury – Université d’Aix-Marseille</strong></p>
+</div>
+
 </body>
 </html>
