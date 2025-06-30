@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,14 +18,15 @@ public class JuryController {
     private final CurriculumPlanRepository planRepo;
 
     @PostMapping("/run")
-    public String launchJury(Model model) {
+    public String launchJury(RedirectAttributes redirectAttributes) {
         Long planId = planRepo.findAll().stream()
                 .findFirst()
                 .orElseThrow()
                 .getId();
 
         int count = juryService.runJury(planId);
-        model.addAttribute("message", count + " étudiants traités.");
+        redirectAttributes.addFlashAttribute("message", count + " étudiants traités.");
         return "redirect:/grades/view";
     }
+
 }

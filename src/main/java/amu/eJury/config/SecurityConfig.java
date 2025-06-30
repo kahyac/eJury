@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, FirstLoginRedirectHandler successHandler) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/reset-password", "/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
+                        .requestMatchers("/login", "/register", "/reset-password", "/reset-password/confirm", "/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
                         .requestMatchers("/").authenticated()
                         .requestMatchers("/curriculum/create").hasRole("ADMIN")
                         .requestMatchers("/curriculum/1").hasRole("ADMIN")

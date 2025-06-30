@@ -19,4 +19,14 @@ public class EmailService {
                 "\nMerci de changer votre mot de passe à la première connexion.\n\nCordialement.");
         mailSender.send(msg);
     }
+
+    public void sendResetPasswordLink(String to, String resetLink) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(to);
+        msg.setSubject("Réinitialisation de votre mot de passe – eJury");
+        msg.setText("Bonjour,\n\nCliquez sur le lien suivant pour réinitialiser votre mot de passe :\n"
+                + resetLink + "\n\nCe lien est valable pendant 1 heure.\n\nCordialement.");
+        mailSender.send(msg);
+    }
+
 }
