@@ -139,11 +139,15 @@
         <label>Email :</label>
         <input type="email" th:field="*{email}" required />
 
-        <label>Responsable d’UE :</label>
-        <select th:field="*{ueId}" required>
-            <option value="" disabled selected>-- Sélectionnez une UE --</option>
-            <option th:each="ue : ${ues}" th:value="${ue.id}" th:text="${ue.label}"></option>
+        <label>Responsable des UEs :</label>
+        <select th:field="*{ueIds}" multiple size="5" required>
+            <option th:each="ue : ${ues}"
+                    th:value="${ue.id}"
+                    th:text="${ue.label}"
+                    th:if="${ue.responsibleTeacher == null or ue.responsibleTeacher.id == form.id}">
+            </option>
         </select>
+
 
         <button type="submit">Enregistrer</button>
     </form>

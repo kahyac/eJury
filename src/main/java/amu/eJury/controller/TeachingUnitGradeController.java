@@ -127,6 +127,7 @@ public class TeachingUnitGradeController {
 
         boolean isStudent = (currentStudent != null);
         boolean isAdmin = (currentUser != null && currentUser.hasRole("ADMIN"));
+        boolean isTeacher = (currentUser != null && currentUser.hasRole("TEACHER"));
 
         if (isStudent && !studentId.equals(currentStudent.getId())) {
             redirectAttributes.addFlashAttribute("message", "Accès non autorisé.");
@@ -154,6 +155,9 @@ public class TeachingUnitGradeController {
         } else if (isAdmin) {
             model.addAttribute("students", studentRepository.findAll());
             model.addAttribute("units", teachingUnitRepository.findAll());
+        } else if (isTeacher) {
+            model.addAttribute("students", studentRepository.findAll());
+            model.addAttribute("units", currentUser.getTeacher().getTeachingUnits());
         } else {
             redirectAttributes.addFlashAttribute("message", "Accès refusé.");
             return "redirect:/grades/view";

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -46,9 +47,10 @@ public class TeacherController {
     public String saveTeacher(@ModelAttribute("form") TeacherDTO form,
                               RedirectAttributes redirectAttributes) {
 
+        Teacher teacher;
+
         if (form.id() != null) {
-            // MODIFICATION d’un enseignant existant
-            Teacher teacher = teacherRepository.findById(form.id())
+            teacher = teacherRepository.findById(form.id())
                     .orElseThrow(() -> new IllegalArgumentException("Enseignant non trouvé"));
 
             teacher.setFirstName(form.firstName());
@@ -57,28 +59,19 @@ public class TeacherController {
 
             AppUser user = teacher.getAppUser();
             if (user != null) {
-                user.setEmail(form.email()); // même si doublon possible, on laisse passer
+                user.setEmail(form.email());
                 appUserRepository.save(user);
             }
 
-            // Réinitialisation de l'UE responsable précédente si elle existe
-            teachingUnitRepository.findByResponsibleTeacherId(teacher.getId())
-                    .ifPresent(oldUe -> {
-                        oldUe.setResponsibleTeacher(null);
-                        teachingUnitRepository.save(oldUe);
-                    });
-
-            // Attribution de la nouvelle UE si sélectionnée
-            if (form.ueId() != null) {
-                TeachingUnit ue = teachingUnitRepository.findById(form.ueId()).orElseThrow();
-                ue.setResponsibleTeacher(teacher);
+            // Nettoyer toutes les UEs de cet enseignant
+            List<TeachingUnit> currentUnits = teachingUnitRepository.findByResponsibleTeacherId(teacher.getId()).stream().toList();
+            for (TeachingUnit ue : currentUnits) {
+                ue.setResponsibleTeacher(null);
                 teachingUnitRepository.save(ue);
             }
 
-            redirectAttributes.addFlashAttribute("successMessage", "L’enseignant a été mis à jour avec succès.");
         } else {
-            // CRÉATION d’un nouvel enseignant
-            Teacher teacher = Teacher.builder()
+            teacher = Teacher.builder()
                     .firstName(form.firstName())
                     .lastName(form.lastName())
                     .build();
@@ -94,18 +87,24 @@ public class TeacherController {
                     .build();
             appUserRepository.save(appUser);
 
-            if (form.ueId() != null) {
-                TeachingUnit ue = teachingUnitRepository.findById(form.ueId()).orElseThrow();
+            emailService.sendNewUserEmail(form.email(), rawPassword);
+        }
+
+        // Affecter les nouvelles UEs sélectionnées
+        if (form.ueIds() != null) {
+            for (Long ueId : form.ueIds()) {
+                TeachingUnit ue = teachingUnitRepository.findById(ueId).orElseThrow();
                 ue.setResponsibleTeacher(teacher);
                 teachingUnitRepository.save(ue);
             }
-
-            emailService.sendNewUserEmail(form.email(), rawPassword);
-            redirectAttributes.addFlashAttribute("successMessage", "L’enseignant a été ajouté avec succès.");
         }
+
+        redirectAttributes.addFlashAttribute("successMessage",
+                form.id() != null ? "L’enseignant a été mis à jour avec succès." : "L’enseignant a été ajouté avec succès.");
 
         return "redirect:/teachers";
     }
+
 
 
 
@@ -113,15 +112,15 @@ public class TeacherController {
     public String showEditForm(@PathVariable Long id, Model model) {
         teacherRepository.findById(id).ifPresent(teacher -> {
             String email = teacher.getAppUser() != null ? teacher.getAppUser().getEmail() : "";
-            Long ueId = teachingUnitRepository.findByResponsibleTeacherId(teacher.getId())
+            List<Long> ueIds = teacher.getTeachingUnits().stream()
                     .map(TeachingUnit::getId)
-                    .orElse(null);
+                    .toList();
             model.addAttribute("form", new TeacherDTO(
                     teacher.getId(),
                     teacher.getFirstName(),
                     teacher.getLastName(),
                     email,
-                    ueId
+                    ueIds
             ));
         });
         model.addAttribute("ues", teachingUnitRepository.findAll());
