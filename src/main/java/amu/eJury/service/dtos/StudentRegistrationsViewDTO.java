@@ -13,10 +13,16 @@ public class StudentRegistrationsViewDTO {
     private String studentFullName;
     private List<UeView> ues;
 
-    public StudentRegistrationsViewDTO(String studentId, String studentFullName, List<UeView> ues) {
+    private Double bonusS1; // BONUS SEMESTRE 1
+    private Double bonusS2; // BONUS SEMESTRE 2
+
+    public StudentRegistrationsViewDTO(String studentId, String studentFullName, List<UeView> ues,
+                                       Double bonusS1, Double bonusS2) {
         this.studentId = studentId;
         this.studentFullName = studentFullName;
         this.ues = ues;
+        this.bonusS1 = bonusS1;
+        this.bonusS2 = bonusS2;
     }
 
     @Setter
@@ -32,5 +38,4 @@ public class StudentRegistrationsViewDTO {
             this.unitId = unitId;
         }
     }
-
 }

@@ -27,5 +27,13 @@ class DefaultStatusPropagationRuleServiceTest {
         assertThat(rule.propagate(ExceptionalStatus.NONE, ExceptionalStatus.NONE))
                 .isEqualTo(ExceptionalStatus.NONE);
     }
+
+    @Test void ar_propagates_if_present() {
+        assertThat(rule.propagate(ExceptionalStatus.NONE, ExceptionalStatus.AR))
+                .isEqualTo(ExceptionalStatus.AR);
+        assertThat(rule.propagate(ExceptionalStatus.AR, ExceptionalStatus.NONE))
+                .isEqualTo(ExceptionalStatus.AR);
+    }
+
 }
 

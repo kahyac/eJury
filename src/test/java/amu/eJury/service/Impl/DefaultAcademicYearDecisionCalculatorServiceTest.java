@@ -105,4 +105,36 @@ class DefaultAcademicYearDecisionCalculatorServiceTest {
         return AnnualKnowledgeBlockResult.builder()
                 .average(avg).status(ExceptionalStatus.NONE).build();
     }
+
+    @Test void mention_fairly_good_if_average_between_12_and_14() {
+        when(annCalc.compute(alice, b1)).thenReturn(blockRes(12.5));
+        when(annCalc.compute(alice, b2)).thenReturn(blockRes(13.5));
+
+        AcademicYearResult res = calc.compute(alice, plan);
+        assertThat(res.getMention()).isEqualTo(Mention.FAIRLY_GOOD);
+    }
+
+    @Test void mention_good_if_average_between_14_and_16() {
+        when(annCalc.compute(alice, b1)).thenReturn(blockRes(14.1));
+        when(annCalc.compute(alice, b2)).thenReturn(blockRes(15.3));
+
+        AcademicYearResult res = calc.compute(alice, plan);
+        assertThat(res.getMention()).isEqualTo(Mention.GOOD);
+    }
+
+    @Test void mention_very_good_if_average_between_16_and_18() {
+        when(annCalc.compute(alice, b1)).thenReturn(blockRes(16.0));
+        when(annCalc.compute(alice, b2)).thenReturn(blockRes(17.8));
+
+        AcademicYearResult res = calc.compute(alice, plan);
+        assertThat(res.getMention()).isEqualTo(Mention.VERY_GOOD);
+    }
+
+    @Test void mention_excellent_if_average_above_18() {
+        when(annCalc.compute(alice, b1)).thenReturn(blockRes(18.2));
+        when(annCalc.compute(alice, b2)).thenReturn(blockRes(19.4));
+
+        AcademicYearResult res = calc.compute(alice, plan);
+        assertThat(res.getMention()).isEqualTo(Mention.EXCELLENT);
+    }
 }

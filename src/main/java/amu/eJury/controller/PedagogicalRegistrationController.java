@@ -1,6 +1,7 @@
 package amu.eJury.controller;
 
 import amu.eJury.dao.PedagogicalRegistrationRepository;
+import amu.eJury.dao.StudentBonusRepository;
 import amu.eJury.dao.StudentRepository;
 import amu.eJury.dao.TeachingUnitRepository;
 import amu.eJury.model.pedagogy.TeachingUnit;
@@ -33,6 +34,8 @@ public class PedagogicalRegistrationController {
     private final TeachingUnitGradeServiceImpl teachingUnitGradeService;
     private final StudentRepository studentRepository;
     private final TeachingUnitRepository teachingUnitRepository;
+    private final StudentBonusRepository bonusRepo;
+
 
 
     @GetMapping("/create")
@@ -119,15 +122,23 @@ public class PedagogicalRegistrationController {
                 .map(entry -> {
                     String studentId = entry.getKey();
                     List<PedagogicalRegistration> regs = entry.getValue();
-                    String fullName = regs.get(0).getStudent().getFirstName() + " " + regs.get(0).getStudent().getLastName();
+                    Student student = regs.get(0).getStudent();
+                    String fullName = student.getFirstName() + " " + student.getLastName();
+
                     List<StudentRegistrationsViewDTO.UeView> ueViews = regs.stream()
                             .map(reg -> new StudentRegistrationsViewDTO.UeView(
                                     reg.getTeachingUnit().getLabel(),
                                     !reg.getTeachingUnit().isObligation(),
                                     reg.getTeachingUnit().getId()
                             ))
-                            .collect(Collectors.toList());
-                    return new StudentRegistrationsViewDTO(studentId, fullName, ueViews);
+                            .toList();
+
+                    Double bonus1 = bonusRepo.findByStudentAndSemester(student, 1)
+                            .map(b -> b.getValue()).orElse(0.0);
+                    Double bonus2 = bonusRepo.findByStudentAndSemester(student, 2)
+                            .map(b -> b.getValue()).orElse(0.0);
+
+                    return new StudentRegistrationsViewDTO(studentId, fullName, ueViews, bonus1, bonus2);
                 })
                 .collect(Collectors.toList());
 

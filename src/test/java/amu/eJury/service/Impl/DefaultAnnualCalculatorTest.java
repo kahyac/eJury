@@ -69,4 +69,17 @@ class DefaultAnnualCalculatorTest {
         assertThat(res.getAverage()).isNull();
         assertThat(res.getStatus()).isEqualTo(ExceptionalStatus.ABI);
     }
+
+    @Test void returns_AR_if_one_semester_missing() {
+        when(semRepo.findByStudentAndSemBlock_SemesterAndSemBlock_AnnualKnowledgeBlock(alice,1,annual))
+                .thenReturn(Optional.of(s1));
+        when(semRepo.findByStudentAndSemBlock_SemesterAndSemBlock_AnnualKnowledgeBlock(alice,2,annual))
+                .thenReturn(Optional.empty()); // ⛔ semestre 2 manquant
+
+        AnnualKnowledgeBlockResult res = calc.compute(alice, annual);
+
+        assertThat(res.getStatus()).isEqualTo(ExceptionalStatus.AR);
+        assertThat(res.getAverage()).isNull();
+    }
+
 }

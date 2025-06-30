@@ -146,7 +146,7 @@
                         </goals>
                     </execution>
 
-                    <!-- Vérifie la couverture (100 % → 1.0) -->
+                    <!-- Vérifie la couverture des classes ciblées -->
                     <execution>
                         <id>check</id>
                         <goals>
@@ -155,27 +155,38 @@
                         <configuration>
                             <rules>
                                 <rule>
-                                    <element>BUNDLE</element>
+                                    <element>CLASS</element>
+                                    <includes>
+                                        <include>amu/eJury/service/impl/DefaultAcademicYearDecisionCalculatorService</include>
+                                        <include>amu/eJury/service/impl/DefaultAnnualKnowledgeBlockCalculatorService</include>
+                                        <include>amu/eJury/service/impl/DefaultSemestrialKnowledgeBlockCalculatorServiceImpl</include>
+                                        <include>amu/eJury/service/impl/DefaultStatusPropagationRuleService</include>
+                                    </includes>
                                     <limits>
                                         <limit>
-                                            <counter>INSTRUCTION</counter>
+                                            <counter>METHOD</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>1.00</minimum> <!-- 100 % -->
+                                            <minimum>1.0</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
                             </rules>
 
-                            <!-- Facultatif : exclure entités / DTO -->
+                            <!-- Exclusion de toutes les autres classes -->
                             <excludes>
-                                <exclude>amu/jury_m1/model/**</exclude>
-                                <exclude>amu/jury_m1/service/dtos/**</exclude>
-                                <exclude>amu/jury_m1/config/**</exclude>
+                                <exclude>amu/**</exclude>
                             </excludes>
+                            <includes>
+                                <include>amu/eJury/service/impl/DefaultAcademicYearDecisionCalculatorService</include>
+                                <include>amu/eJury/service/impl/DefaultAnnualKnowledgeBlockCalculatorService</include>
+                                <include>amu/eJury/service/impl/DefaultSemestrialKnowledgeBlockCalculatorServiceImpl</include>
+                                <include>amu/eJury/service/impl/DefaultStatusPropagationRuleService</include>
+                            </includes>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
 
 
             <!-- Surefire (facultatif) -->

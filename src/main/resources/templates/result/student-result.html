@@ -192,6 +192,10 @@
             <span class="badge" th:text="'Statut : ' + ${sb.status}"></span>
         </span>
             <span th:if="${sb.average != null}" th:text="'Moyenne : ' + ${sb.average}"></span>
+            <span th:if="${sb.bonusApplied > 0}"
+                  style="display: block; font-size: 0.9rem; color: var(--accent); margin-top: 0.3rem;"
+                  th:text="'Bonus appliqué : ' + ${sb.bonusApplied} + ' pts'">
+</span>
         </li>
     </ul>
 

@@ -91,12 +91,14 @@
     <h3>Blocs Semestriels</h3>
     <ul>
         <li th:each="sb : ${semestrialResults}">
-            <span>
-                <strong th:text="'Code : ' + ${sb.semBlock.code} + ' | Libellé : ' + ${sb.semBlock.label} + ' (Semestre ' + ${sb.semBlock.semester} + ')'">Semestre</strong>
-                <span class="badge" th:text="'Statut : ' + ${sb.status}">Statut</span>
-            </span>
+        <span>
+            <strong th:text="'Code : ' + ${sb.semBlock.code} + ' | Libellé : ' + ${sb.semBlock.label} + ' (Semestre ' + ${sb.semBlock.semester} + ')'">Semestre</strong>
+            <span class="badge" th:text="'Statut : ' + ${sb.status}">Statut</span>
+        </span>
             <br />
             <span th:if="${sb.average != null}" th:text="'Moyenne : ' + ${sb.average}">Moyenne</span>
+            <br th:if="${sb.bonusApplied > 0}" />
+            <span th:if="${sb.bonusApplied > 0}" th:text="'Bonus appliqué : ' + ${sb.bonusApplied} + ' pts'">Bonus</span>
         </li>
     </ul>
 

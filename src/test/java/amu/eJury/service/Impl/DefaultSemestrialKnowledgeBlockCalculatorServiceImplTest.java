@@ -100,4 +100,50 @@ class DefaultSemestrialKnowledgeBlockCalculatorServiceImplTest {
     private TeachingUnitGrade gradeWithStatus(ExceptionalStatus st) {
         return TeachingUnitGrade.builder().status(st).build();
     }
+
+    @Test void throws_if_grade_missing() {
+        PedagogicalRegistration reg = mock(PedagogicalRegistration.class);
+        when(reg.getTeachingUnit()).thenReturn(UE1);
+        when(reg.getSemester()).thenReturn(1);
+        when(reg.getGradeInfo()).thenReturn(null);  // ⛔ pas de note
+
+        when(gradePort.registrationsOf(alice)).thenReturn(List.of(reg));
+
+        // Assertion
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, () -> {
+            calc.compute(alice, block);
+        });
+    }
+
+    @Test void ue_not_in_block_is_ignored() {
+        TeachingUnit UE3 = TeachingUnit.builder().code("UE3").build(); // non présent dans le bloc
+        PedagogicalRegistration reg = mock(PedagogicalRegistration.class);
+        when(reg.getTeachingUnit()).thenReturn(UE3);
+        when(reg.getSemester()).thenReturn(1);
+        when(reg.getGradeInfo()).thenReturn(grade(15));
+
+        when(gradePort.registrationsOf(alice)).thenReturn(List.of(reg));
+
+        SemestrialKnowledgeBlockResult res = calc.compute(alice, block);
+
+        // Aucun calcul donc pas de moyenne, mais statut reste NONE
+        assertThat(res.getAverage()).isNull();
+        assertThat(res.getStatus()).isEqualTo(ExceptionalStatus.NONE);
+    }
+
+    @Test void registration_in_other_semester_is_ignored() {
+        PedagogicalRegistration reg = mock(PedagogicalRegistration.class);
+        when(reg.getTeachingUnit()).thenReturn(UE1); // UE1 est bien dans le bloc
+        when(reg.getSemester()).thenReturn(2);       // Mais semestre ≠ 1
+        when(reg.getGradeInfo()).thenReturn(grade(15));
+
+        when(gradePort.registrationsOf(alice)).thenReturn(List.of(reg));
+
+        SemestrialKnowledgeBlockResult res = calc.compute(alice, block);
+
+        // Ignorée pour semestre ≠ 1 → aucun calcul
+        assertThat(res.getAverage()).isNull();
+        assertThat(res.getStatus()).isEqualTo(ExceptionalStatus.NONE);
+    }
+
 }

@@ -103,14 +103,12 @@ public class CurriculumDataLoader {
         List<Student> students = studentRepo.findAll();
 
         if (students.size() >= 3) {
-            students.get(0).setLastName("KARTOUT");
-            students.get(0).setFirstName("Ahmed Yacine");
 
-            students.get(1).setLastName("BELHADJ");
-            students.get(1).setFirstName("Akram Djalal");
+            students.get(0).setLastName("BELHADJ");
+            students.get(0).setFirstName("Akram Djalal");
 
-            students.get(2).setLastName("MUFUTA MULUMBA");
-            students.get(2).setFirstName("Nathan");
+            students.get(1).setLastName("MUFUTA MULUMBA");
+            students.get(1).setFirstName("Nathan");
 
             studentRepo.saveAll(students.subList(0, 3));
         }

@@ -61,11 +61,15 @@ public class DefaultSemestrialKnowledgeBlockCalculatorServiceImpl implements Sem
         r.setBonusApplied(0);
         r.setAverage(null);
 
-        if (worst == ExceptionalStatus.NONE) {
+        if (worst == ExceptionalStatus.NONE & sumCoef > 0) {
             double avg = round(sum / sumCoef, 2);
             double bonus = bonusPolicy.bonusFor(s, block.getSemester());
             r.setBonusApplied(bonus);
             r.setAverage(Math.min(20, avg + bonus));
+        }
+        else {
+            r.setBonusApplied(0);
+            r.setAverage(null);
         }
 
         return savePort.save(r);
