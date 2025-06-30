@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GradePort {
-    Optional<TeachingUnitGrade> gradeOf(Student s, TeachingUnit u);
     List<PedagogicalRegistration> registrationsOf(Student student);
 
 }

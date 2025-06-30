@@ -3,7 +3,7 @@ package amu.eJury.service.impl;
 import amu.eJury.dao.TeachingUnitRepository;
 import amu.eJury.model.pedagogy.TeachingUnit;
 import amu.eJury.service.api.TeachingUnitService;
-import amu.eJury.service.dtos.TeachingUnitDto;
+import amu.eJury.service.dtos.TeachingUnitDTO;
 import amu.eJury.service.validator.TeachingUnitValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class TeachingUnitServiceImpl implements TeachingUnitService {
     private final TeachingUnitValidator teachingUnitValidator;
 
     @Transactional
-    public void addTeachingUnit(TeachingUnitDto dto) {
+    public void addTeachingUnit(TeachingUnitDTO dto) {
         teachingUnitValidator.validateNewTeachingUnit(dto);
 
         TeachingUnit unit = TeachingUnit.builder()
@@ -34,7 +34,7 @@ public class TeachingUnitServiceImpl implements TeachingUnitService {
     }
 
     @Transactional
-    public void updateTeachingUnit(Long id, TeachingUnitDto dto) {
+    public void updateTeachingUnit(Long id, TeachingUnitDTO dto) {
         TeachingUnit existing = teachingUnitRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("UE introuvable : " + id));
 

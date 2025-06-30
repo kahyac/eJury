@@ -181,10 +181,11 @@
         </form>
     </div>
 
-    <div sec:authorize="hasRole('STUDENT')">
+    <!-- Bloc étudiant -->
+    <div th:if="${currentStudent != null}">
         <form th:action="@{/results/view}" method="post" style="margin-bottom: 2.4rem;">
-            <label for="studentSelect"><strong>Voir tous les résultats :</strong></label>
-            <select id="studentSelect" name="studentId" required style="flex: 1;">
+            <label for="studentSelectStudent"><strong>Voir tous les résultats :</strong></label>
+            <select id="studentSelectStudent" name="studentId" required style="flex: 1;">
                 <option th:value="${currentStudent.id}"
                         th:text="${currentStudent.firstName + ' ' + currentStudent.lastName}"
                         selected>
@@ -194,7 +195,23 @@
         </form>
     </div>
 
-    <div sec:authorize="hasAnyRole('ADMIN', 'TEACHER')">
+    <!-- Bloc admin -->
+    <div th:if="${currentUser != null and currentUser.role.name() == 'ADMIN'}">
+        <form th:action="@{/results/view}" method="post" style="margin-bottom: 2.4rem;">
+            <label for="studentSelectAdmin"><strong>Voir les résultats d’un étudiant :</strong></label>
+            <select id="studentSelectAdmin" name="studentId" required style="flex: 1;">
+                <option value="" disabled selected>-- Choisir un étudiant --</option>
+                <option th:each="student : ${students}"
+                        th:value="${student.id}"
+                        th:text="${student.firstName + ' ' + student.lastName}">
+                </option>
+            </select>
+            <button type="submit" style="white-space: nowrap;">Voir résultats</button>
+        </form>
+    </div>
+
+
+    <div sec:authorize="hasAnyRole('ADMIN', 'TEACHER','STUDENT')">
         <h2>Consulter une note</h2>
         <form th:action="@{/grades/view}" method="post">
             <label for="studentId">Étudiant :</label>

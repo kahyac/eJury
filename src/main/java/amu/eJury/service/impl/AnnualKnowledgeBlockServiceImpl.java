@@ -5,7 +5,7 @@ import amu.eJury.dao.CurriculumPlanRepository;
 import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
 import amu.eJury.model.pedagogy.CurriculumPlan;
 import amu.eJury.service.api.AnnualKnowledgeBlockService;
-import amu.eJury.service.dtos.AnnualKnowledgeBlockDto;
+import amu.eJury.service.dtos.AnnualKnowledgeBlockDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class AnnualKnowledgeBlockServiceImpl implements AnnualKnowledgeBlockServ
     private final CurriculumPlanRepository curriculumPlanRepository;
 
     @Transactional
-    public void addAnnualKnowledgeBlock(AnnualKnowledgeBlockDto dto) {
+    public void addAnnualKnowledgeBlock(AnnualKnowledgeBlockDTO dto) {
         if (annualKnowledgeBlockRepository.existsByCode(dto.code())) {
             throw new IllegalArgumentException("Un bloc annuel avec cet identifiant existe déjà.");
         }

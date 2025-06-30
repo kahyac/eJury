@@ -3,7 +3,7 @@ package amu.eJury.controller;
 import amu.eJury.model.pedagogy.CurriculumPlan;
 import amu.eJury.service.api.CurriculumPlanService;
 import amu.eJury.service.api.TeachingUnitService;
-import amu.eJury.service.dtos.CurriculumPlanDto;
+import amu.eJury.service.dtos.CurriculumPlanDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,13 +22,13 @@ public class CurriculumPlanController {
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         boolean exists = curriculumPlanService.existsDefaultCurriculumPlan();
-        model.addAttribute("dto", new CurriculumPlanDto("", ""));
+        model.addAttribute("dto", new CurriculumPlanDTO("", ""));
         model.addAttribute("curriculumExists", exists);
         return "curriculum/create_curriculum";
     }
 
     @PostMapping("/create")
-    public String createCurriculum(@Valid @ModelAttribute("dto") CurriculumPlanDto dto,
+    public String createCurriculum(@Valid @ModelAttribute("dto") CurriculumPlanDTO dto,
                                    BindingResult result,
                                    Model model) {
         boolean exists = curriculumPlanService.existsDefaultCurriculumPlan();
@@ -47,7 +47,7 @@ public class CurriculumPlanController {
         CurriculumPlan plan = curriculumPlanService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Maquette introuvable"));
 
-        CurriculumPlanDto dto = new CurriculumPlanDto(plan.getAcademicYear(), plan.getName());
+        CurriculumPlanDTO dto = new CurriculumPlanDTO(plan.getAcademicYear(), plan.getName());
         model.addAttribute("dto", dto);
         model.addAttribute("planId", plan.getId());
         return "curriculum/edit_curriculum";
@@ -55,7 +55,7 @@ public class CurriculumPlanController {
 
     @PostMapping("/{id}/edit")
     public String updateCurriculum(@PathVariable Long id,
-                                   @Valid @ModelAttribute("dto") CurriculumPlanDto dto,
+                                   @Valid @ModelAttribute("dto") CurriculumPlanDTO dto,
                                    BindingResult result,
                                    Model model) {
         if (result.hasErrors()) {

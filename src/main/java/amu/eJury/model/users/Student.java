@@ -1,7 +1,11 @@
 package amu.eJury.model.users;
 
+import amu.eJury.model.registration.PedagogicalRegistration;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +26,10 @@ public class Student{
     private String identifiant;
     private String lastName;
     private String firstName;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedagogicalRegistration> pedagogicalRegistrations = new ArrayList<>();
 
     @OneToOne(mappedBy = "student")
     private AppUser appUser;

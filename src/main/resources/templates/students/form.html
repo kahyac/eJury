@@ -124,6 +124,16 @@
 </head>
 <body>
 <div class="form-card">
+    <!-- Messages de succès -->
+    <div th:if="${successMessage}" style="margin-bottom: 1rem; color: var(--success); font-weight: bold;">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <!-- Messages d'erreur -->
+    <div th:if="${errorMessage}" style="margin-bottom: 1rem; color: red; font-weight: bold;">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
     <h1 th:text="${form.id() == null} ? 'Ajouter un étudiant' : 'Modifier l’étudiant'"></h1>
 
     <form th:action="@{/students/save}" th:object="${form}" method="post">

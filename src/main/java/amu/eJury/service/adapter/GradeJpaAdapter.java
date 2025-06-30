@@ -17,12 +17,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 class GradeJpaAdapter implements GradePort {
-    private final TeachingUnitGradeRepository teachingUnitGradeRepository;
     private final PedagogicalRegistrationRepository registrationRepository;
-
-    public Optional<TeachingUnitGrade> gradeOf(Student s, TeachingUnit u){
-        return teachingUnitGradeRepository.findByRegistration_StudentAndRegistration_TeachingUnit(s, u);
-    }
 
     @Override
     public List<PedagogicalRegistration> registrationsOf(Student student) {

@@ -4,9 +4,9 @@ import amu.eJury.model.pedagogy.CurriculumPlan;
 import amu.eJury.model.pedagogy.SemestrialKnowledgeBlock;
 import amu.eJury.model.users.Student;
 
-import amu.eJury.service.api.AnnualCalculator;
-import amu.eJury.service.api.SemestrialCalculator;
-import amu.eJury.service.api.YearDecisionCalculator;
+import amu.eJury.service.api.AnnualKnowledgeBlockCalculatorService;
+import amu.eJury.service.api.SemestrialKnowledgeBlockCalculatorService;
+import amu.eJury.service.api.AcademicYearDecisionCalculatorService;
 import lombok.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ResultEngine {
 
-    private final SemestrialCalculator  semCalc;
-    private final AnnualCalculator      annCalc;
-    private final YearDecisionCalculator yearCalc;
+    private final SemestrialKnowledgeBlockCalculatorService semCalc;
+    private final AnnualKnowledgeBlockCalculatorService annCalc;
+    private final AcademicYearDecisionCalculatorService yearCalc;
 
     @Transactional
     public void recompute(Student s, CurriculumPlan plan,

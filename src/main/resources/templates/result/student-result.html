@@ -130,7 +130,28 @@
     </style>
 </head>
 <body>
+<div class="back-link" style="margin-top: 2rem; text-align: center;">
+
+    <!-- Étudiant : pas besoin d’envoyer l’ID -->
+    <div th:if="${currentStudent != null}">
+        <form th:action="@{/grades/pv/download}" method="get">
+            <button type="submit">Télécharger mon PV</button>
+        </form>
+    </div>
+
+    <!-- Admin : studentId requis -->
+    <div th:if="${currentUser != null and currentUser.role.name() == 'ADMIN' and studentId != null}">
+        <form th:action="@{/grades/pv/download}" method="get">
+            <input type="hidden" name="studentId" th:value="${studentId}" />
+            <button type="submit">Télécharger le PV PDF</button>
+        </form>
+    </div>
+
+</div>
+
+
 <div class="results-container">
+
     <h2 th:text="'Résultats de ' + ${student.firstName} + ' ' + ${student.lastName}"></h2>
 
     <h3>Unités d’enseignement</h3>

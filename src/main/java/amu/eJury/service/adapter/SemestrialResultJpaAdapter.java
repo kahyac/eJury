@@ -1,8 +1,8 @@
 package amu.eJury.service.adapter;
 
-import amu.eJury.dao.SemestrialBlockResultRepository;
+import amu.eJury.dao.SemestrialKnowledgeBlockResultRepository;
 import amu.eJury.model.pedagogy.SemestrialKnowledgeBlock;
-import amu.eJury.model.result.SemestrialBlockResult;
+import amu.eJury.model.result.SemestrialKnowledgeBlockResult;
 import amu.eJury.model.users.Student;
 import amu.eJury.service.port.SaveSemestrialResultPort;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +14,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 class SemestrialResultJpaAdapter implements SaveSemestrialResultPort {
 
-    private final SemestrialBlockResultRepository semestrialBlockResultRepository;
+    private final SemestrialKnowledgeBlockResultRepository semestrialKnowledgeBlockResultRepository;
 
     @Override
-    public SemestrialBlockResult save(SemestrialBlockResult result) {
-        return semestrialBlockResultRepository.save(result);
+    public SemestrialKnowledgeBlockResult save(SemestrialKnowledgeBlockResult result) {
+        return semestrialKnowledgeBlockResultRepository.save(result);
     }
 
     @Override
-    public Optional<SemestrialBlockResult> findByStudentAndBlock(Student s, SemestrialKnowledgeBlock block) {
-        return semestrialBlockResultRepository.findByStudentAndSemBlock(s, block);
+    public Optional<SemestrialKnowledgeBlockResult> findByStudentAndBlock(Student s, SemestrialKnowledgeBlock block) {
+        return semestrialKnowledgeBlockResultRepository.findByStudentAndSemBlock(s, block);
     }
 }

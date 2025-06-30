@@ -2,7 +2,7 @@ package amu.eJury.service.validator;
 
 import amu.eJury.dao.TeachingUnitRepository;
 import amu.eJury.model.pedagogy.TeachingUnit;
-import amu.eJury.service.dtos.TeachingUnitDto;
+import amu.eJury.service.dtos.TeachingUnitDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ public class TeachingUnitValidator {
 
     private final TeachingUnitRepository teachingUnitRepository;
 
-    public void validateNewTeachingUnit(TeachingUnitDto dto) {
+    public void validateNewTeachingUnit(TeachingUnitDTO dto) {
         if (teachingUnitRepository.existsByCode(dto.code())) {
             throw new IllegalArgumentException("Une UE avec ce code existe déjà.");
         }
@@ -24,7 +24,7 @@ public class TeachingUnitValidator {
         validateDtoFields(dto);
     }
 
-    public void validateUpdatedTeachingUnit(TeachingUnitDto dto, TeachingUnit existing) {
+    public void validateUpdatedTeachingUnit(TeachingUnitDTO dto, TeachingUnit existing) {
         boolean labelConflict = teachingUnitRepository.existsByLabel(dto.label())
                 && !existing.getLabel().equals(dto.label()) ;
         if (labelConflict) {
@@ -39,7 +39,7 @@ public class TeachingUnitValidator {
         validateDtoFields(dto);
     }
 
-    private void validateDtoFields(TeachingUnitDto dto) {
+    private void validateDtoFields(TeachingUnitDTO dto) {
         if (dto.ects() < 0 || dto.ects() > 30) {
             throw new IllegalArgumentException("Le nombre d’ECTS est invalide.");
         }

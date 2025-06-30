@@ -35,10 +35,11 @@ public class SecurityConfig {
                         .requestMatchers("/registrations").hasRole("ADMIN")
                         .requestMatchers("/jury/run").hasRole("ADMIN")
                         .requestMatchers("/grades/new").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers("/results/view").hasRole("STUDENT")
+                        .requestMatchers("/results/view").hasAnyRole("STUDENT","ADMIN")
                         .requestMatchers("/grades/new", "/grades/save").hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers("/students/**").hasRole("ADMIN")
                         .requestMatchers("/teachers/**").hasRole("ADMIN")
+                        .requestMatchers("/grades/pv/download").hasAnyRole("ADMIN", "STUDENT")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

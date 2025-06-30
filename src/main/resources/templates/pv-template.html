@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Résultats – eJury</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap" />
+    <style type="text/css">
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: #21243d;
+            padding: 2rem;
+        }
+
+        .results-container {
+            max-width: 860px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2f80ed;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            margin-top: 1.8rem;
+            font-size: 1.3rem;
+            color: #27ae60;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            margin-bottom: 0.8rem;
+            padding: 1rem;
+            border-left: 5px solid #2f80ed;
+            border-radius: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: #e0ecff;
+            color: #2f80ed;
+            margin-left: 0.4rem;
+        }
+
+        .final-result {
+            margin-top: 2rem;
+            padding: 1.2rem;
+            background: #eefaf2;
+            border-left: 5px solid #27ae60;
+            border-radius: 0.6rem;
+        }
+
+        .back-link {
+            margin-top: 2rem;
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<div class="results-container">
+
+    <h2 th:text="'Résultats de ' + ${student.firstName} + ' ' + ${student.lastName}">Résultats de [Nom Prénom]</h2>
+
+    <h3>Unités d’enseignement</h3>
+    <ul>
+        <li th:each="grade : ${unitGrades}">
+            <span>
+                <strong th:text="${grade.registration.teachingUnit.label}">Nom UE</strong>
+                <span class="badge" th:text="'Statut : ' + ${grade.status}">Statut</span>
+            </span>
+            <br />
+            <span th:if="${grade.status.name() == 'NONE'}" th:text="'Note : ' + ${grade.grade} + '/20'">Note</span>
+        </li>
+    </ul>
+
+    <h3>Blocs Semestriels</h3>
+    <ul>
+        <li th:each="sb : ${semestrialResults}">
+            <span>
+                <strong th:text="'Code : ' + ${sb.semBlock.code} + ' | Libellé : ' + ${sb.semBlock.label} + ' (Semestre ' + ${sb.semBlock.semester} + ')'">Semestre</strong>
+                <span class="badge" th:text="'Statut : ' + ${sb.status}">Statut</span>
+            </span>
+            <br />
+            <span th:if="${sb.average != null}" th:text="'Moyenne : ' + ${sb.average}">Moyenne</span>
+        </li>
+    </ul>
+
+    <h3>Blocs Annuels</h3>
+    <ul>
+        <li th:each="ab : ${annualResults}">
+            <span>
+                <strong th:text="${ab.annualBlock.code}">Code</strong>
+                <span class="badge" th:text="'Décision : ' + ${ab.status}">Décision</span>
+            </span>
+            <br />
+            <span th:if="${ab.average != null}" th:text="'Moyenne : ' + ${ab.average}">Moyenne</span>
+        </li>
+    </ul>
+
+    <div th:if="${yearResult != null}" class="final-result">
+        <p>
+            <span th:if="${yearResult.decision.name() == 'ADM'}">✅</span>
+            <span th:if="${yearResult.decision.name() != 'ADM'}">❌</span>
+            <span th:text="'Décision finale : ' + ${yearResult.decision}">Décision finale</span>
+        </p>
+        <p th:if="${yearResult.mention != null}" th:text="'Mention : ' + ${yearResult.mention}">Mention</p>
+    </div>
+
+    <div class="back-link">
+        Ce document est généré automatiquement et ne contient pas de liens interactifs.
+    </div>
+</div>
+</body>
+</html>

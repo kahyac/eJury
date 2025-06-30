@@ -2,7 +2,7 @@ package amu.eJury.controller;
 
 import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
 import amu.eJury.service.api.AnnualKnowledgeBlockService;
-import amu.eJury.service.dtos.AnnualKnowledgeBlockDto;
+import amu.eJury.service.dtos.AnnualKnowledgeBlockDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,13 +20,13 @@ public class AnnualKnowledgeBlockController {
     @GetMapping("/{id}/add-annual-block")
     public String showAddAnnualBlockForm(@PathVariable Long id, Model model) {
         model.addAttribute("curriculumId", id);
-        model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDto(""));
+        model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDTO(""));
         return "annualKnowledgeBlock/add_annual_block";
     }
 
     @PostMapping("/{id}/add-annual-block")
     public String addAnnualBlock(@PathVariable Long id,
-                                 @Valid @ModelAttribute("annualBlockDto") AnnualKnowledgeBlockDto dto,
+                                 @Valid @ModelAttribute("annualBlockDto") AnnualKnowledgeBlockDTO dto,
                                  BindingResult result,
                                  Model model) {
         model.addAttribute("curriculumId", id);
@@ -52,13 +52,13 @@ public class AnnualKnowledgeBlockController {
                 .orElseThrow(() -> new IllegalArgumentException("Bloc non trouvé : " + annualId));
         model.addAttribute("oldCode", block.getCode());
         model.addAttribute("annualId", annualId);
-        model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDto(""));
+        model.addAttribute("annualBlockDto", new AnnualKnowledgeBlockDTO(""));
         return "annualKnowledgeBlock/rename_annual_block";
     }
 
     @PostMapping("/annual/{annualId}/rename")
     public String renameAnnualBlock(@PathVariable Long annualId,
-                                    @Valid @ModelAttribute("annualBlockDto") AnnualKnowledgeBlockDto dto,
+                                    @Valid @ModelAttribute("annualBlockDto") AnnualKnowledgeBlockDTO dto,
                                     BindingResult result,
                                     Model model) {
 

@@ -7,7 +7,7 @@ import amu.eJury.model.pedagogy.AnnualKnowledgeBlock;
 import amu.eJury.model.pedagogy.SemestrialKnowledgeBlock;
 import amu.eJury.model.pedagogy.TeachingUnit;
 import amu.eJury.service.api.SemestrialKnowledgeBlockService;
-import amu.eJury.service.dtos.SemestrialKnowledgeBlockDto;
+import amu.eJury.service.dtos.SemestrialKnowledgeBlockDTO;
 import amu.eJury.service.validator.SemestrialKnowledgeBlockValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeB
     private final SemestrialKnowledgeBlockValidator semestrialKnowledgeBlockValidator;
 
     @Transactional
-    public void addSemestrialBlockToAnnual(Long annualBlockId, SemestrialKnowledgeBlockDto dto) {
+    public void addSemestrialBlockToAnnual(Long annualBlockId, SemestrialKnowledgeBlockDTO dto) {
         AnnualKnowledgeBlock annual = semestrialKnowledgeBlockValidator.validateAnnualBlockExists(annualBlockId);
 
         SemestrialKnowledgeBlock block = SemestrialKnowledgeBlock.builder()
@@ -56,7 +56,7 @@ public class SemestrialKnowledgeBlockServiceImpl implements SemestrialKnowledgeB
 
     @Transactional
     @Override
-    public void updateSemestrialBlock(Long blockId, SemestrialKnowledgeBlockDto dto) {
+    public void updateSemestrialBlock(Long blockId, SemestrialKnowledgeBlockDTO dto) {
         SemestrialKnowledgeBlock block = semestrialKnowledgeBlockValidator.validateSemestrialBlockExists(blockId);
 
         block.setLabel(dto.label());

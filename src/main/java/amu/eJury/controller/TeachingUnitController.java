@@ -2,7 +2,7 @@ package amu.eJury.controller;
 
 import amu.eJury.model.pedagogy.TeachingUnit;
 import amu.eJury.service.api.TeachingUnitService;
-import amu.eJury.service.dtos.TeachingUnitDto;
+import amu.eJury.service.dtos.TeachingUnitDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,13 +20,13 @@ public class TeachingUnitController {
     @GetMapping("/{id}/add-unit")
     public String showAddUnitForm(@PathVariable String id, Model model) {
         model.addAttribute("curriculumId", id);
-        model.addAttribute("teachingUnitDto", new TeachingUnitDto("", "", 1,0.0, 0.0,true));
+        model.addAttribute("teachingUnitDto", new TeachingUnitDTO("", "", 1,0.0, 0.0,true));
         return "teachingUnit/add_unit";
     }
 
     @PostMapping("/{id}/add-unit")
     public String addUnit(@PathVariable String id,
-                          @Valid @ModelAttribute("teachingUnitDto") TeachingUnitDto dto,
+                          @Valid @ModelAttribute("teachingUnitDto") TeachingUnitDTO dto,
                           BindingResult result,
                           Model model) {
         model.addAttribute("curriculumId", id);
@@ -50,7 +50,7 @@ public class TeachingUnitController {
         TeachingUnit unit = teachingUnitService.findById(unitId)
                 .orElseThrow(() -> new IllegalArgumentException("UE introuvable : " + unitId));
         model.addAttribute("unitId", unit.getId());
-        model.addAttribute("teachingUnitDto", new TeachingUnitDto(
+        model.addAttribute("teachingUnitDto", new TeachingUnitDTO(
                 unit.getCode(), unit.getLabel(), unit.getSemester(), unit.getEcts(), unit.getWorkloadHours(), unit.isObligation()
         ));
         return "teachingUnit/edit_unit";
@@ -58,7 +58,7 @@ public class TeachingUnitController {
 
     @PostMapping("/unit/{unitId}/edit")
     public String updateTeachingUnit(@PathVariable Long unitId,
-                                     @Valid @ModelAttribute("teachingUnitDto") TeachingUnitDto dto,
+                                     @Valid @ModelAttribute("teachingUnitDto") TeachingUnitDTO dto,
                                      BindingResult result,
                                      Model model) {
 

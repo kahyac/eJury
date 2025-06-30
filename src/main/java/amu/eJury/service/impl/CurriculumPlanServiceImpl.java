@@ -3,7 +3,7 @@ package amu.eJury.service.impl;
 import amu.eJury.dao.CurriculumPlanRepository;
 import amu.eJury.model.pedagogy.CurriculumPlan;
 import amu.eJury.service.api.CurriculumPlanService;
-import amu.eJury.service.dtos.CurriculumPlanDto;
+import amu.eJury.service.dtos.CurriculumPlanDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class CurriculumPlanServiceImpl implements CurriculumPlanService {
     private final CurriculumPlanRepository curriculumPlanRepository;
 
     @Transactional
-    public void createCurriculumPlan(CurriculumPlanDto dto) {
+    public void createCurriculumPlan(CurriculumPlanDTO dto) {
         CurriculumPlan plan = CurriculumPlan.builder()
                 .id(1L)
                 .academicYear(dto.academicYear())
@@ -31,7 +31,7 @@ public class CurriculumPlanServiceImpl implements CurriculumPlanService {
 
     @Override
     @Transactional
-    public void updateCurriculumPlan(Long id, CurriculumPlanDto dto) {
+    public void updateCurriculumPlan(Long id, CurriculumPlanDTO dto) {
         CurriculumPlan plan = curriculumPlanRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Maquette introuvable"));
 

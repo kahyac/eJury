@@ -31,4 +31,8 @@ public class AppUser {
 
     @OneToOne
     private Teacher teacher;
+
+    public boolean hasRole(String roleName) {
+        return this.role != null && this.role.name().equalsIgnoreCase(roleName);
+    }
 }

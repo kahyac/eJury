@@ -152,6 +152,11 @@
      style="background: #d5f5e3; color: #1e8449; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; text-align: center; font-weight: 600;">
     <p th:text="${successMessage}"></p>
 </div>
+<div th:if="${errorMessage}"
+     style="background: #fdecea; color: #c0392b; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
 <div class="top-nav">
     <a th:href="@{/}" class="nav-btn">Accueil</a>
 </div>

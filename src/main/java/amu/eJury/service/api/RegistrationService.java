@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface RegistrationService {
     void deleteRegistration(Long studentId, Long unitId);
-    public Map<Student, Integer> checkEctsCompletenessForSemester(int semester);
+    public Map<Student, Integer> checkECTSCompletenessForSemester(int semester);
 
 }
